@@ -1,0 +1,47 @@
+aid: cilium
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml
+name: Cilium
+tags:
+  - Kubernetes
+  - Networking
+  - Security
+  - eBPF
+  - Cloud Native
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+created: '2026-03-16'
+modified: '2026-03-16'
+position: Consumer
+description: >-
+  Cilium is an open source, cloud native solution for providing, securing, and
+  observing network connectivity between workloads, fueled by the revolutionary
+  kernel technology eBPF. Cilium provides network security, load balancing,
+  and observability for Kubernetes clusters.
+apis:
+  - aid: cilium:cilium-api
+    name: Cilium API
+    tags:
+      - Kubernetes
+      - Networking
+    humanURL: https://docs.cilium.io/en/latest/api/
+    properties:
+      - url: https://docs.cilium.io/en/latest/api/
+        type: Documentation
+    description: >-
+      The Cilium API provides access to Cilium daemon and agent endpoints for
+      Kubernetes network policy and security management.
+common:
+  - type: Website
+    url: https://cilium.io/
+  - type: Documentation
+    url: https://docs.cilium.io/
+  - type: GitHub Organization
+    url: https://github.com/cilium/cilium
+  - type: Privacy Policy
+    url: https://cilium.io/privacy/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+specificationVersion: '0.19'
