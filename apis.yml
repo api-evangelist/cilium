@@ -87,12 +87,62 @@ apis:
         type: Reference
       - url: https://github.com/cilium/tetragon
         type: GitHubRepository
+      - url: https://tetragon.io/docs/getting-started/
+        type: Getting Started
+      - url: https://github.com/cilium/tetragon/releases
+        type: Change Log
     description: >-
       The Tetragon gRPC API provides access to eBPF-based security observability
       and runtime enforcement capabilities. It enables querying of kernel-level
       events including process execution, file access, and network activity,
       and supports defining tracing policies via Kubernetes custom resources for
       real-time enforcement and event streaming.
+  - aid: cilium:cilium-operator-api
+    name: Cilium Operator API
+    tags:
+      - Kubernetes
+      - Networking
+      - Operations
+      - eBPF
+    humanURL: https://docs.cilium.io/en/stable/internals/
+    baseURL: https://localhost/v1
+    properties:
+      - url: https://docs.cilium.io/en/stable/internals/
+        type: Documentation
+      - url: https://github.com/cilium/cilium/blob/main/api/v1/operator/openapi.yaml
+        type: OpenAPI
+      - url: https://github.com/cilium/cilium/releases
+        type: Change Log
+    description: >-
+      The Cilium Operator API provides a REST interface for the Cilium operator
+      component, which handles cluster-wide tasks such as garbage collection of
+      Cilium endpoints and identities, node IPAM management, and coordination
+      of cluster mesh operations. It exposes health and status endpoints for
+      operator lifecycle management in Kubernetes deployments.
+  - aid: cilium:hubble-relay-api
+    name: Hubble Relay API
+    tags:
+      - Observability
+      - Networking
+      - Kubernetes
+      - gRPC
+    humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
+    properties:
+      - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
+        type: Documentation
+      - url: https://github.com/cilium/cilium/tree/main/api/v1/relay
+        type: Reference
+      - url: https://github.com/cilium/cilium
+        type: GitHubRepository
+      - url: https://github.com/cilium/cilium/releases
+        type: Change Log
+    description: >-
+      The Hubble Relay API is a gRPC service that aggregates and relays network
+      flow data from multiple Hubble agents running across Kubernetes cluster
+      nodes. It provides a single cluster-wide endpoint for the Hubble Observer
+      service, enabling centralized queries of flow data, DNS events, and HTTP
+      metrics from all nodes through Hubble Relay without connecting to each
+      node individually.
 common:
   - type: JSON-LD
     url: json-ld/cilium-context.jsonld
@@ -120,6 +170,12 @@ common:
     url: https://slack.cilium.io/
   - type: Change Log
     url: https://github.com/cilium/cilium/releases
+  - type: YouTube
+    url: https://www.youtube.com/@CiliumProject
+  - type: Terms of Service
+    url: https://cilium.io/terms/
+  - type: Stack Overflow
+    url: https://stackoverflow.com/questions/tagged/cilium
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
