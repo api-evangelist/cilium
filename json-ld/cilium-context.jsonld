@@ -1,0 +1,193 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "cilium": "https://cilium.io/ontology/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "k8s": "https://kubernetes.io/ontology/",
+
+    "Endpoint": {
+      "@id": "cilium:Endpoint",
+      "@context": {
+        "id": "cilium:endpointId",
+        "containerID": "cilium:containerID",
+        "containerName": "schema:name",
+        "k8sNamespace": "k8s:namespace",
+        "k8sPodName": "k8s:podName",
+        "k8sUID": "k8s:uid",
+        "state": "cilium:endpointState",
+        "labels": {
+          "@id": "cilium:label",
+          "@container": "@set"
+        },
+        "identity": {
+          "@id": "cilium:hasIdentity",
+          "@type": "@id"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Identity": {
+      "@id": "cilium:Identity",
+      "@context": {
+        "id": "cilium:identityId",
+        "labels": {
+          "@id": "cilium:label",
+          "@container": "@set"
+        },
+        "labelsSHA256": "cilium:labelsSHA256"
+      }
+    },
+
+    "NetworkPolicy": {
+      "@id": "cilium:NetworkPolicy",
+      "@context": {
+        "name": "schema:name",
+        "namespace": "k8s:namespace",
+        "revision": "cilium:policyRevision",
+        "rules": {
+          "@id": "cilium:hasRule",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "PolicyRule": {
+      "@id": "cilium:PolicyRule",
+      "@context": {
+        "labels": {
+          "@id": "cilium:label",
+          "@container": "@set"
+        },
+        "endpointSelector": "cilium:endpointSelector",
+        "ingress": {
+          "@id": "cilium:ingressRule",
+          "@container": "@set"
+        },
+        "egress": {
+          "@id": "cilium:egressRule",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Service": {
+      "@id": "cilium:Service",
+      "@context": {
+        "id": "cilium:serviceId",
+        "name": "schema:name",
+        "namespace": "k8s:namespace",
+        "frontendAddress": {
+          "@id": "cilium:frontendAddress",
+          "@type": "@id"
+        },
+        "backendAddresses": {
+          "@id": "cilium:backendAddress",
+          "@container": "@set"
+        },
+        "type": "cilium:serviceType",
+        "trafficPolicy": "cilium:trafficPolicy"
+      }
+    },
+
+    "FrontendAddress": {
+      "@id": "cilium:FrontendAddress",
+      "@context": {
+        "ip": "schema:ipAddressOrRange",
+        "port": "schema:portNumber",
+        "protocol": "cilium:protocol",
+        "scope": "cilium:addressScope"
+      }
+    },
+
+    "BackendAddress": {
+      "@id": "cilium:BackendAddress",
+      "@context": {
+        "ip": "schema:ipAddressOrRange",
+        "port": "schema:portNumber",
+        "nodeName": "k8s:nodeName",
+        "state": "cilium:backendState",
+        "weight": "cilium:loadBalancerWeight"
+      }
+    },
+
+    "NetworkFlow": {
+      "@id": "cilium:NetworkFlow",
+      "@context": {
+        "time": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "verdict": "cilium:policyVerdict",
+        "source": {
+          "@id": "cilium:sourceEndpoint",
+          "@type": "@id"
+        },
+        "destination": {
+          "@id": "cilium:destinationEndpoint",
+          "@type": "@id"
+        },
+        "nodeName": "k8s:nodeName",
+        "trafficDirection": "cilium:trafficDirection",
+        "sourceService": {
+          "@id": "cilium:sourceService",
+          "@type": "@id"
+        },
+        "destinationService": {
+          "@id": "cilium:destinationService",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "ClusterNode": {
+      "@id": "cilium:ClusterNode",
+      "@context": {
+        "name": "schema:name",
+        "primaryAddress": {
+          "@id": "cilium:primaryAddress",
+          "@type": "@id"
+        },
+        "allocationCIDR": "cilium:allocationCIDR",
+        "encryptionKey": "cilium:encryptionKey"
+      }
+    },
+
+    "BgpPeer": {
+      "@id": "cilium:BgpPeer",
+      "@context": {
+        "peerAddress": {
+          "@id": "schema:ipAddressOrRange"
+        },
+        "peerASN": "cilium:peerASN",
+        "localASN": "cilium:localASN",
+        "sessionState": "cilium:bgpSessionState"
+      }
+    },
+
+    "DNSLookup": {
+      "@id": "cilium:DNSLookup",
+      "@context": {
+        "fqdn": "cilium:fullyQualifiedDomainName",
+        "ips": {
+          "@id": "cilium:resolvedIP",
+          "@container": "@set"
+        },
+        "lookupTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "expirationTime": {
+          "@id": "dcterms:valid",
+          "@type": "xsd:dateTime"
+        },
+        "ttl": "cilium:dnsTTL"
+      }
+    }
+  }
+}

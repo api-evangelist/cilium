@@ -12,7 +12,7 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2026-03-16'
-modified: '2026-03-16'
+modified: '2026-03-18'
 position: Consumer
 description: >-
   Cilium is an open source, cloud native solution for providing, securing, and
@@ -25,22 +25,101 @@ apis:
     tags:
       - Kubernetes
       - Networking
-    humanURL: https://docs.cilium.io/en/latest/api/
+      - eBPF
+      - Security
+    humanURL: https://docs.cilium.io/en/stable/api/
+    baseURL: https://localhost/v1
     properties:
-      - url: https://docs.cilium.io/en/latest/api/
+      - url: https://docs.cilium.io/en/stable/api/
         type: Documentation
+      - url: https://github.com/cilium/cilium/blob/main/api/v1/openapi.yaml
+        type: OpenAPI
+      - url: openapi/cilium-api-openapi.yml
+        type: OpenAPI
+      - url: https://docs.cilium.io/en/stable/gettingstarted/
+        type: Getting Started
+      - url: https://github.com/cilium/cilium/releases
+        type: Change Log
     description: >-
-      The Cilium API provides access to Cilium daemon and agent endpoints for
-      Kubernetes network policy and security management.
+      The Cilium REST API provides access to Cilium daemon and agent endpoints
+      for managing Kubernetes network policy, security, and connectivity. The
+      API is served by the cilium-agent process over a local Unix domain socket
+      and HTTP interface, and covers endpoints, identities, cluster nodes, and
+      health status.
+  - aid: cilium:hubble-api
+    name: Hubble API
+    tags:
+      - Observability
+      - Networking
+      - Kubernetes
+      - eBPF
+    humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
+    properties:
+      - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
+        type: Documentation
+      - url: https://docs.cilium.io/en/stable/internals/hubble/
+        type: Reference
+      - url: asyncapi/cilium-hubble-asyncapi.yml
+        type: AsyncAPI
+      - url: https://github.com/cilium/hubble
+        type: GitHubRepository
+      - url: https://github.com/cilium/hubble/releases
+        type: Change Log
+    description: >-
+      The Hubble API is a gRPC-based observability API built on top of Cilium
+      and eBPF that provides deep visibility into network flows, DNS queries,
+      HTTP requests, and service communication within Kubernetes clusters. It
+      exposes Observer and Peer gRPC services for querying flows, nodes,
+      namespaces, and server status across single nodes or entire clusters via
+      Hubble Relay.
+  - aid: cilium:tetragon-api
+    name: Tetragon API
+    tags:
+      - Security
+      - Observability
+      - Kubernetes
+      - eBPF
+    humanURL: https://tetragon.io/docs/reference/grpc-api/
+    properties:
+      - url: https://tetragon.io/docs/reference/grpc-api/
+        type: Documentation
+      - url: https://tetragon.io/docs/
+        type: Reference
+      - url: https://github.com/cilium/tetragon
+        type: GitHubRepository
+    description: >-
+      The Tetragon gRPC API provides access to eBPF-based security observability
+      and runtime enforcement capabilities. It enables querying of kernel-level
+      events including process execution, file access, and network activity,
+      and supports defining tracing policies via Kubernetes custom resources for
+      real-time enforcement and event streaming.
 common:
+  - type: JSON-LD
+    url: json-ld/cilium-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cilium-endpoint-schema.json
   - type: Website
     url: https://cilium.io/
   - type: Documentation
     url: https://docs.cilium.io/
+  - type: Getting Started
+    url: https://docs.cilium.io/en/stable/gettingstarted/
   - type: GitHub Organization
+    url: https://github.com/cilium
+  - type: GitHubRepository
     url: https://github.com/cilium/cilium
+  - type: Blog
+    url: https://cilium.io/blog/
+  - type: Community
+    url: https://cilium.io/get-involved/
+  - type: Support
+    url: https://cilium.io/get-help/
   - type: Privacy Policy
     url: https://cilium.io/privacy/
+  - type: Slack
+    url: https://slack.cilium.io/
+  - type: Change Log
+    url: https://github.com/cilium/cilium/releases
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

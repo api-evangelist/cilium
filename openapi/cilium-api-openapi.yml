@@ -1,0 +1,2237 @@
+openapi: 3.1.0
+info:
+  title: Cilium API
+  description: >-
+    The Cilium REST API provides access to the Cilium daemon and agent endpoints
+    for managing Kubernetes network policy, security, and connectivity. The API
+    is served by the cilium-agent process over a local Unix domain socket and
+    HTTP interface. It covers endpoint management, identity management, policy
+    configuration, IP address management, service configuration, BGP operations,
+    and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/
+servers:
+  - url: http://localhost/v1
+    description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+  - name: Daemon
+    description: Cilium daemon configuration, health, and cluster management
+  - name: Endpoint
+    description: Endpoint lifecycle management, configuration, and status
+  - name: Policy
+    description: Network policy, security identities, and FQDN/DNS policy
+  - name: IPAM
+    description: IP address management and allocation
+  - name: Service
+    description: Service load balancing and local redirect policies
+  - name: BGP
+    description: BGP control plane peers, routes, and route policies
+  - name: Prefilter
+    description: XDP prefilter CIDR management
+paths:
+  /healthz:
+    get:
+      operationId: getDaemonHealth
+      summary: Get daemon health status
+      description: >-
+        Returns the overall health status of the Cilium daemon including
+        connectivity to the kvstore, container runtime, Kubernetes API server,
+        and the status of each configured subsystem.
+      tags:
+        - Daemon
+      parameters:
+        - $ref: '#/components/parameters/BriefParam'
+      responses:
+        '200':
+          description: Daemon health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /config:
+    get:
+      operationId: getDaemonConfig
+      summary: Get daemon configuration
+      description: >-
+        Returns the current runtime configuration of the Cilium daemon,
+        including mutable and immutable settings such as policy enforcement mode,
+        enabled features, and address pool information.
+      tags:
+        - Daemon
+      responses:
+        '200':
+          description: Daemon configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DaemonConfiguration'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchDaemonConfig
+      summary: Modify daemon configuration
+      description: >-
+        Modifies the mutable runtime configuration of the Cilium daemon.
+        Supports updating policy enforcement mode and feature toggles without
+        restarting the agent.
+      tags:
+        - Daemon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DaemonConfigurationSpec'
+      responses:
+        '200':
+          description: Configuration updated successfully
+        '400':
+          description: Invalid configuration parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cluster/nodes:
+    get:
+      operationId: getClusterNodes
+      summary: List cluster nodes
+      description: >-
+        Returns information about all nodes in the Cilium cluster, including
+        their addresses, health status, and connectivity information.
+      tags:
+        - Daemon
+      parameters:
+        - $ref: '#/components/parameters/ClientIDParam'
+      responses:
+        '200':
+          description: Cluster node list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterNodeStatus'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /debuginfo:
+    get:
+      operationId: getDebugInfo
+      summary: Get debugging information
+      description: >-
+        Returns comprehensive debugging information about the Cilium daemon,
+        including BPF map state, policy state, endpoint information, and
+        environment details useful for troubleshooting.
+      tags:
+        - Daemon
+      responses:
+        '200':
+          description: Debug information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DebugInfo'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /map:
+    get:
+      operationId: getBPFMaps
+      summary: List BPF maps
+      description: >-
+        Returns a list of all open BPF maps used by the Cilium datapath,
+        including their names, types, key/value sizes, and current entry counts.
+      tags:
+        - Daemon
+      responses:
+        '200':
+          description: BPF map list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BPFMap'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /node/ids:
+    get:
+      operationId: getNodeIDs
+      summary: Get node IDs
+      description: >-
+        Returns the mapping of node names to their allocated numeric node IDs
+        used in the BPF datapath for traffic identification and policy
+        enforcement.
+      tags:
+        - Daemon
+      responses:
+        '200':
+          description: Node ID mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodeID'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint:
+    get:
+      operationId: listEndpoints
+      summary: List endpoints
+      description: >-
+        Returns a list of all managed endpoints on this Cilium node, including
+        their identities, IP addresses, labels, and policy enforcement status.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: List of endpoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endpoint'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteEndpoints
+      summary: Delete endpoints by label selector
+      description: >-
+        Deletes all endpoints that match the given label selector. Used to
+        clean up endpoints associated with terminated workloads.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: Endpoints deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointChangeRequest'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No endpoints found matching labels
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}:
+    get:
+      operationId: getEndpoint
+      summary: Get endpoint by ID
+      description: >-
+        Returns the full state of a specific endpoint including its identity,
+        IP addressing, label configuration, policy enforcement status, and
+        health information.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint'
+        '400':
+          description: Invalid endpoint ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: putEndpoint
+      summary: Create or replace endpoint
+      description: >-
+        Creates a new endpoint or replaces an existing one with the provided
+        configuration. Used by container runtimes and CNI plugins to register
+        new workload endpoints with the Cilium agent.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointChangeRequest'
+      responses:
+        '201':
+          description: Endpoint created
+        '400':
+          description: Invalid endpoint configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Endpoint already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpoint
+      summary: Modify endpoint
+      description: >-
+        Applies partial changes to an existing endpoint configuration, such as
+        updating labels or other mutable properties, without replacing the full
+        endpoint state.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointChangeRequest'
+      responses:
+        '200':
+          description: Endpoint updated
+        '400':
+          description: Invalid modification request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteEndpoint
+      summary: Delete endpoint
+      description: >-
+        Removes a managed endpoint from the Cilium agent, cleaning up all
+        associated BPF maps, policy state, and IP allocations.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint deleted
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/config:
+    get:
+      operationId: getEndpointConfig
+      summary: Get endpoint configuration
+      description: >-
+        Returns the current configuration of a specific endpoint, including
+        policy enforcement settings and enabled feature flags.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointConfigurationSpec'
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpointConfig
+      summary: Modify endpoint configuration
+      description: >-
+        Updates the mutable configuration settings of a specific endpoint,
+        such as policy enforcement mode and per-endpoint feature toggles.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointConfigurationSpec'
+      responses:
+        '200':
+          description: Configuration updated
+        '400':
+          description: Invalid configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/labels:
+    get:
+      operationId: getEndpointLabels
+      summary: Get endpoint labels
+      description: >-
+        Returns the current set of labels applied to a specific endpoint,
+        including both static and dynamic labels used for identity derivation
+        and policy matching.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelConfiguration'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpointLabels
+      summary: Modify endpoint labels
+      description: >-
+        Updates the labels associated with a specific endpoint, which may
+        trigger identity recalculation and policy re-evaluation.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelConfigurationSpec'
+      responses:
+        '200':
+          description: Labels updated
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/log:
+    get:
+      operationId: getEndpointLog
+      summary: Get endpoint status log
+      description: >-
+        Returns the historical status log of a specific endpoint, recording
+        state transitions, policy changes, and other significant events in
+        the endpoint lifecycle.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint status log
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EndpointStatusChange'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/healthz:
+    get:
+      operationId: getEndpointHealth
+      summary: Get endpoint health
+      description: >-
+        Returns the health status of a specific endpoint, including BPF
+        program status, policy enforcement state, and connectivity checks.
+      tags:
+        - Endpoint
+      parameters:
+        - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointHealth'
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /identity:
+    get:
+      operationId: listIdentities
+      summary: List security identities
+      description: >-
+        Returns a list of all security identities known to the Cilium agent,
+        each consisting of a numeric ID and the associated label set used to
+        derive that identity for policy enforcement.
+      tags:
+        - Policy
+      parameters:
+        - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: List of identities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /identity/{id}:
+    get:
+      operationId: getIdentity
+      summary: Get identity by ID
+      description: >-
+        Returns the security identity corresponding to the given numeric
+        identity ID, including its associated label set.
+      tags:
+        - Policy
+      parameters:
+        - $ref: '#/components/parameters/IdentityIDParam'
+      responses:
+        '200':
+          description: Identity details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '400':
+          description: Invalid identity ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Identity not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /identity/endpoints:
+    get:
+      operationId: getLocalEndpointIdentities
+      summary: List local endpoint identities
+      description: >-
+        Returns the set of numeric security identities that are currently
+        in use by local endpoints managed by this Cilium agent.
+      tags:
+        - Policy
+      responses:
+        '200':
+          description: Local endpoint identity list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /policy/selectors:
+    get:
+      operationId: getPolicySelectors
+      summary: Get policy selectors
+      description: >-
+        Returns all policy selectors and the set of security identities that
+        each selector currently matches, useful for debugging policy enforcement.
+      tags:
+        - Policy
+      responses:
+        '200':
+          description: Policy selector list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SelectorCache'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fqdn/cache:
+    get:
+      operationId: getFQDNCache
+      summary: Get FQDN DNS cache
+      description: >-
+        Returns the current DNS lookup cache used by Cilium for FQDN-based
+        network policy enforcement, including resolved IP addresses and TTL
+        information for each DNS name.
+      tags:
+        - Policy
+      parameters:
+        - $ref: '#/components/parameters/MatchPatternParam'
+        - $ref: '#/components/parameters/CIDRParam'
+        - $ref: '#/components/parameters/SourceParam'
+      responses:
+        '200':
+          description: FQDN cache entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DNSLookup'
+        '400':
+          description: Invalid filter parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteFQDNCache
+      summary: Clear FQDN DNS cache
+      description: >-
+        Removes entries from the FQDN DNS cache. Can delete all entries or
+        filter by pattern. This forces re-resolution of DNS names on next
+        policy evaluation.
+      tags:
+        - Policy
+      parameters:
+        - $ref: '#/components/parameters/MatchPatternParam'
+      responses:
+        '200':
+          description: Cache entries deleted
+        '400':
+          description: Invalid filter pattern
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fqdn/names:
+    get:
+      operationId: getFQDNNames
+      summary: Get FQDN selector names
+      description: >-
+        Returns all DNS names currently tracked by Cilium FQDN selectors,
+        including the selectors that reference each name and the current set
+        of IP addresses associated with each name.
+      tags:
+        - Policy
+      responses:
+        '200':
+          description: FQDN name list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameManager'
+        '400':
+          description: Request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ipam:
+    post:
+      operationId: allocateIPAddress
+      summary: Allocate IP address
+      description: >-
+        Allocates a new IP address from the configured IPAM pool for assignment
+        to a new endpoint. Returns the allocated IP address and relevant
+        routing information.
+      tags:
+        - IPAM
+      parameters:
+        - $ref: '#/components/parameters/IPAMFamilyParam'
+        - $ref: '#/components/parameters/IPAMOwnerParam'
+        - $ref: '#/components/parameters/IPAMExpirationParam'
+      responses:
+        '201':
+          description: IP address allocated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPAMResponse'
+        '502':
+          description: IPAM provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ipam/{ip}:
+    post:
+      operationId: allocateSpecificIPAddress
+      summary: Allocate specific IP address
+      description: >-
+        Allocates a specific IP address in the IPAM pool, reserving it for
+        assignment to an endpoint. Fails if the IP is already allocated or
+        out of the configured pool range.
+      tags:
+        - IPAM
+      parameters:
+        - $ref: '#/components/parameters/IPParam'
+        - $ref: '#/components/parameters/IPAMOwnerParam'
+        - $ref: '#/components/parameters/IPAMExpirationParam'
+      responses:
+        '200':
+          description: IP address allocated
+        '400':
+          description: Invalid IP address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: IP address already allocated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: releaseIPAddress
+      summary: Release IP address
+      description: >-
+        Returns a previously allocated IP address back to the IPAM pool,
+        making it available for future allocations.
+      tags:
+        - IPAM
+      parameters:
+        - $ref: '#/components/parameters/IPParam'
+        - $ref: '#/components/parameters/IPAMOwnerParam'
+      responses:
+        '200':
+          description: IP address released
+        '400':
+          description: Invalid IP address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: IP address not found or not allocated
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ip:
+    get:
+      operationId: listIPAddresses
+      summary: List IP addresses
+      description: >-
+        Returns information about all IP addresses known to the Cilium agent,
+        including their allocation state, associated endpoint, and routing
+        information.
+      tags:
+        - IPAM
+      responses:
+        '200':
+          description: IP address list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IPListEntry'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service:
+    get:
+      operationId: listServices
+      summary: List services
+      description: >-
+        Returns all services managed by the Cilium load balancer, including
+        their frontend VIP addresses and the set of backend endpoints with
+        associated weight and health status.
+      tags:
+        - Service
+      responses:
+        '200':
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service/{id}:
+    get:
+      operationId: getService
+      summary: Get service by ID
+      description: >-
+        Returns the configuration and status of a specific Cilium-managed
+        service, identified by its numeric service ID.
+      tags:
+        - Service
+      parameters:
+        - $ref: '#/components/parameters/ServiceIDParam'
+      responses:
+        '200':
+          description: Service details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: putService
+      summary: Create or update service
+      description: >-
+        Creates a new Cilium-managed service or updates an existing one,
+        specifying the frontend VIP and port along with the set of backend
+        endpoints for load balancing.
+      tags:
+        - Service
+      parameters:
+        - $ref: '#/components/parameters/ServiceIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceSpec'
+      responses:
+        '200':
+          description: Service updated
+        '201':
+          description: Service created
+        '400':
+          description: Invalid service specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteService
+      summary: Delete service
+      description: >-
+        Removes a Cilium-managed service and all its associated load balancing
+        configuration from the BPF datapath.
+      tags:
+        - Service
+      parameters:
+        - $ref: '#/components/parameters/ServiceIDParam'
+      responses:
+        '200':
+          description: Service deleted
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /lrp:
+    get:
+      operationId: listLocalRedirectPolicies
+      summary: List local redirect policies
+      description: >-
+        Returns all local redirect policies (LRP) configured on this node,
+        which redirect traffic destined for a frontend address to local backend
+        endpoints rather than using the normal load balancer.
+      tags:
+        - Service
+      responses:
+        '200':
+          description: Local redirect policy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LRPSpec'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /prefilter:
+    get:
+      operationId: getPrefilterConfig
+      summary: Get prefilter configuration
+      description: >-
+        Returns the current XDP prefilter configuration, including CIDR ranges
+        that are configured for early packet dropping at the network driver
+        level before reaching the Cilium BPF programs.
+      tags:
+        - Prefilter
+      responses:
+        '200':
+          description: Prefilter configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prefilter'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchPrefilterConfig
+      summary: Update prefilter configuration
+      description: >-
+        Updates the XDP prefilter CIDR list, adding or removing network ranges
+        from the prefilter set for early traffic dropping.
+      tags:
+        - Prefilter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrefilterSpec'
+      responses:
+        '200':
+          description: Prefilter configuration updated
+        '400':
+          description: Invalid CIDR specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deletePrefilterConfig
+      summary: Delete prefilter entries
+      description: >-
+        Removes specific CIDR entries from the XDP prefilter configuration.
+      tags:
+        - Prefilter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrefilterSpec'
+      responses:
+        '200':
+          description: Prefilter entries deleted
+        '400':
+          description: Invalid CIDR specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bgp/peers:
+    get:
+      operationId: getBGPPeers
+      summary: List BGP peers
+      description: >-
+        Returns the status of all BGP peers configured on this Cilium node,
+        including session state, address families negotiated, and routing
+        statistics.
+      tags:
+        - BGP
+      responses:
+        '200':
+          description: BGP peer list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpPeer'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bgp/routes:
+    get:
+      operationId: getBGPRoutes
+      summary: List BGP routes
+      description: >-
+        Returns the BGP routing information base (RIB) for this Cilium node,
+        including routes learned from peers and locally originated routes
+        for pod CIDRs and services.
+      tags:
+        - BGP
+      parameters:
+        - $ref: '#/components/parameters/BGPTableTypeParam'
+        - $ref: '#/components/parameters/BGPVrfParam'
+        - $ref: '#/components/parameters/BGPAFIParam'
+        - $ref: '#/components/parameters/BGPSAFIParam'
+        - $ref: '#/components/parameters/BGPNeighborParam'
+      responses:
+        '200':
+          description: BGP route table
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpRoute'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bgp/route-policies:
+    get:
+      operationId: getBGPRoutePolicies
+      summary: List BGP route policies
+      description: >-
+        Returns all BGP route policies configured on this node, used to filter
+        and modify routes exchanged with BGP peers based on prefix lists,
+        community strings, and other BGP attributes.
+      tags:
+        - BGP
+      parameters:
+        - $ref: '#/components/parameters/BGPRouterASNParam'
+      responses:
+        '200':
+          description: BGP route policy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpRoutePolicy'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    EndpointIDParam:
+      name: id
+      in: path
+      required: true
+      description: >-
+        Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint
+        ID, or container name prefixed with the appropriate scheme.
+      schema:
+        type: string
+    IdentityIDParam:
+      name: id
+      in: path
+      required: true
+      description: Numeric security identity ID.
+      schema:
+        type: string
+    ServiceIDParam:
+      name: id
+      in: path
+      required: true
+      description: Numeric service ID.
+      schema:
+        type: integer
+    LabelsParam:
+      name: labels
+      in: query
+      required: false
+      description: Filter by label selector (key=value pairs).
+      schema:
+        type: array
+        items:
+          type: string
+    BriefParam:
+      name: brief
+      in: query
+      required: false
+      description: Return brief response with reduced detail.
+      schema:
+        type: boolean
+    ClientIDParam:
+      name: client-id
+      in: query
+      required: false
+      description: >-
+        Unique client ID for long-polling. Returns only changes since the
+        last response to this client.
+      schema:
+        type: integer
+        format: int64
+    MatchPatternParam:
+      name: matchpattern
+      in: query
+      required: false
+      description: FQDN name match pattern (shell-style glob).
+      schema:
+        type: string
+    CIDRParam:
+      name: cidr
+      in: query
+      required: false
+      description: Filter by CIDR network range.
+      schema:
+        type: string
+    SourceParam:
+      name: source
+      in: query
+      required: false
+      description: Filter by DNS entry source (e.g., dns, connection).
+      schema:
+        type: string
+    IPAMFamilyParam:
+      name: family
+      in: query
+      required: false
+      description: IP address family to allocate (ipv4 or ipv6).
+      schema:
+        type: string
+        enum: [ipv4, ipv6]
+    IPAMOwnerParam:
+      name: owner
+      in: query
+      required: false
+      description: Owner identifier for the IP allocation.
+      schema:
+        type: string
+    IPAMExpirationParam:
+      name: expiration
+      in: query
+      required: false
+      description: Whether the allocation should expire if not confirmed.
+      schema:
+        type: boolean
+    IPParam:
+      name: ip
+      in: path
+      required: true
+      description: IP address to allocate or release.
+      schema:
+        type: string
+    BGPTableTypeParam:
+      name: table_type
+      in: query
+      required: false
+      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
+      schema:
+        type: string
+    BGPVrfParam:
+      name: vrf
+      in: query
+      required: false
+      description: BGP VRF name.
+      schema:
+        type: string
+    BGPAFIParam:
+      name: afi
+      in: query
+      required: false
+      description: Address Family Identifier (ipv4 or ipv6).
+      schema:
+        type: string
+    BGPSAFIParam:
+      name: safi
+      in: query
+      required: false
+      description: Subsequent Address Family Identifier (unicast or multicast).
+      schema:
+        type: string
+    BGPNeighborParam:
+      name: neighbor
+      in: query
+      required: false
+      description: Filter routes for a specific BGP neighbor address.
+      schema:
+        type: string
+    BGPRouterASNParam:
+      name: router_asn
+      in: query
+      required: false
+      description: Filter policies for a specific BGP router ASN.
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    Error:
+      type: string
+      description: Human-readable error message.
+    StatusResponse:
+      type: object
+      description: >-
+        Overall health and status of the Cilium daemon, including connectivity
+        to external dependencies and subsystem health.
+      properties:
+        cilium:
+          $ref: '#/components/schemas/Status'
+        cluster:
+          $ref: '#/components/schemas/ClusterStatus'
+        container-runtime:
+          $ref: '#/components/schemas/Status'
+        controllers:
+          $ref: '#/components/schemas/ControllerStatuses'
+        ipam:
+          $ref: '#/components/schemas/IPAMStatus'
+        kube-proxy-replacement:
+          $ref: '#/components/schemas/KubeProxyReplacementStatus'
+        kubernetes:
+          $ref: '#/components/schemas/K8sStatus'
+        kvstore:
+          $ref: '#/components/schemas/Status'
+        nodeMonitor:
+          $ref: '#/components/schemas/MonitorStatus'
+    Status:
+      type: object
+      description: Health status of a single Cilium subsystem or dependency.
+      properties:
+        state:
+          type: string
+          description: >-
+            State of the subsystem. One of Ok, Warning, Failure, or Disabled.
+          enum: [Ok, Warning, Failure, Disabled]
+        msg:
+          type: string
+          description: Additional message describing the current state.
+    ClusterStatus:
+      type: object
+      description: Status of the Cilium cluster mesh connectivity.
+      properties:
+        self:
+          type: string
+          description: Name of this cluster.
+        nodes:
+          type: object
+          description: Map of node names to their connectivity status.
+          additionalProperties:
+            $ref: '#/components/schemas/NodeStatus'
+    NodeStatus:
+      type: object
+      description: Connectivity and health status of a single cluster node.
+      properties:
+        name:
+          type: string
+          description: Node name.
+        primaryAddress:
+          $ref: '#/components/schemas/NodeAddress'
+        healthEndpointAddress:
+          $ref: '#/components/schemas/NodeAddress'
+    NodeAddress:
+      type: object
+      description: Network address information for a cluster node.
+      properties:
+        ip:
+          type: string
+          description: IP address of the node.
+        allocationCIDR:
+          type: string
+          description: CIDR block allocated to this node for pod IPs.
+    ControllerStatuses:
+      type: object
+      description: Map of controller names to their current status.
+      additionalProperties:
+        $ref: '#/components/schemas/ControllerStatus'
+    ControllerStatus:
+      type: object
+      description: Status of a single Cilium background controller.
+      properties:
+        name:
+          type: string
+          description: Controller name.
+        status:
+          type: object
+          description: Controller run status details.
+          properties:
+            consecutiveFailureCount:
+              type: integer
+              description: Number of consecutive failures.
+            failureCount:
+              type: integer
+              description: Total failure count.
+            lastFailureTimestamp:
+              type: string
+              format: date-time
+              description: Time of last failure.
+            lastSuccessTimestamp:
+              type: string
+              format: date-time
+              description: Time of last success.
+            successCount:
+              type: integer
+              description: Total success count.
+    IPAMStatus:
+      type: object
+      description: Current IPAM pool usage and allocation statistics.
+      properties:
+        ipv4:
+          type: array
+          items:
+            type: string
+          description: List of allocated IPv4 addresses.
+        ipv6:
+          type: array
+          items:
+            type: string
+          description: List of allocated IPv6 addresses.
+    KubeProxyReplacementStatus:
+      type: object
+      description: Status of the kube-proxy replacement functionality.
+      properties:
+        mode:
+          type: string
+          description: kube-proxy replacement mode (disabled, partial, strict).
+    K8sStatus:
+      type: object
+      description: Status of Kubernetes API server connectivity and version.
+      properties:
+        state:
+          type: string
+          description: Connection state to the Kubernetes API server.
+        msg:
+          type: string
+          description: Additional Kubernetes connectivity information.
+        k8s-api-versions:
+          type: array
+          items:
+            type: string
+          description: List of supported Kubernetes API versions.
+    MonitorStatus:
+      type: object
+      description: Status of the Cilium node monitor.
+      properties:
+        cpus:
+          type: integer
+          description: Number of CPUs the monitor is running on.
+        lost:
+          type: integer
+          format: int64
+          description: Number of monitor events lost due to buffer overflow.
+        unknown:
+          type: integer
+          format: int64
+          description: Number of unknown monitor events received.
+    DaemonConfiguration:
+      type: object
+      description: Current runtime configuration of the Cilium daemon.
+      properties:
+        spec:
+          $ref: '#/components/schemas/DaemonConfigurationSpec'
+        status:
+          $ref: '#/components/schemas/DaemonConfigurationStatus'
+    DaemonConfigurationSpec:
+      type: object
+      description: Mutable configuration options for the Cilium daemon.
+      properties:
+        options:
+          type: object
+          description: Map of configuration option names to their values.
+          additionalProperties:
+            type: string
+        policyEnforcement:
+          type: string
+          description: Policy enforcement mode.
+          enum: [default, always, never]
+    DaemonConfigurationStatus:
+      type: object
+      description: Current effective configuration of the Cilium daemon.
+      properties:
+        immutable:
+          type: object
+          description: Immutable configuration options.
+          additionalProperties:
+            type: string
+        realized:
+          $ref: '#/components/schemas/DaemonConfigurationSpec'
+    ClusterNodeStatus:
+      type: object
+      description: Cluster-wide node status and membership information.
+      properties:
+        self:
+          type: string
+          description: Name of this node.
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeElement'
+          description: All nodes in the cluster.
+    NodeElement:
+      type: object
+      description: Information about a single cluster node.
+      properties:
+        name:
+          type: string
+          description: Node hostname.
+        primaryAddress:
+          $ref: '#/components/schemas/NodeAddress'
+        health-endpoint-address:
+          $ref: '#/components/schemas/NodeAddress'
+        encryption:
+          type: object
+          description: Node encryption configuration.
+    DebugInfo:
+      type: object
+      description: Comprehensive debugging information about the Cilium daemon.
+      properties:
+        cilium-version:
+          type: string
+          description: Cilium version string.
+        kernel-version:
+          type: string
+          description: Linux kernel version.
+        policy-information:
+          type: object
+          description: Current policy state.
+        endpoint-list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endpoint'
+          description: All managed endpoints.
+    BPFMap:
+      type: object
+      description: Information about a BPF map used by the Cilium datapath.
+      properties:
+        path:
+          type: string
+          description: File system path to the pinned BPF map.
+        cache:
+          type: array
+          items:
+            $ref: '#/components/schemas/BPFMapEntry'
+          description: Current entries in the BPF map.
+    BPFMapEntry:
+      type: object
+      description: A single key-value entry in a BPF map.
+      properties:
+        key:
+          type: string
+          description: BPF map entry key.
+        value:
+          type: string
+          description: BPF map entry value.
+        desiredAction:
+          type: string
+          description: Desired reconciliation action for this entry.
+    NodeID:
+      type: object
+      description: Mapping of a node name to its numeric datapath ID.
+      properties:
+        id:
+          type: integer
+          description: Numeric node ID used in the BPF datapath.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels associated with this node.
+        cidr:
+          type: string
+          description: CIDR block allocated to this node.
+    Endpoint:
+      type: object
+      description: >-
+        A Cilium-managed network endpoint, typically corresponding to a
+        Kubernetes pod or container with associated identity and policy state.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Numeric endpoint ID assigned by Cilium.
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        spec:
+          $ref: '#/components/schemas/EndpointSpec'
+    EndpointSpec:
+      type: object
+      description: Desired configuration for an endpoint.
+      properties:
+        addressing:
+          $ref: '#/components/schemas/AddressPair'
+        containerID:
+          type: string
+          description: Container runtime ID for this endpoint.
+        containerName:
+          type: string
+          description: Container name.
+        k8sNamespace:
+          type: string
+          description: Kubernetes namespace.
+        k8sPodName:
+          type: string
+          description: Kubernetes pod name.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Security labels associated with this endpoint.
+    EndpointStatus:
+      type: object
+      description: Current status of an endpoint.
+      properties:
+        identity:
+          $ref: '#/components/schemas/Identity'
+        networking:
+          $ref: '#/components/schemas/EndpointNetworking'
+        policy:
+          $ref: '#/components/schemas/EndpointPolicyStatus'
+        state:
+          type: string
+          description: Current lifecycle state of the endpoint.
+          enum: [waiting-for-identity, not-ready, waiting-to-regenerate, regenerating, restoring, ready, disconnecting, disconnected, invalid]
+        health:
+          $ref: '#/components/schemas/EndpointHealth'
+    EndpointNetworking:
+      type: object
+      description: Network addressing information for an endpoint.
+      properties:
+        addressing:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPair'
+          description: IP addresses assigned to this endpoint.
+        node:
+          type: string
+          description: IP address of the node hosting this endpoint.
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    EndpointPolicyStatus:
+      type: object
+      description: Policy enforcement status for an endpoint.
+      properties:
+        allowed:
+          type: object
+          description: Map of allowed traffic flows.
+        denied:
+          type: object
+          description: Map of denied traffic flows.
+        realized:
+          $ref: '#/components/schemas/EndpointPolicy'
+        spec:
+          $ref: '#/components/schemas/EndpointPolicy'
+    EndpointPolicy:
+      type: object
+      description: Desired or realized policy for an endpoint.
+      properties:
+        allowed-egress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs that egress traffic is allowed to reach.
+        allowed-ingress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs allowed to send ingress traffic.
+        cidr-policy:
+          type: object
+          description: CIDR-based policy configuration.
+        id:
+          type: integer
+          description: Policy revision number.
+    EndpointHealth:
+      type: object
+      description: Health status of an endpoint's BPF programs and policy.
+      properties:
+        bpf:
+          type: string
+          description: Health status of the BPF program for this endpoint.
+        connected:
+          type: boolean
+          description: Whether the endpoint is connected to the network.
+        overallHealth:
+          type: string
+          description: Overall health status of the endpoint.
+        policy:
+          type: string
+          description: Health status of policy enforcement for this endpoint.
+    EndpointChangeRequest:
+      type: object
+      description: Request payload for creating or modifying an endpoint.
+      properties:
+        addressing:
+          $ref: '#/components/schemas/AddressPair'
+        containerID:
+          type: string
+          description: Container runtime ID.
+        containerName:
+          type: string
+          description: Container name.
+        k8sNamespace:
+          type: string
+          description: Kubernetes namespace.
+        k8sPodName:
+          type: string
+          description: Kubernetes pod name.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Security labels to associate with this endpoint.
+        state:
+          type: string
+          description: Desired endpoint state.
+    EndpointConfigurationSpec:
+      type: object
+      description: Configuration options for a specific endpoint.
+      properties:
+        options:
+          type: object
+          description: Map of option names to their values.
+          additionalProperties:
+            type: string
+    LabelConfiguration:
+      type: object
+      description: Full label configuration for an endpoint.
+      properties:
+        status:
+          $ref: '#/components/schemas/LabelConfigurationStatus'
+    LabelConfigurationStatus:
+      type: object
+      description: Current label state of an endpoint.
+      properties:
+        derived:
+          type: array
+          items:
+            type: string
+          description: Labels derived from orchestration system.
+        disabled:
+          type: array
+          items:
+            type: string
+          description: Labels explicitly disabled.
+        realized:
+          $ref: '#/components/schemas/LabelConfigurationSpec'
+        security-relevant:
+          type: array
+          items:
+            type: string
+          description: Labels used for security identity derivation.
+    LabelConfigurationSpec:
+      type: object
+      description: Desired label configuration for an endpoint.
+      properties:
+        user:
+          type: array
+          items:
+            type: string
+          description: User-provided labels to add to the endpoint.
+    EndpointStatusChange:
+      type: object
+      description: A single entry in an endpoint's status change log.
+      properties:
+        code:
+          type: string
+          description: Status change code.
+          enum: [ok, failed]
+        message:
+          type: string
+          description: Human-readable description of the status change.
+        state:
+          type: string
+          description: Endpoint state after this change.
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp of the status change.
+    Identity:
+      type: object
+      description: >-
+        A Cilium security identity, derived from the set of labels associated
+        with a workload and used for policy enforcement decisions.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique numeric identity ID.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels that define this identity.
+        labelsSHA256:
+          type: string
+          description: SHA256 hash of the label set for change detection.
+    SelectorCache:
+      type: object
+      description: A policy selector and the identities it currently matches.
+      properties:
+        selector:
+          type: string
+          description: Label selector expression.
+        users:
+          type: integer
+          description: Number of policy rules using this selector.
+        identities:
+          type: array
+          items:
+            type: integer
+          description: List of identity IDs currently matched by this selector.
+    DNSLookup:
+      type: object
+      description: A DNS lookup entry in the FQDN cache.
+      properties:
+        fqdn:
+          type: string
+          description: Fully qualified domain name.
+        ips:
+          type: array
+          items:
+            type: string
+          description: IP addresses resolved for this FQDN.
+        lookupTime:
+          type: string
+          format: date-time
+          description: Time when this DNS lookup was performed.
+        ttl:
+          type: integer
+          description: DNS TTL in seconds.
+        expirationTime:
+          type: string
+          format: date-time
+          description: Time when this cache entry expires.
+    NameManager:
+      type: object
+      description: FQDN name manager state including all tracked DNS names.
+      properties:
+        FQDNs:
+          type: array
+          items:
+            type: object
+            properties:
+              fqdn:
+                type: string
+                description: DNS name being tracked.
+              ips:
+                type: array
+                items:
+                  type: string
+                description: Current IP addresses for this name.
+          description: List of tracked FQDN entries.
+    IPAMResponse:
+      type: object
+      description: Response from an IP address allocation request.
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressPair'
+        host-addressing:
+          $ref: '#/components/schemas/NodeAddressing'
+        ipv4:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+        ipv6:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+    IPAMAddressResponse:
+      type: object
+      description: Details of a single allocated IP address.
+      properties:
+        ip:
+          type: string
+          description: The allocated IP address.
+        gateway:
+          type: string
+          description: Gateway IP address for this allocation.
+        interface-number:
+          type: integer
+          description: Network interface number.
+        masquerade-enabled:
+          type: boolean
+          description: Whether masquerading is enabled for this IP.
+    NodeAddressing:
+      type: object
+      description: IP addressing information for the host node.
+      properties:
+        ipv4:
+          $ref: '#/components/schemas/NodeAddressingElement'
+        ipv6:
+          $ref: '#/components/schemas/NodeAddressingElement'
+    NodeAddressingElement:
+      type: object
+      description: Node addressing for a single address family.
+      properties:
+        address-type:
+          type: string
+          description: Type of address (internal, external).
+        alloc-range:
+          type: string
+          description: CIDR allocation range for pods.
+        enabled:
+          type: boolean
+          description: Whether this address family is enabled.
+        ip:
+          type: string
+          description: Node IP address.
+    IPListEntry:
+      type: object
+      description: Information about a single IP address known to the Cilium agent.
+      properties:
+        cidr:
+          type: string
+          description: CIDR block containing this IP address.
+        identity:
+          type: integer
+          format: int64
+          description: Security identity associated with this IP address.
+        owned:
+          type: boolean
+          description: Whether this IP is allocated by the local IPAM.
+    Service:
+      type: object
+      description: A Cilium-managed load balancer service with frontend and backends.
+      properties:
+        spec:
+          $ref: '#/components/schemas/ServiceSpec'
+        status:
+          $ref: '#/components/schemas/ServiceStatus'
+    ServiceSpec:
+      type: object
+      description: Specification for a Cilium service.
+      properties:
+        id:
+          type: integer
+          description: Numeric service ID.
+        frontend-address:
+          $ref: '#/components/schemas/FrontendAddress'
+        backend-addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendAddress'
+          description: Load balancer backend endpoints.
+        flags:
+          $ref: '#/components/schemas/ServiceSpecFlags'
+    ServiceSpecFlags:
+      type: object
+      description: Feature flags for a service.
+      properties:
+        type:
+          type: string
+          description: Service type (ClusterIP, NodePort, LoadBalancer, ExternalIPs, HostPort, LocalRedirect, Custom, HostNamespace).
+        trafficPolicy:
+          type: string
+          description: Traffic policy (Cluster, Local).
+        healthCheckNodePort:
+          type: integer
+          description: Port for health check NodePort.
+        name:
+          type: string
+          description: Service name.
+        namespace:
+          type: string
+          description: Service namespace.
+        natPolicy:
+          type: string
+          description: NAT policy applied to this service.
+    FrontendAddress:
+      type: object
+      description: Frontend VIP address and port for a service.
+      properties:
+        ip:
+          type: string
+          description: Frontend IP address (VIP).
+        port:
+          type: integer
+          description: Frontend port number.
+        protocol:
+          type: string
+          description: Protocol (TCP, UDP, SCTP).
+          enum: [TCP, UDP, SCTP, ANY]
+        scope:
+          type: string
+          description: Scope of the frontend (external, internal, host).
+    BackendAddress:
+      type: object
+      description: A single backend endpoint for a load balancer service.
+      properties:
+        ip:
+          type: string
+          description: Backend pod or endpoint IP address.
+        port:
+          type: integer
+          description: Backend port number.
+        nodeName:
+          type: string
+          description: Node where this backend resides.
+        state:
+          type: string
+          description: State of this backend (active, terminating, quarantined, maintenance).
+        weight:
+          type: integer
+          description: Load balancer weight for this backend.
+    ServiceStatus:
+      type: object
+      description: Realized status of a Cilium service.
+      properties:
+        realized:
+          $ref: '#/components/schemas/ServiceSpec'
+    LRPSpec:
+      type: object
+      description: Local redirect policy specification.
+      properties:
+        uid:
+          type: string
+          description: Unique identifier for this LRP.
+        name:
+          type: string
+          description: LRP name from the Kubernetes resource.
+        namespace:
+          type: string
+          description: Kubernetes namespace of this LRP.
+        frontend-type:
+          type: string
+          description: Type of frontend address (addr-port-proto, svc-frontend-all-ports, svc-frontend-named-ports).
+        frontend-mappings:
+          type: array
+          items:
+            type: object
+          description: Frontend to backend port mappings.
+    Prefilter:
+      type: object
+      description: XDP prefilter configuration and statistics.
+      properties:
+        spec:
+          $ref: '#/components/schemas/PrefilterSpec'
+        status:
+          $ref: '#/components/schemas/PrefilterStatus'
+    PrefilterSpec:
+      type: object
+      description: Prefilter CIDR list specification.
+      properties:
+        deny:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges to deny at the XDP layer.
+        allow:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges explicitly allowed (overrides deny).
+    PrefilterStatus:
+      type: object
+      description: Current state of the XDP prefilter.
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: Total number of CIDR entries in the prefilter.
+        realized:
+          $ref: '#/components/schemas/PrefilterSpec'
+    BgpPeer:
+      type: object
+      description: Status information for a single BGP peer.
+      properties:
+        local-asn:
+          type: integer
+          format: int64
+          description: Local BGP ASN.
+        peer-asn:
+          type: integer
+          format: int64
+          description: Remote peer ASN.
+        peer-address:
+          type: string
+          description: IP address of the BGP peer.
+        session-state:
+          type: string
+          description: Current BGP session state.
+          enum: [unknown, idle, connect, active, opensent, openconfirm, established]
+        families:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpFamily'
+          description: Address families negotiated with this peer.
+        timers:
+          type: object
+          description: BGP session timer information.
+    BgpFamily:
+      type: object
+      description: A BGP address family (AFI/SAFI combination).
+      properties:
+        afi:
+          type: string
+          description: Address Family Identifier.
+        safi:
+          type: string
+          description: Subsequent Address Family Identifier.
+        received:
+          type: integer
+          format: int64
+          description: Number of routes received from peer.
+        advertised:
+          type: integer
+          format: int64
+          description: Number of routes advertised to peer.
+    BgpRoute:
+      type: object
+      description: A single BGP route entry.
+      properties:
+        prefix:
+          type: string
+          description: Network prefix of the route.
+        router-id:
+          type: string
+          description: BGP router ID that originated this route.
+        neighbor:
+          type: string
+          description: Neighbor that advertised this route (adj-rib tables only).
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpPath'
+          description: BGP path attributes for this route.
+    BgpPath:
+      type: object
+      description: BGP path attributes for a route.
+      properties:
+        best:
+          type: boolean
+          description: Whether this is the best path for the prefix.
+        local-pref:
+          type: integer
+          format: int64
+          description: LOCAL_PREF attribute value.
+        med:
+          type: integer
+          format: int64
+          description: MULTI_EXIT_DISC attribute value.
+        origin:
+          type: string
+          description: Route origin attribute (igp, egp, incomplete).
+        nexthop:
+          type: string
+          description: Next-hop IP address for this path.
+        as-path:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: AS_PATH segments for this route.
+        communities:
+          type: object
+          description: BGP community attributes.
+    BgpRoutePolicy:
+      type: object
+      description: A BGP route policy for filtering or modifying routes.
+      properties:
+        name:
+          type: string
+          description: Policy name.
+        type:
+          type: string
+          description: Policy type (export or import).
+          enum: [export, import]
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpRoutePolicyStatement'
+          description: Ordered list of policy statements.
+    BgpRoutePolicyStatement:
+      type: object
+      description: A single statement in a BGP route policy.
+      properties:
+        name:
+          type: string
+          description: Statement name.
+        conditions:
+          type: object
+          description: Matching conditions for this statement.
+        actions:
+          type: object
+          description: Actions to take when conditions match.
