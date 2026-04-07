@@ -20,18 +20,16 @@ servers:
   - url: http://localhost/v1
     description: Local Cilium Agent (Unix socket or HTTP)
 tags:
+  - name: BGP
+    description: BGP control plane peers, routes, and route policies
   - name: Daemon
     description: Cilium daemon configuration, health, and cluster management
   - name: Endpoint
     description: Endpoint lifecycle management, configuration, and status
-  - name: Policy
-    description: Network policy, security identities, and FQDN/DNS policy
   - name: IPAM
     description: IP address management and allocation
-  - name: Service
-    description: Service load balancing and local redirect policies
-  - name: BGP
-    description: BGP control plane peers, routes, and route policies
+  - name: Policy
+    description: Network policy, security identities, and FQDN/DNS policy
   - name: Prefilter
     description: XDP prefilter CIDR management
 paths:
@@ -916,8 +914,7 @@ paths:
         Returns all services managed by the Cilium load balancer, including
         their frontend VIP addresses and the set of backend endpoints with
         associated weight and health status.
-      tags:
-        - Service
+      tags: []
       responses:
         '200':
           description: List of services
@@ -940,8 +937,7 @@ paths:
       description: >-
         Returns the configuration and status of a specific Cilium-managed
         service, identified by its numeric service ID.
-      tags:
-        - Service
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceIDParam'
       responses:
@@ -966,8 +962,7 @@ paths:
         Creates a new Cilium-managed service or updates an existing one,
         specifying the frontend VIP and port along with the set of backend
         endpoints for load balancing.
-      tags:
-        - Service
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceIDParam'
       requestBody:
@@ -999,8 +994,7 @@ paths:
       description: >-
         Removes a Cilium-managed service and all its associated load balancing
         configuration from the BPF datapath.
-      tags:
-        - Service
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceIDParam'
       responses:
@@ -1022,8 +1016,7 @@ paths:
         Returns all local redirect policies (LRP) configured on this node,
         which redirect traffic destined for a frontend address to local backend
         endpoints rather than using the normal load balancer.
-      tags:
-        - Service
+      tags: []
       responses:
         '200':
           description: Local redirect policy list

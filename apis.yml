@@ -3,11 +3,11 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml
 name: Cilium
 tags:
+  - Cloud Native
+  - eBPF
   - Kubernetes
   - Networking
   - Security
-  - eBPF
-  - Cloud Native
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
@@ -23,9 +23,9 @@ apis:
   - aid: cilium:cilium-api
     name: Cilium API
     tags:
+      - eBPF
       - Kubernetes
       - Networking
-      - eBPF
       - Security
     humanURL: https://docs.cilium.io/en/stable/api/
     baseURL: https://localhost/v1
@@ -49,10 +49,10 @@ apis:
   - aid: cilium:hubble-api
     name: Hubble API
     tags:
-      - Observability
-      - Networking
-      - Kubernetes
       - eBPF
+      - Kubernetes
+      - Networking
+      - Observability
     humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
     properties:
       - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
@@ -75,10 +75,10 @@ apis:
   - aid: cilium:tetragon-api
     name: Tetragon API
     tags:
-      - Security
-      - Observability
-      - Kubernetes
       - eBPF
+      - Kubernetes
+      - Observability
+      - Security
     humanURL: https://tetragon.io/docs/reference/grpc-api/
     properties:
       - url: https://tetragon.io/docs/reference/grpc-api/
@@ -100,10 +100,10 @@ apis:
   - aid: cilium:cilium-operator-api
     name: Cilium Operator API
     tags:
+      - eBPF
       - Kubernetes
       - Networking
       - Operations
-      - eBPF
     humanURL: https://docs.cilium.io/en/stable/internals/
     baseURL: https://localhost/v1
     properties:
@@ -122,10 +122,10 @@ apis:
   - aid: cilium:hubble-relay-api
     name: Hubble Relay API
     tags:
-      - Observability
-      - Networking
-      - Kubernetes
       - gRPC
+      - Kubernetes
+      - Networking
+      - Observability
     humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
     properties:
       - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
