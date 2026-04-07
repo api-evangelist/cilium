@@ -38,7 +38,7 @@ paths:
   /healthz:
     get:
       operationId: getDaemonHealth
-      summary: Get daemon health status
+      summary: Cilium Get daemon health status
       description: >-
         Returns the overall health status of the Cilium daemon including
         connectivity to the kvstore, container runtime, Kubernetes API server,
@@ -63,7 +63,7 @@ paths:
   /config:
     get:
       operationId: getDaemonConfig
-      summary: Get daemon configuration
+      summary: Cilium Get daemon configuration
       description: >-
         Returns the current runtime configuration of the Cilium daemon,
         including mutable and immutable settings such as policy enforcement mode,
@@ -85,7 +85,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: patchDaemonConfig
-      summary: Modify daemon configuration
+      summary: Cilium Modify daemon configuration
       description: >-
         Modifies the mutable runtime configuration of the Cilium daemon.
         Supports updating policy enforcement mode and feature toggles without
@@ -116,7 +116,7 @@ paths:
   /cluster/nodes:
     get:
       operationId: getClusterNodes
-      summary: List cluster nodes
+      summary: Cilium List cluster nodes
       description: >-
         Returns information about all nodes in the Cilium cluster, including
         their addresses, health status, and connectivity information.
@@ -140,7 +140,7 @@ paths:
   /debuginfo:
     get:
       operationId: getDebugInfo
-      summary: Get debugging information
+      summary: Cilium Get debugging information
       description: >-
         Returns comprehensive debugging information about the Cilium daemon,
         including BPF map state, policy state, endpoint information, and
@@ -163,7 +163,7 @@ paths:
   /map:
     get:
       operationId: getBPFMaps
-      summary: List BPF maps
+      summary: Cilium List BPF maps
       description: >-
         Returns a list of all open BPF maps used by the Cilium datapath,
         including their names, types, key/value sizes, and current entry counts.
@@ -187,7 +187,7 @@ paths:
   /node/ids:
     get:
       operationId: getNodeIDs
-      summary: Get node IDs
+      summary: Cilium Get node IDs
       description: >-
         Returns the mapping of node names to their allocated numeric node IDs
         used in the BPF datapath for traffic identification and policy
@@ -212,7 +212,7 @@ paths:
   /endpoint:
     get:
       operationId: listEndpoints
-      summary: List endpoints
+      summary: Cilium List endpoints
       description: >-
         Returns a list of all managed endpoints on this Cilium node, including
         their identities, IP addresses, labels, and policy enforcement status.
@@ -243,7 +243,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: deleteEndpoints
-      summary: Delete endpoints by label selector
+      summary: Cilium Delete endpoints by label selector
       description: >-
         Deletes all endpoints that match the given label selector. Used to
         clean up endpoints associated with terminated workloads.
@@ -275,7 +275,7 @@ paths:
   /endpoint/{id}:
     get:
       operationId: getEndpoint
-      summary: Get endpoint by ID
+      summary: Cilium Get endpoint by ID
       description: >-
         Returns the full state of a specific endpoint including its identity,
         IP addressing, label configuration, policy enforcement status, and
@@ -307,7 +307,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       operationId: putEndpoint
-      summary: Create or replace endpoint
+      summary: Cilium Create or replace endpoint
       description: >-
         Creates a new endpoint or replaces an existing one with the provided
         configuration. Used by container runtimes and CNI plugins to register
@@ -345,7 +345,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: patchEndpoint
-      summary: Modify endpoint
+      summary: Cilium Modify endpoint
       description: >-
         Applies partial changes to an existing endpoint configuration, such as
         updating labels or other mutable properties, without replacing the full
@@ -379,7 +379,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: deleteEndpoint
-      summary: Delete endpoint
+      summary: Cilium Delete endpoint
       description: >-
         Removes a managed endpoint from the Cilium agent, cleaning up all
         associated BPF maps, policy state, and IP allocations.
@@ -407,7 +407,7 @@ paths:
   /endpoint/{id}/config:
     get:
       operationId: getEndpointConfig
-      summary: Get endpoint configuration
+      summary: Cilium Get endpoint configuration
       description: >-
         Returns the current configuration of a specific endpoint, including
         policy enforcement settings and enabled feature flags.
@@ -438,7 +438,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: patchEndpointConfig
-      summary: Modify endpoint configuration
+      summary: Cilium Modify endpoint configuration
       description: >-
         Updates the mutable configuration settings of a specific endpoint,
         such as policy enforcement mode and per-endpoint feature toggles.
@@ -472,7 +472,7 @@ paths:
   /endpoint/{id}/labels:
     get:
       operationId: getEndpointLabels
-      summary: Get endpoint labels
+      summary: Cilium Get endpoint labels
       description: >-
         Returns the current set of labels applied to a specific endpoint,
         including both static and dynamic labels used for identity derivation
@@ -498,7 +498,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: patchEndpointLabels
-      summary: Modify endpoint labels
+      summary: Cilium Modify endpoint labels
       description: >-
         Updates the labels associated with a specific endpoint, which may
         trigger identity recalculation and policy re-evaluation.
@@ -532,7 +532,7 @@ paths:
   /endpoint/{id}/log:
     get:
       operationId: getEndpointLog
-      summary: Get endpoint status log
+      summary: Cilium Get endpoint status log
       description: >-
         Returns the historical status log of a specific endpoint, recording
         state transitions, policy changes, and other significant events in
@@ -561,7 +561,7 @@ paths:
   /endpoint/{id}/healthz:
     get:
       operationId: getEndpointHealth
-      summary: Get endpoint health
+      summary: Cilium Get endpoint health
       description: >-
         Returns the health status of a specific endpoint, including BPF
         program status, policy enforcement state, and connectivity checks.
@@ -593,7 +593,7 @@ paths:
   /identity:
     get:
       operationId: listIdentities
-      summary: List security identities
+      summary: Cilium List security identities
       description: >-
         Returns a list of all security identities known to the Cilium agent,
         each consisting of a numeric ID and the associated label set used to
@@ -626,7 +626,7 @@ paths:
   /identity/{id}:
     get:
       operationId: getIdentity
-      summary: Get identity by ID
+      summary: Cilium Get identity by ID
       description: >-
         Returns the security identity corresponding to the given numeric
         identity ID, including its associated label set.
@@ -658,7 +658,7 @@ paths:
   /identity/endpoints:
     get:
       operationId: getLocalEndpointIdentities
-      summary: List local endpoint identities
+      summary: Cilium List local endpoint identities
       description: >-
         Returns the set of numeric security identities that are currently
         in use by local endpoints managed by this Cilium agent.
@@ -682,7 +682,7 @@ paths:
   /policy/selectors:
     get:
       operationId: getPolicySelectors
-      summary: Get policy selectors
+      summary: Cilium Get policy selectors
       description: >-
         Returns all policy selectors and the set of security identities that
         each selector currently matches, useful for debugging policy enforcement.
@@ -706,7 +706,7 @@ paths:
   /fqdn/cache:
     get:
       operationId: getFQDNCache
-      summary: Get FQDN DNS cache
+      summary: Cilium Get FQDN DNS cache
       description: >-
         Returns the current DNS lookup cache used by Cilium for FQDN-based
         network policy enforcement, including resolved IP addresses and TTL
@@ -740,7 +740,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: deleteFQDNCache
-      summary: Clear FQDN DNS cache
+      summary: Cilium Clear FQDN DNS cache
       description: >-
         Removes entries from the FQDN DNS cache. Can delete all entries or
         filter by pattern. This forces re-resolution of DNS names on next
@@ -767,7 +767,7 @@ paths:
   /fqdn/names:
     get:
       operationId: getFQDNNames
-      summary: Get FQDN selector names
+      summary: Cilium Get FQDN selector names
       description: >-
         Returns all DNS names currently tracked by Cilium FQDN selectors,
         including the selectors that reference each name and the current set
@@ -796,7 +796,7 @@ paths:
   /ipam:
     post:
       operationId: allocateIPAddress
-      summary: Allocate IP address
+      summary: Cilium Allocate IP address
       description: >-
         Allocates a new IP address from the configured IPAM pool for assignment
         to a new endpoint. Returns the allocated IP address and relevant
@@ -823,7 +823,7 @@ paths:
   /ipam/{ip}:
     post:
       operationId: allocateSpecificIPAddress
-      summary: Allocate specific IP address
+      summary: Cilium Allocate specific IP address
       description: >-
         Allocates a specific IP address in the IPAM pool, reserving it for
         assignment to an endpoint. Fails if the IP is already allocated or
@@ -857,7 +857,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: releaseIPAddress
-      summary: Release IP address
+      summary: Cilium Release IP address
       description: >-
         Returns a previously allocated IP address back to the IPAM pool,
         making it available for future allocations.
@@ -886,7 +886,7 @@ paths:
   /ip:
     get:
       operationId: listIPAddresses
-      summary: List IP addresses
+      summary: Cilium List IP addresses
       description: >-
         Returns information about all IP addresses known to the Cilium agent,
         including their allocation state, associated endpoint, and routing
@@ -911,7 +911,7 @@ paths:
   /service:
     get:
       operationId: listServices
-      summary: List services
+      summary: Cilium List services
       description: >-
         Returns all services managed by the Cilium load balancer, including
         their frontend VIP addresses and the set of backend endpoints with
@@ -936,7 +936,7 @@ paths:
   /service/{id}:
     get:
       operationId: getService
-      summary: Get service by ID
+      summary: Cilium Get service by ID
       description: >-
         Returns the configuration and status of a specific Cilium-managed
         service, identified by its numeric service ID.
@@ -961,7 +961,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       operationId: putService
-      summary: Create or update service
+      summary: Cilium Create or update service
       description: >-
         Creates a new Cilium-managed service or updates an existing one,
         specifying the frontend VIP and port along with the set of backend
@@ -995,7 +995,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: deleteService
-      summary: Delete service
+      summary: Cilium Delete service
       description: >-
         Removes a Cilium-managed service and all its associated load balancing
         configuration from the BPF datapath.
@@ -1017,7 +1017,7 @@ paths:
   /lrp:
     get:
       operationId: listLocalRedirectPolicies
-      summary: List local redirect policies
+      summary: Cilium List local redirect policies
       description: >-
         Returns all local redirect policies (LRP) configured on this node,
         which redirect traffic destined for a frontend address to local backend
@@ -1042,7 +1042,7 @@ paths:
   /prefilter:
     get:
       operationId: getPrefilterConfig
-      summary: Get prefilter configuration
+      summary: Cilium Get prefilter configuration
       description: >-
         Returns the current XDP prefilter configuration, including CIDR ranges
         that are configured for early packet dropping at the network driver
@@ -1064,7 +1064,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: patchPrefilterConfig
-      summary: Update prefilter configuration
+      summary: Cilium Update prefilter configuration
       description: >-
         Updates the XDP prefilter CIDR list, adding or removing network ranges
         from the prefilter set for early traffic dropping.
@@ -1093,7 +1093,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       operationId: deletePrefilterConfig
-      summary: Delete prefilter entries
+      summary: Cilium Delete prefilter entries
       description: >-
         Removes specific CIDR entries from the XDP prefilter configuration.
       tags:
@@ -1122,7 +1122,7 @@ paths:
   /bgp/peers:
     get:
       operationId: getBGPPeers
-      summary: List BGP peers
+      summary: Cilium List BGP peers
       description: >-
         Returns the status of all BGP peers configured on this Cilium node,
         including session state, address families negotiated, and routing
@@ -1147,7 +1147,7 @@ paths:
   /bgp/routes:
     get:
       operationId: getBGPRoutes
-      summary: List BGP routes
+      summary: Cilium List BGP routes
       description: >-
         Returns the BGP routing information base (RIB) for this Cilium node,
         including routes learned from peers and locally originated routes
@@ -1178,7 +1178,7 @@ paths:
   /bgp/route-policies:
     get:
       operationId: getBGPRoutePolicies
-      summary: List BGP route policies
+      summary: Cilium List BGP route policies
       description: >-
         Returns all BGP route policies configured on this node, used to filter
         and modify routes exchanged with BGP peers based on prefix lists,
