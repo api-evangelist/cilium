@@ -12,7 +12,7 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2026-03-16'
-modified: '2026-03-18'
+modified: '2026-04-23'
 position: Consumer
 description: >-
   Cilium is an open source, cloud native solution for providing, securing, and
@@ -144,17 +144,13 @@ apis:
       metrics from all nodes through Hubble Relay without connecting to each
       node individually.
 common:
-  - type: JSON-LD
-    url: json-ld/cilium-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cilium-endpoint-schema.json
   - type: Website
     url: https://cilium.io/
   - type: Documentation
     url: https://docs.cilium.io/
-  - type: Getting Started
+  - type: GettingStarted
     url: https://docs.cilium.io/en/stable/gettingstarted/
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/cilium
   - type: GitHubRepository
     url: https://github.com/cilium/cilium
@@ -164,19 +160,31 @@ common:
     url: https://cilium.io/get-involved/
   - type: Support
     url: https://cilium.io/get-help/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://cilium.io/privacy/
   - type: Slack
     url: https://slack.cilium.io/
-  - type: Change Log
+  - type: ChangeLog
     url: https://github.com/cilium/cilium/releases
   - type: YouTube
     url: https://www.youtube.com/@CiliumProject
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://cilium.io/terms/
-  - type: Stack Overflow
+  - type: StackOverflow
     url: https://stackoverflow.com/questions/tagged/cilium
+  - type: JSONLDContext
+    url: json-ld/cilium-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cilium-endpoint-schema.json
+  - type: AsyncAPI
+    url: asyncapi/cilium-hubble-asyncapi.yml
+  - type: OpenAPI
+    url: openapi/cilium-api-openapi.yml
+  - type: Spectral
+    url: spectral/cilium-spectral.yml
+  - type: NaftikoCapabilities
+    url: naftiko/cilium-capabilities.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-specificationVersion: '0.19'
+specificationVersion: '0.20'

@@ -15,8 +15,8 @@ Cilium is an open source, cloud native solution for providing, securing, and obs
 
 ## Timestamps
 
-- **Created:** 2026-03-16 
-- **Modified:** 2026-03-18 
+- **Created:** 2026-03-16
+- **Modified:** 2026-04-23
 
 ## APIs
 
@@ -125,6 +125,8 @@ The Hubble Relay API is a gRPC service that aggregates and relays network flow d
 - [YouTube](https://www.youtube.com/@CiliumProject)
 - [Terms of Service](https://cilium.io/terms/)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/cilium)
+- [Spectral Rules](spectral/cilium-spectral.yml)
+- [Naftiko Capabilities](naftiko/cilium-capabilities.yml)
 
 ## Maintainers
 

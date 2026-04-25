@@ -1,0 +1,145 @@
+name: cilium-capabilities
+description: >-
+  Naftiko sandbox capabilities for the Cilium agent REST API, the Hubble and
+  Hubble Relay observability gRPC services, the Tetragon runtime security
+  service, and the Cilium operator API. Covers endpoint, identity, policy,
+  service, and cluster management as well as flow visibility and tracing
+  policy lifecycle.
+provider: cilium
+version: '1.0'
+capabilities:
+  - id: cilium.endpoint.list
+    name: List endpoints
+    description: List all endpoints managed by the local Cilium agent.
+    operationId: GetEndpoint
+    inputs: []
+    outputs:
+      - name: endpoints
+        type: array
+    tags: [cilium, endpoint]
+  - id: cilium.endpoint.get
+    name: Get endpoint
+    description: Retrieve a specific endpoint by id.
+    operationId: GetEndpointID
+    inputs:
+      - name: id
+        type: string
+        required: true
+    outputs:
+      - name: endpoint
+        type: object
+    tags: [cilium, endpoint]
+  - id: cilium.identity.list
+    name: List identities
+    description: List all identities known to the local Cilium agent.
+    operationId: GetIdentity
+    inputs: []
+    outputs:
+      - name: identities
+        type: array
+    tags: [cilium, identity, security]
+  - id: cilium.policy.get
+    name: Get policy tree
+    description: Retrieve the entire enforced policy tree.
+    operationId: GetPolicy
+    inputs: []
+    outputs:
+      - name: policy
+        type: object
+    tags: [cilium, policy, security]
+  - id: cilium.service.list
+    name: List services
+    description: List all Cilium services known to the local agent.
+    operationId: GetService
+    inputs: []
+    outputs:
+      - name: services
+        type: array
+    tags: [cilium, service, load-balancing]
+  - id: cilium.cluster.nodes
+    name: Cluster nodes
+    description: List nodes in the Cilium cluster.
+    operationId: GetClusterNodes
+    inputs: []
+    outputs:
+      - name: nodes
+        type: array
+    tags: [cilium, cluster]
+  - id: cilium.healthz
+    name: Daemon health
+    description: Retrieve daemon health and status information.
+    operationId: GetHealthz
+    inputs: []
+    outputs:
+      - name: status
+        type: object
+    tags: [cilium, health]
+  - id: hubble.observer.flows
+    name: Stream Hubble flows
+    description: Stream Hubble network flow events with filters.
+    operationId: GetFlows
+    inputs:
+      - name: number
+        type: integer
+        required: false
+      - name: follow
+        type: boolean
+        required: false
+      - name: whitelist
+        type: array
+        required: false
+    outputs:
+      - name: flows
+        type: array
+    tags: [hubble, observability, grpc]
+  - id: hubble.observer.namespaces
+    name: List Hubble namespaces
+    description: List Kubernetes namespaces seen by Hubble.
+    operationId: GetNamespaces
+    inputs: []
+    outputs:
+      - name: namespaces
+        type: array
+    tags: [hubble, observability]
+  - id: hubble.relay.serverStatus
+    name: Hubble Relay server status
+    description: Retrieve the cluster-wide Hubble Relay server status.
+    operationId: ServerStatus
+    inputs: []
+    outputs:
+      - name: status
+        type: object
+    tags: [hubble-relay, observability]
+  - id: tetragon.events.stream
+    name: Stream Tetragon events
+    description: Stream eBPF-derived process, kprobe, and tracepoint events from Tetragon.
+    operationId: GetEvents
+    inputs:
+      - name: filter
+        type: array
+        required: false
+    outputs:
+      - name: events
+        type: array
+    tags: [tetragon, security, observability]
+  - id: tetragon.policy.add
+    name: Add tracing policy
+    description: Apply a Tetragon TracingPolicy YAML manifest at runtime.
+    operationId: AddTracingPolicy
+    inputs:
+      - name: yaml
+        type: string
+        required: true
+    outputs:
+      - name: result
+        type: object
+    tags: [tetragon, policy, security]
+  - id: tetragon.policy.list
+    name: List tracing policies
+    description: List loaded Tetragon tracing policies.
+    operationId: ListTracingPolicies
+    inputs: []
+    outputs:
+      - name: policies
+        type: array
+    tags: [tetragon, policy]

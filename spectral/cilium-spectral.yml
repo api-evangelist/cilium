@@ -1,0 +1,37 @@
+extends:
+  - spectral:oas
+rules:
+  cilium-info-contact:
+    description: Cilium API definitions must declare a contact for the project.
+    severity: warn
+    given: $.info
+    then:
+      field: contact
+      function: truthy
+  cilium-info-license:
+    description: Cilium APIs must declare an Apache-2.0 license aligned with the upstream project.
+    severity: warn
+    given: $.info
+    then:
+      field: license
+      function: truthy
+  cilium-tag-categorization:
+    description: Operations should be categorized by tag (Endpoint, Identity, Policy, Service, Cluster).
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: tags
+      function: truthy
+  cilium-operation-id-required:
+    description: Each operation must declare an operationId.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: operationId
+      function: truthy
+  cilium-cni-friendly-resources:
+    description: Cilium API surfaces should expose CNI/Kubernetes-friendly resource paths.
+    severity: hint
+    given: $.paths
+    then:
+      function: truthy
