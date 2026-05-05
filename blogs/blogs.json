@@ -1,0 +1,13 @@
+{
+  "repo": "cilium",
+  "feeds": [
+    {
+      "source": "https://cilium.io/blog/",
+      "feed_url": "https://cilium.io/blog/rss.xml",
+      "saved": 10,
+      "title": "Cilium - The latest articles covering eBPF-based Networking, Observability, and Security"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:25:11Z"
+}
