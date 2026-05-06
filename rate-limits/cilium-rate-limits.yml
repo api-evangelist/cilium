@@ -4,106 +4,64 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Cilium
 providerId: cilium
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
-  - Cloud Native
   - eBPF
   - Kubernetes
   - Networking
+  - Observability
   - Security
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Cilium API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Cilium APIs (cilium-agent REST API on the local Unix socket, Hubble gRPC Observer / Peer,
+  Hubble Relay, Tetragon gRPC, and the Cilium Operator REST API) are local cluster APIs rather than
+  multi-tenant SaaS endpoints. The project does not publish per-second rate limits — practical
+  throughput is bounded by the agent / operator process, the underlying eBPF data path, the gRPC
+  server settings on Hubble / Tetragon, and operator-defined ingress / authorization rules. Cilium
+  itself can enforce L7 rate-limiting on application traffic via Envoy-based network policy — that
+  is a workload-policy feature, not a self-imposed API limit.
+notes: No published numeric rate-limit policy exists for the Cilium / Hubble / Tetragon APIs. Limits
+  are operator-imposed at deployment time.
+sources:
+  - https://docs.cilium.io/
+  - https://docs.cilium.io/en/stable/api/
+  - https://docs.cilium.io/en/stable/observability/hubble/
+  - https://tetragon.io/docs/
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  unauthorized: 401
+  forbidden: 403
+  serverError: 500
+  gRPCUnavailable: 14
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Cilium API
-      - Hubble API
-      - Tetragon API
-      - Cilium Operator API
-      - Hubble Relay API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Cilium API
-      - Hubble API
-      - Tetragon API
-      - Cilium Operator API
-      - Hubble Relay API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Cilium API
-      - Hubble API
-      - Tetragon API
-      - Cilium Operator API
-      - Hubble Relay API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Cilium API
-      - Hubble API
-      - Tetragon API
-      - Cilium Operator API
-      - Hubble Relay API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Cilium API
-      - Hubble API
-      - Tetragon API
-      - Cilium Operator API
-      - Hubble Relay API
+  - name: cilium-agent local API
+    scope: node
+    metric: varies
+    limit: 'no built-in rate limit; bounded by node CPU / memory and Unix-socket throughput'
+    notes: Served locally on each node; access is restricted by file-system permissions on the
+      Unix-domain socket.
+  - name: Hubble Observer gRPC
+    scope: cluster
+    metric: varies
+    limit: 'gRPC server defaults; operator-tunable'
+    notes: Per-stream concurrency is controlled by Hubble Relay configuration and the underlying
+      gRPC server settings.
+  - name: Tetragon gRPC
+    scope: node
+    metric: varies
+    limit: 'gRPC server defaults; operator-tunable'
+    notes: Tetragon does not impose an upstream rate limit; operators bound consumers via Kubernetes
+      RBAC and gRPC server settings.
 policies:
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: gRPC clients should retry transient unavailability with exponential backoff and
+      jitter; honor any deadline / cancellation propagated by the server.
+  - name: Local Access Model
+    description: cilium-agent and the Cilium Operator API are local APIs intended for in-cluster /
+      node-local use, secured by Unix-socket permissions and Kubernetes RBAC rather than per-second
+      throttling.
+  - name: Workload Rate Limiting
+    description: Cilium Network Policy can enforce L7 rate limits on application traffic via
+      Envoy-based filters — a workload-policy feature distinct from API rate limits.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
