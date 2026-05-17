@@ -37,9 +37,9 @@ apis:
       - url: openapi/cilium-api-openapi.yml
         type: OpenAPI
       - url: https://docs.cilium.io/en/stable/gettingstarted/
-        type: Getting Started
+        type: GettingStarted
       - url: https://github.com/cilium/cilium/releases
-        type: Change Log
+        type: ChangeLog
     description: >-
       The Cilium REST API provides access to Cilium daemon and agent endpoints
       for managing Kubernetes network policy, security, and connectivity. The
@@ -64,7 +64,7 @@ apis:
       - url: https://github.com/cilium/hubble
         type: GitHubRepository
       - url: https://github.com/cilium/hubble/releases
-        type: Change Log
+        type: ChangeLog
     description: >-
       The Hubble API is a gRPC-based observability API built on top of Cilium
       and eBPF that provides deep visibility into network flows, DNS queries,
@@ -88,9 +88,9 @@ apis:
       - url: https://github.com/cilium/tetragon
         type: GitHubRepository
       - url: https://tetragon.io/docs/getting-started/
-        type: Getting Started
+        type: GettingStarted
       - url: https://github.com/cilium/tetragon/releases
-        type: Change Log
+        type: ChangeLog
     description: >-
       The Tetragon gRPC API provides access to eBPF-based security observability
       and runtime enforcement capabilities. It enables querying of kernel-level
@@ -112,7 +112,7 @@ apis:
       - url: https://github.com/cilium/cilium/blob/main/api/v1/operator/openapi.yaml
         type: OpenAPI
       - url: https://github.com/cilium/cilium/releases
-        type: Change Log
+        type: ChangeLog
     description: >-
       The Cilium Operator API provides a REST interface for the Cilium operator
       component, which handles cluster-wide tasks such as garbage collection of
@@ -135,7 +135,7 @@ apis:
       - url: https://github.com/cilium/cilium
         type: GitHubRepository
       - url: https://github.com/cilium/cilium/releases
-        type: Change Log
+        type: ChangeLog
     description: >-
       The Hubble Relay API is a gRPC service that aggregates and relays network
       flow data from multiple Hubble agents running across Kubernetes cluster
