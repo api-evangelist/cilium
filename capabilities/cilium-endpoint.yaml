@@ -1,0 +1,417 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cilium API — Endpoint
+  description: 'Cilium API — Endpoint. 12 operations. Lead operation: Cilium List endpoints. Self-contained Naftiko capability
+    covering one Cilium business surface.'
+  tags:
+  - Cilium
+  - Endpoint
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CILIUM_API_KEY: CILIUM_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cilium-endpoint
+    baseUri: http://localhost/v1
+    description: Cilium API — Endpoint business capability. Self-contained, no shared references.
+    resources:
+    - name: endpoint
+      path: /endpoint
+      operations:
+      - name: listendpoints
+        method: GET
+        description: Cilium List endpoints
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteendpoints
+        method: DELETE
+        description: Cilium Delete endpoints by label selector
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: endpoint-id
+      path: /endpoint/{id}
+      operations:
+      - name: getendpoint
+        method: GET
+        description: Cilium Get endpoint by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: putendpoint
+        method: PUT
+        description: Cilium Create or replace endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: patchendpoint
+        method: PATCH
+        description: Cilium Modify endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteendpoint
+        method: DELETE
+        description: Cilium Delete endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: endpoint-id-config
+      path: /endpoint/{id}/config
+      operations:
+      - name: getendpointconfig
+        method: GET
+        description: Cilium Get endpoint configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: patchendpointconfig
+        method: PATCH
+        description: Cilium Modify endpoint configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: endpoint-id-healthz
+      path: /endpoint/{id}/healthz
+      operations:
+      - name: getendpointhealth
+        method: GET
+        description: Cilium Get endpoint health
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: endpoint-id-labels
+      path: /endpoint/{id}/labels
+      operations:
+      - name: getendpointlabels
+        method: GET
+        description: Cilium Get endpoint labels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: patchendpointlabels
+        method: PATCH
+        description: Cilium Modify endpoint labels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: endpoint-id-log
+      path: /endpoint/{id}/log
+      operations:
+      - name: getendpointlog
+        method: GET
+        description: Cilium Get endpoint status log
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: cilium-endpoint-rest
+    port: 8080
+    description: REST adapter for Cilium API — Endpoint. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/endpoint
+      name: endpoint
+      description: REST surface for endpoint.
+      operations:
+      - method: GET
+        name: listendpoints
+        description: Cilium List endpoints
+        call: cilium-endpoint.listendpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteendpoints
+        description: Cilium Delete endpoints by label selector
+        call: cilium-endpoint.deleteendpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/endpoint/{id}
+      name: endpoint-id
+      description: REST surface for endpoint-id.
+      operations:
+      - method: GET
+        name: getendpoint
+        description: Cilium Get endpoint by ID
+        call: cilium-endpoint.getendpoint
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putendpoint
+        description: Cilium Create or replace endpoint
+        call: cilium-endpoint.putendpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchendpoint
+        description: Cilium Modify endpoint
+        call: cilium-endpoint.patchendpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteendpoint
+        description: Cilium Delete endpoint
+        call: cilium-endpoint.deleteendpoint
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/endpoint/{id}/config
+      name: endpoint-id-config
+      description: REST surface for endpoint-id-config.
+      operations:
+      - method: GET
+        name: getendpointconfig
+        description: Cilium Get endpoint configuration
+        call: cilium-endpoint.getendpointconfig
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchendpointconfig
+        description: Cilium Modify endpoint configuration
+        call: cilium-endpoint.patchendpointconfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/endpoint/{id}/healthz
+      name: endpoint-id-healthz
+      description: REST surface for endpoint-id-healthz.
+      operations:
+      - method: GET
+        name: getendpointhealth
+        description: Cilium Get endpoint health
+        call: cilium-endpoint.getendpointhealth
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/endpoint/{id}/labels
+      name: endpoint-id-labels
+      description: REST surface for endpoint-id-labels.
+      operations:
+      - method: GET
+        name: getendpointlabels
+        description: Cilium Get endpoint labels
+        call: cilium-endpoint.getendpointlabels
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchendpointlabels
+        description: Cilium Modify endpoint labels
+        call: cilium-endpoint.patchendpointlabels
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/endpoint/{id}/log
+      name: endpoint-id-log
+      description: REST surface for endpoint-id-log.
+      operations:
+      - method: GET
+        name: getendpointlog
+        description: Cilium Get endpoint status log
+        call: cilium-endpoint.getendpointlog
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cilium-endpoint-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cilium API — Endpoint. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: cilium-list-endpoints
+      description: Cilium List endpoints
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.listendpoints
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-delete-endpoints-label-selector
+      description: Cilium Delete endpoints by label selector
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: cilium-endpoint.deleteendpoints
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-endpoint-id
+      description: Cilium Get endpoint by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.getendpoint
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-create-replace-endpoint
+      description: Cilium Create or replace endpoint
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.putendpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-modify-endpoint
+      description: Cilium Modify endpoint
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.patchendpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-delete-endpoint
+      description: Cilium Delete endpoint
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: cilium-endpoint.deleteendpoint
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-endpoint-configuration
+      description: Cilium Get endpoint configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.getendpointconfig
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-modify-endpoint-configuration
+      description: Cilium Modify endpoint configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.patchendpointconfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-endpoint-health
+      description: Cilium Get endpoint health
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.getendpointhealth
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-endpoint-labels
+      description: Cilium Get endpoint labels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.getendpointlabels
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-modify-endpoint-labels
+      description: Cilium Modify endpoint labels
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.patchendpointlabels
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-endpoint-status-log
+      description: Cilium Get endpoint status log
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-endpoint.getendpointlog
+      outputParameters:
+      - type: object
+        mapping: $.

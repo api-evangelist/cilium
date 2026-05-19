@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cilium API — Prefilter
+  description: 'Cilium API — Prefilter. 3 operations. Lead operation: Cilium Get prefilter configuration. Self-contained Naftiko
+    capability covering one Cilium business surface.'
+  tags:
+  - Cilium
+  - Prefilter
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CILIUM_API_KEY: CILIUM_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cilium-prefilter
+    baseUri: http://localhost/v1
+    description: Cilium API — Prefilter business capability. Self-contained, no shared references.
+    resources:
+    - name: prefilter
+      path: /prefilter
+      operations:
+      - name: getprefilterconfig
+        method: GET
+        description: Cilium Get prefilter configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: patchprefilterconfig
+        method: PATCH
+        description: Cilium Update prefilter configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteprefilterconfig
+        method: DELETE
+        description: Cilium Delete prefilter entries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: cilium-prefilter-rest
+    port: 8080
+    description: REST adapter for Cilium API — Prefilter. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/prefilter
+      name: prefilter
+      description: REST surface for prefilter.
+      operations:
+      - method: GET
+        name: getprefilterconfig
+        description: Cilium Get prefilter configuration
+        call: cilium-prefilter.getprefilterconfig
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchprefilterconfig
+        description: Cilium Update prefilter configuration
+        call: cilium-prefilter.patchprefilterconfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteprefilterconfig
+        description: Cilium Delete prefilter entries
+        call: cilium-prefilter.deleteprefilterconfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cilium-prefilter-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cilium API — Prefilter. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: cilium-get-prefilter-configuration
+      description: Cilium Get prefilter configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-prefilter.getprefilterconfig
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-update-prefilter-configuration
+      description: Cilium Update prefilter configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: cilium-prefilter.patchprefilterconfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-delete-prefilter-entries
+      description: Cilium Delete prefilter entries
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: cilium-prefilter.deleteprefilterconfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

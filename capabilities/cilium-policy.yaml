@@ -1,0 +1,252 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cilium API — Policy
+  description: 'Cilium API — Policy. 7 operations. Lead operation: Cilium Get FQDN DNS cache. Self-contained Naftiko capability
+    covering one Cilium business surface.'
+  tags:
+  - Cilium
+  - Policy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CILIUM_API_KEY: CILIUM_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cilium-policy
+    baseUri: http://localhost/v1
+    description: Cilium API — Policy business capability. Self-contained, no shared references.
+    resources:
+    - name: fqdn-cache
+      path: /fqdn/cache
+      operations:
+      - name: getfqdncache
+        method: GET
+        description: Cilium Get FQDN DNS cache
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletefqdncache
+        method: DELETE
+        description: Cilium Clear FQDN DNS cache
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: fqdn-names
+      path: /fqdn/names
+      operations:
+      - name: getfqdnnames
+        method: GET
+        description: Cilium Get FQDN selector names
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity
+      path: /identity
+      operations:
+      - name: listidentities
+        method: GET
+        description: Cilium List security identities
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-endpoints
+      path: /identity/endpoints
+      operations:
+      - name: getlocalendpointidentities
+        method: GET
+        description: Cilium List local endpoint identities
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-id
+      path: /identity/{id}
+      operations:
+      - name: getidentity
+        method: GET
+        description: Cilium Get identity by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: policy-selectors
+      path: /policy/selectors
+      operations:
+      - name: getpolicyselectors
+        method: GET
+        description: Cilium Get policy selectors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: cilium-policy-rest
+    port: 8080
+    description: REST adapter for Cilium API — Policy. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/fqdn/cache
+      name: fqdn-cache
+      description: REST surface for fqdn-cache.
+      operations:
+      - method: GET
+        name: getfqdncache
+        description: Cilium Get FQDN DNS cache
+        call: cilium-policy.getfqdncache
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefqdncache
+        description: Cilium Clear FQDN DNS cache
+        call: cilium-policy.deletefqdncache
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/fqdn/names
+      name: fqdn-names
+      description: REST surface for fqdn-names.
+      operations:
+      - method: GET
+        name: getfqdnnames
+        description: Cilium Get FQDN selector names
+        call: cilium-policy.getfqdnnames
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity
+      name: identity
+      description: REST surface for identity.
+      operations:
+      - method: GET
+        name: listidentities
+        description: Cilium List security identities
+        call: cilium-policy.listidentities
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/endpoints
+      name: identity-endpoints
+      description: REST surface for identity-endpoints.
+      operations:
+      - method: GET
+        name: getlocalendpointidentities
+        description: Cilium List local endpoint identities
+        call: cilium-policy.getlocalendpointidentities
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/{id}
+      name: identity-id
+      description: REST surface for identity-id.
+      operations:
+      - method: GET
+        name: getidentity
+        description: Cilium Get identity by ID
+        call: cilium-policy.getidentity
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policy/selectors
+      name: policy-selectors
+      description: REST surface for policy-selectors.
+      operations:
+      - method: GET
+        name: getpolicyselectors
+        description: Cilium Get policy selectors
+        call: cilium-policy.getpolicyselectors
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cilium-policy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cilium API — Policy. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: cilium-get-fqdn-dns-cache
+      description: Cilium Get FQDN DNS cache
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.getfqdncache
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-clear-fqdn-dns-cache
+      description: Cilium Clear FQDN DNS cache
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: cilium-policy.deletefqdncache
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-fqdn-selector-names
+      description: Cilium Get FQDN selector names
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.getfqdnnames
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-list-security-identities
+      description: Cilium List security identities
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.listidentities
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-list-local-endpoint-identities
+      description: Cilium List local endpoint identities
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.getlocalendpointidentities
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-identity-id
+      description: Cilium Get identity by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.getidentity
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-get-policy-selectors
+      description: Cilium Get policy selectors
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-policy.getpolicyselectors
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,156 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cilium API — IPAM
+  description: 'Cilium API — IPAM. 4 operations. Lead operation: Cilium List IP addresses. Self-contained Naftiko capability
+    covering one Cilium business surface.'
+  tags:
+  - Cilium
+  - IPAM
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CILIUM_API_KEY: CILIUM_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cilium-ipam
+    baseUri: http://localhost/v1
+    description: Cilium API — IPAM business capability. Self-contained, no shared references.
+    resources:
+    - name: ip
+      path: /ip
+      operations:
+      - name: listipaddresses
+        method: GET
+        description: Cilium List IP addresses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: ipam
+      path: /ipam
+      operations:
+      - name: allocateipaddress
+        method: POST
+        description: Cilium Allocate IP address
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: ipam-ip
+      path: /ipam/{ip}
+      operations:
+      - name: allocatespecificipaddress
+        method: POST
+        description: Cilium Allocate specific IP address
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: releaseipaddress
+        method: DELETE
+        description: Cilium Release IP address
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: cilium-ipam-rest
+    port: 8080
+    description: REST adapter for Cilium API — IPAM. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/ip
+      name: ip
+      description: REST surface for ip.
+      operations:
+      - method: GET
+        name: listipaddresses
+        description: Cilium List IP addresses
+        call: cilium-ipam.listipaddresses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ipam
+      name: ipam
+      description: REST surface for ipam.
+      operations:
+      - method: POST
+        name: allocateipaddress
+        description: Cilium Allocate IP address
+        call: cilium-ipam.allocateipaddress
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ipam/{ip}
+      name: ipam-ip
+      description: REST surface for ipam-ip.
+      operations:
+      - method: POST
+        name: allocatespecificipaddress
+        description: Cilium Allocate specific IP address
+        call: cilium-ipam.allocatespecificipaddress
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: releaseipaddress
+        description: Cilium Release IP address
+        call: cilium-ipam.releaseipaddress
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: cilium-ipam-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cilium API — IPAM. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: cilium-list-ip-addresses
+      description: Cilium List IP addresses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: cilium-ipam.listipaddresses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-allocate-ip-address
+      description: Cilium Allocate IP address
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: cilium-ipam.allocateipaddress
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-allocate-specific-ip-address
+      description: Cilium Allocate specific IP address
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: cilium-ipam.allocatespecificipaddress
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cilium-release-ip-address
+      description: Cilium Release IP address
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: cilium-ipam.releaseipaddress
+      outputParameters:
+      - type: object
+        mapping: $.
