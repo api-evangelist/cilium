@@ -1,0 +1,823 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Daemon",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Get daemon health status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/healthz",
+            "params": [
+              {
+                "name": "brief",
+                "value": "",
+                "type": "query",
+                "description": "Return brief response with reduced detail."
+              }
+            ]
+          },
+          "docs": "Returns the overall health status of the Cilium daemon including connectivity to the kvstore, container runtime, Kubernetes API server, and the status of each configured subsystem."
+        },
+        {
+          "info": {
+            "name": "Cilium Get daemon configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/config"
+          },
+          "docs": "Returns the current runtime configuration of the Cilium daemon, including mutable and immutable settings such as policy enforcement mode, enabled features, and address pool information."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify daemon configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies the mutable runtime configuration of the Cilium daemon. Supports updating policy enforcement mode and feature toggles without restarting the agent."
+        },
+        {
+          "info": {
+            "name": "Cilium List cluster nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/cluster/nodes",
+            "params": [
+              {
+                "name": "client-id",
+                "value": "",
+                "type": "query",
+                "description": "Unique client ID for long-polling. Returns only changes since the last response to this client."
+              }
+            ]
+          },
+          "docs": "Returns information about all nodes in the Cilium cluster, including their addresses, health status, and connectivity information."
+        },
+        {
+          "info": {
+            "name": "Cilium Get debugging information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/debuginfo"
+          },
+          "docs": "Returns comprehensive debugging information about the Cilium daemon, including BPF map state, policy state, endpoint information, and environment details useful for troubleshooting."
+        },
+        {
+          "info": {
+            "name": "Cilium List BPF maps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/map"
+          },
+          "docs": "Returns a list of all open BPF maps used by the Cilium datapath, including their names, types, key/value sizes, and current entry counts."
+        },
+        {
+          "info": {
+            "name": "Cilium Get node IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/node/ids"
+          },
+          "docs": "Returns the mapping of node names to their allocated numeric node IDs used in the BPF datapath for traffic identification and policy enforcement."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Endpoint",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Returns a list of all managed endpoints on this Cilium node, including their identities, IP addresses, labels, and policy enforcement status."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete endpoints by label selector",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/endpoint",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Deletes all endpoints that match the given label selector. Used to clean up endpoints associated with terminated workloads."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the full state of a specific endpoint including its identity, IP addressing, label configuration, policy enforcement status, and health information."
+        },
+        {
+          "info": {
+            "name": "Cilium Create or replace endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new endpoint or replaces an existing one with the provided configuration. Used by container runtimes and CNI plugins to register new workload endpoints with the Cilium agent."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies partial changes to an existing endpoint configuration, such as updating labels or other mutable properties, without replacing the full endpoint state."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Removes a managed endpoint from the Cilium agent, cleaning up all associated BPF maps, policy state, and IP allocations."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/config",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the current configuration of a specific endpoint, including policy enforcement settings and enabled feature flags."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id/config",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the mutable configuration settings of a specific endpoint, such as policy enforcement mode and per-endpoint feature toggles."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/labels",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the current set of labels applied to a specific endpoint, including both static and dynamic labels used for identity derivation and policy matching."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id/labels",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the labels associated with a specific endpoint, which may trigger identity recalculation and policy re-evaluation."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint status log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/log",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the historical status log of a specific endpoint, recording state transitions, policy changes, and other significant events in the endpoint lifecycle."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/healthz",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the health status of a specific endpoint, including BPF program status, policy enforcement state, and connectivity checks."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List security identities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Returns a list of all security identities known to the Cilium agent, each consisting of a numeric ID and the associated label set used to derive that identity for policy enforcement."
+        },
+        {
+          "info": {
+            "name": "Cilium Get identity by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric security identity ID."
+              }
+            ]
+          },
+          "docs": "Returns the security identity corresponding to the given numeric identity ID, including its associated label set."
+        },
+        {
+          "info": {
+            "name": "Cilium List local endpoint identities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity/endpoints"
+          },
+          "docs": "Returns the set of numeric security identities that are currently in use by local endpoints managed by this Cilium agent."
+        },
+        {
+          "info": {
+            "name": "Cilium Get policy selectors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/policy/selectors"
+          },
+          "docs": "Returns all policy selectors and the set of security identities that each selector currently matches, useful for debugging policy enforcement."
+        },
+        {
+          "info": {
+            "name": "Cilium Get FQDN DNS cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/fqdn/cache",
+            "params": [
+              {
+                "name": "matchpattern",
+                "value": "",
+                "type": "query",
+                "description": "FQDN name match pattern (shell-style glob)."
+              },
+              {
+                "name": "cidr",
+                "value": "",
+                "type": "query",
+                "description": "Filter by CIDR network range."
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter by DNS entry source (e.g., dns, connection)."
+              }
+            ]
+          },
+          "docs": "Returns the current DNS lookup cache used by Cilium for FQDN-based network policy enforcement, including resolved IP addresses and TTL information for each DNS name."
+        },
+        {
+          "info": {
+            "name": "Cilium Clear FQDN DNS cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/fqdn/cache",
+            "params": [
+              {
+                "name": "matchpattern",
+                "value": "",
+                "type": "query",
+                "description": "FQDN name match pattern (shell-style glob)."
+              }
+            ]
+          },
+          "docs": "Removes entries from the FQDN DNS cache. Can delete all entries or filter by pattern. This forces re-resolution of DNS names on next policy evaluation."
+        },
+        {
+          "info": {
+            "name": "Cilium Get FQDN selector names",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/fqdn/names"
+          },
+          "docs": "Returns all DNS names currently tracked by Cilium FQDN selectors, including the selectors that reference each name and the current set of IP addresses associated with each name."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "IPAM",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Allocate IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost/v1/ipam",
+            "params": [
+              {
+                "name": "family",
+                "value": "",
+                "type": "query",
+                "description": "IP address family to allocate (ipv4 or ipv6)."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              },
+              {
+                "name": "expiration",
+                "value": "",
+                "type": "query",
+                "description": "Whether the allocation should expire if not confirmed."
+              }
+            ]
+          },
+          "docs": "Allocates a new IP address from the configured IPAM pool for assignment to a new endpoint. Returns the allocated IP address and relevant routing information."
+        },
+        {
+          "info": {
+            "name": "Cilium Allocate specific IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost/v1/ipam/:ip",
+            "params": [
+              {
+                "name": "ip",
+                "value": "",
+                "type": "path",
+                "description": "IP address to allocate or release."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              },
+              {
+                "name": "expiration",
+                "value": "",
+                "type": "query",
+                "description": "Whether the allocation should expire if not confirmed."
+              }
+            ]
+          },
+          "docs": "Allocates a specific IP address in the IPAM pool, reserving it for assignment to an endpoint. Fails if the IP is already allocated or out of the configured pool range."
+        },
+        {
+          "info": {
+            "name": "Cilium Release IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/ipam/:ip",
+            "params": [
+              {
+                "name": "ip",
+                "value": "",
+                "type": "path",
+                "description": "IP address to allocate or release."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              }
+            ]
+          },
+          "docs": "Returns a previously allocated IP address back to the IPAM pool, making it available for future allocations."
+        },
+        {
+          "info": {
+            "name": "Cilium List IP addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/ip"
+          },
+          "docs": "Returns information about all IP addresses known to the Cilium agent, including their allocation state, associated endpoint, and routing information."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Default",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/service"
+          },
+          "docs": "Returns all services managed by the Cilium load balancer, including their frontend VIP addresses and the set of backend endpoints with associated weight and health status."
+        },
+        {
+          "info": {
+            "name": "Cilium Get service by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and status of a specific Cilium-managed service, identified by its numeric service ID."
+        },
+        {
+          "info": {
+            "name": "Cilium Create or update service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Cilium-managed service or updates an existing one, specifying the frontend VIP and port along with the set of backend endpoints for load balancing."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ]
+          },
+          "docs": "Removes a Cilium-managed service and all its associated load balancing configuration from the BPF datapath."
+        },
+        {
+          "info": {
+            "name": "Cilium List local redirect policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/lrp"
+          },
+          "docs": "Returns all local redirect policies (LRP) configured on this node, which redirect traffic destined for a frontend address to local backend endpoints rather than using the normal load balancer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Prefilter",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Get prefilter configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/prefilter"
+          },
+          "docs": "Returns the current XDP prefilter configuration, including CIDR ranges that are configured for early packet dropping at the network driver level before reaching the Cilium BPF programs."
+        },
+        {
+          "info": {
+            "name": "Cilium Update prefilter configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/prefilter",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the XDP prefilter CIDR list, adding or removing network ranges from the prefilter set for early traffic dropping."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete prefilter entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/prefilter",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes specific CIDR entries from the XDP prefilter configuration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "BGP",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List BGP peers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/peers"
+          },
+          "docs": "Returns the status of all BGP peers configured on this Cilium node, including session state, address families negotiated, and routing statistics."
+        },
+        {
+          "info": {
+            "name": "Cilium List BGP routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/routes",
+            "params": [
+              {
+                "name": "table_type",
+                "value": "",
+                "type": "query",
+                "description": "BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out)."
+              },
+              {
+                "name": "vrf",
+                "value": "",
+                "type": "query",
+                "description": "BGP VRF name."
+              },
+              {
+                "name": "afi",
+                "value": "",
+                "type": "query",
+                "description": "Address Family Identifier (ipv4 or ipv6)."
+              },
+              {
+                "name": "safi",
+                "value": "",
+                "type": "query",
+                "description": "Subsequent Address Family Identifier (unicast or multicast)."
+              },
+              {
+                "name": "neighbor",
+                "value": "",
+                "type": "query",
+                "description": "Filter routes for a specific BGP neighbor address."
+              }
+            ]
+          },
+          "docs": "Returns the BGP routing information base (RIB) for this Cilium node, including routes learned from peers and locally originated routes for pod CIDRs and services."
+        },
+        {
+          "info": {
+            "name": "Cilium List BGP route policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/route-policies",
+            "params": [
+              {
+                "name": "router_asn",
+                "value": "",
+                "type": "query",
+                "description": "Filter policies for a specific BGP router ASN."
+              }
+            ]
+          },
+          "docs": "Returns all BGP route policies configured on this node, used to filter and modify routes exchanged with BGP peers based on prefix lists, community strings, and other BGP attributes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
