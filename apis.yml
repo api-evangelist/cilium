@@ -133,6 +133,8 @@ apis:
       service, enabling centralized queries of flow data, DNS events, and HTTP metrics from all nodes through Hubble
       Relay without connecting to each node individually.
 common:
+  - type: AgenticAccess
+    url: agentic-access/cilium-agentic-access.yml
   - type: DomainSecurity
     url: security/cilium-domain-security.yml
   - type: LinkedIn
