@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP IPAM API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: IPAM
+  description: IP address management and allocation
+paths:
+  /ipam:
+    post:
+      operationId: allocateIPAddress
+      summary: Cilium Allocate IP address
+      description: Allocates a new IP address from the configured IPAM pool for assignment to a new endpoint. Returns the allocated IP address and relevant routing information.
+      tags:
+      - IPAM
+      parameters:
+      - $ref: '#/components/parameters/IPAMFamilyParam'
+      - $ref: '#/components/parameters/IPAMOwnerParam'
+      - $ref: '#/components/parameters/IPAMExpirationParam'
+      responses:
+        '201':
+          description: IP address allocated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPAMResponse'
+        '502':
+          description: IPAM provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ipam/{ip}:
+    post:
+      operationId: allocateSpecificIPAddress
+      summary: Cilium Allocate specific IP address
+      description: Allocates a specific IP address in the IPAM pool, reserving it for assignment to an endpoint. Fails if the IP is already allocated or out of the configured pool range.
+      tags:
+      - IPAM
+      parameters:
+      - $ref: '#/components/parameters/IPParam'
+      - $ref: '#/components/parameters/IPAMOwnerParam'
+      - $ref: '#/components/parameters/IPAMExpirationParam'
+      responses:
+        '200':
+          description: IP address allocated
+        '400':
+          description: Invalid IP address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: IP address already allocated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: releaseIPAddress
+      summary: Cilium Release IP address
+      description: Returns a previously allocated IP address back to the IPAM pool, making it available for future allocations.
+      tags:
+      - IPAM
+      parameters:
+      - $ref: '#/components/parameters/IPParam'
+      - $ref: '#/components/parameters/IPAMOwnerParam'
+      responses:
+        '200':
+          description: IP address released
+        '400':
+          description: Invalid IP address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: IP address not found or not allocated
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ip:
+    get:
+      operationId: listIPAddresses
+      summary: Cilium List IP addresses
+      description: Returns information about all IP addresses known to the Cilium agent, including their allocation state, associated endpoint, and routing information.
+      tags:
+      - IPAM
+      responses:
+        '200':
+          description: IP address list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IPListEntry'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    NodeAddressing:
+      type: object
+      description: IP addressing information for the host node.
+      properties:
+        ipv4:
+          $ref: '#/components/schemas/NodeAddressingElement'
+        ipv6:
+          $ref: '#/components/schemas/NodeAddressingElement'
+    IPListEntry:
+      type: object
+      description: Information about a single IP address known to the Cilium agent.
+      properties:
+        cidr:
+          type: string
+          description: CIDR block containing this IP address.
+        identity:
+          type: integer
+          format: int64
+          description: Security identity associated with this IP address.
+        owned:
+          type: boolean
+          description: Whether this IP is allocated by the local IPAM.
+    NodeAddressingElement:
+      type: object
+      description: Node addressing for a single address family.
+      properties:
+        address-type:
+          type: string
+          description: Type of address (internal, external).
+        alloc-range:
+          type: string
+          description: CIDR allocation range for pods.
+        enabled:
+          type: boolean
+          description: Whether this address family is enabled.
+        ip:
+          type: string
+          description: Node IP address.
+    IPAMAddressResponse:
+      type: object
+      description: Details of a single allocated IP address.
+      properties:
+        ip:
+          type: string
+          description: The allocated IP address.
+        gateway:
+          type: string
+          description: Gateway IP address for this allocation.
+        interface-number:
+          type: integer
+          description: Network interface number.
+        masquerade-enabled:
+          type: boolean
+          description: Whether masquerading is enabled for this IP.
+    IPAMResponse:
+      type: object
+      description: Response from an IP address allocation request.
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressPair'
+        host-addressing:
+          $ref: '#/components/schemas/NodeAddressing'
+        ipv4:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+        ipv6:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+    Error:
+      type: string
+      description: Human-readable error message.
+  parameters:
+    IPParam:
+      name: ip
+      in: path
+      required: true
+      description: IP address to allocate or release.
+      schema:
+        type: string
+    IPAMOwnerParam:
+      name: owner
+      in: query
+      required: false
+      description: Owner identifier for the IP allocation.
+      schema:
+        type: string
+    IPAMFamilyParam:
+      name: family
+      in: query
+      required: false
+      description: IP address family to allocate (ipv4 or ipv6).
+      schema:
+        type: string
+        enum:
+        - ipv4
+        - ipv6
+    IPAMExpirationParam:
+      name: expiration
+      in: query
+      required: false
+      description: Whether the allocation should expire if not confirmed.
+      schema:
+        type: boolean
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

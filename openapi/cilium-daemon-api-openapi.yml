@@ -1,0 +1,616 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Daemon API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Daemon
+  description: Cilium daemon configuration, health, and cluster management
+paths:
+  /healthz:
+    get:
+      operationId: getDaemonHealth
+      summary: Cilium Get daemon health status
+      description: Returns the overall health status of the Cilium daemon including connectivity to the kvstore, container runtime, Kubernetes API server, and the status of each configured subsystem.
+      tags:
+      - Daemon
+      parameters:
+      - $ref: '#/components/parameters/BriefParam'
+      responses:
+        '200':
+          description: Daemon health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /config:
+    get:
+      operationId: getDaemonConfig
+      summary: Cilium Get daemon configuration
+      description: Returns the current runtime configuration of the Cilium daemon, including mutable and immutable settings such as policy enforcement mode, enabled features, and address pool information.
+      tags:
+      - Daemon
+      responses:
+        '200':
+          description: Daemon configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DaemonConfiguration'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchDaemonConfig
+      summary: Cilium Modify daemon configuration
+      description: Modifies the mutable runtime configuration of the Cilium daemon. Supports updating policy enforcement mode and feature toggles without restarting the agent.
+      tags:
+      - Daemon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DaemonConfigurationSpec'
+      responses:
+        '200':
+          description: Configuration updated successfully
+        '400':
+          description: Invalid configuration parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cluster/nodes:
+    get:
+      operationId: getClusterNodes
+      summary: Cilium List cluster nodes
+      description: Returns information about all nodes in the Cilium cluster, including their addresses, health status, and connectivity information.
+      tags:
+      - Daemon
+      parameters:
+      - $ref: '#/components/parameters/ClientIDParam'
+      responses:
+        '200':
+          description: Cluster node list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterNodeStatus'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /debuginfo:
+    get:
+      operationId: getDebugInfo
+      summary: Cilium Get debugging information
+      description: Returns comprehensive debugging information about the Cilium daemon, including BPF map state, policy state, endpoint information, and environment details useful for troubleshooting.
+      tags:
+      - Daemon
+      responses:
+        '200':
+          description: Debug information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DebugInfo'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /map:
+    get:
+      operationId: getBPFMaps
+      summary: Cilium List BPF maps
+      description: Returns a list of all open BPF maps used by the Cilium datapath, including their names, types, key/value sizes, and current entry counts.
+      tags:
+      - Daemon
+      responses:
+        '200':
+          description: BPF map list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BPFMap'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /node/ids:
+    get:
+      operationId: getNodeIDs
+      summary: Cilium Get node IDs
+      description: Returns the mapping of node names to their allocated numeric node IDs used in the BPF datapath for traffic identification and policy enforcement.
+      tags:
+      - Daemon
+      responses:
+        '200':
+          description: Node ID mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodeID'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    DaemonConfigurationStatus:
+      type: object
+      description: Current effective configuration of the Cilium daemon.
+      properties:
+        immutable:
+          type: object
+          description: Immutable configuration options.
+          additionalProperties:
+            type: string
+        realized:
+          $ref: '#/components/schemas/DaemonConfigurationSpec'
+    StatusResponse:
+      type: object
+      description: Overall health and status of the Cilium daemon, including connectivity to external dependencies and subsystem health.
+      properties:
+        cilium:
+          $ref: '#/components/schemas/Status'
+        cluster:
+          $ref: '#/components/schemas/ClusterStatus'
+        container-runtime:
+          $ref: '#/components/schemas/Status'
+        controllers:
+          $ref: '#/components/schemas/ControllerStatuses'
+        ipam:
+          $ref: '#/components/schemas/IPAMStatus'
+        kube-proxy-replacement:
+          $ref: '#/components/schemas/KubeProxyReplacementStatus'
+        kubernetes:
+          $ref: '#/components/schemas/K8sStatus'
+        kvstore:
+          $ref: '#/components/schemas/Status'
+        nodeMonitor:
+          $ref: '#/components/schemas/MonitorStatus'
+    BPFMapEntry:
+      type: object
+      description: A single key-value entry in a BPF map.
+      properties:
+        key:
+          type: string
+          description: BPF map entry key.
+        value:
+          type: string
+          description: BPF map entry value.
+        desiredAction:
+          type: string
+          description: Desired reconciliation action for this entry.
+    BPFMap:
+      type: object
+      description: Information about a BPF map used by the Cilium datapath.
+      properties:
+        path:
+          type: string
+          description: File system path to the pinned BPF map.
+        cache:
+          type: array
+          items:
+            $ref: '#/components/schemas/BPFMapEntry'
+          description: Current entries in the BPF map.
+    ClusterNodeStatus:
+      type: object
+      description: Cluster-wide node status and membership information.
+      properties:
+        self:
+          type: string
+          description: Name of this node.
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeElement'
+          description: All nodes in the cluster.
+    DaemonConfigurationSpec:
+      type: object
+      description: Mutable configuration options for the Cilium daemon.
+      properties:
+        options:
+          type: object
+          description: Map of configuration option names to their values.
+          additionalProperties:
+            type: string
+        policyEnforcement:
+          type: string
+          description: Policy enforcement mode.
+          enum:
+          - default
+          - always
+          - never
+    NodeElement:
+      type: object
+      description: Information about a single cluster node.
+      properties:
+        name:
+          type: string
+          description: Node hostname.
+        primaryAddress:
+          $ref: '#/components/schemas/NodeAddress'
+        health-endpoint-address:
+          $ref: '#/components/schemas/NodeAddress'
+        encryption:
+          type: object
+          description: Node encryption configuration.
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    ControllerStatus:
+      type: object
+      description: Status of a single Cilium background controller.
+      properties:
+        name:
+          type: string
+          description: Controller name.
+        status:
+          type: object
+          description: Controller run status details.
+          properties:
+            consecutiveFailureCount:
+              type: integer
+              description: Number of consecutive failures.
+            failureCount:
+              type: integer
+              description: Total failure count.
+            lastFailureTimestamp:
+              type: string
+              format: date-time
+              description: Time of last failure.
+            lastSuccessTimestamp:
+              type: string
+              format: date-time
+              description: Time of last success.
+            successCount:
+              type: integer
+              description: Total success count.
+    Identity:
+      type: object
+      description: A Cilium security identity, derived from the set of labels associated with a workload and used for policy enforcement decisions.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique numeric identity ID.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels that define this identity.
+        labelsSHA256:
+          type: string
+          description: SHA256 hash of the label set for change detection.
+    NodeID:
+      type: object
+      description: Mapping of a node name to its numeric datapath ID.
+      properties:
+        id:
+          type: integer
+          description: Numeric node ID used in the BPF datapath.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels associated with this node.
+        cidr:
+          type: string
+          description: CIDR block allocated to this node.
+    Error:
+      type: string
+      description: Human-readable error message.
+    KubeProxyReplacementStatus:
+      type: object
+      description: Status of the kube-proxy replacement functionality.
+      properties:
+        mode:
+          type: string
+          description: kube-proxy replacement mode (disabled, partial, strict).
+    MonitorStatus:
+      type: object
+      description: Status of the Cilium node monitor.
+      properties:
+        cpus:
+          type: integer
+          description: Number of CPUs the monitor is running on.
+        lost:
+          type: integer
+          format: int64
+          description: Number of monitor events lost due to buffer overflow.
+        unknown:
+          type: integer
+          format: int64
+          description: Number of unknown monitor events received.
+    K8sStatus:
+      type: object
+      description: Status of Kubernetes API server connectivity and version.
+      properties:
+        state:
+          type: string
+          description: Connection state to the Kubernetes API server.
+        msg:
+          type: string
+          description: Additional Kubernetes connectivity information.
+        k8s-api-versions:
+          type: array
+          items:
+            type: string
+          description: List of supported Kubernetes API versions.
+    DebugInfo:
+      type: object
+      description: Comprehensive debugging information about the Cilium daemon.
+      properties:
+        cilium-version:
+          type: string
+          description: Cilium version string.
+        kernel-version:
+          type: string
+          description: Linux kernel version.
+        policy-information:
+          type: object
+          description: Current policy state.
+        endpoint-list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endpoint'
+          description: All managed endpoints.
+    EndpointPolicyStatus:
+      type: object
+      description: Policy enforcement status for an endpoint.
+      properties:
+        allowed:
+          type: object
+          description: Map of allowed traffic flows.
+        denied:
+          type: object
+          description: Map of denied traffic flows.
+        realized:
+          $ref: '#/components/schemas/EndpointPolicy'
+        spec:
+          $ref: '#/components/schemas/EndpointPolicy'
+    DaemonConfiguration:
+      type: object
+      description: Current runtime configuration of the Cilium daemon.
+      properties:
+        spec:
+          $ref: '#/components/schemas/DaemonConfigurationSpec'
+        status:
+          $ref: '#/components/schemas/DaemonConfigurationStatus'
+    EndpointPolicy:
+      type: object
+      description: Desired or realized policy for an endpoint.
+      properties:
+        allowed-egress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs that egress traffic is allowed to reach.
+        allowed-ingress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs allowed to send ingress traffic.
+        cidr-policy:
+          type: object
+          description: CIDR-based policy configuration.
+        id:
+          type: integer
+          description: Policy revision number.
+    EndpointStatus:
+      type: object
+      description: Current status of an endpoint.
+      properties:
+        identity:
+          $ref: '#/components/schemas/Identity'
+        networking:
+          $ref: '#/components/schemas/EndpointNetworking'
+        policy:
+          $ref: '#/components/schemas/EndpointPolicyStatus'
+        state:
+          type: string
+          description: Current lifecycle state of the endpoint.
+          enum:
+          - waiting-for-identity
+          - not-ready
+          - waiting-to-regenerate
+          - regenerating
+          - restoring
+          - ready
+          - disconnecting
+          - disconnected
+          - invalid
+        health:
+          $ref: '#/components/schemas/EndpointHealth'
+    ClusterStatus:
+      type: object
+      description: Status of the Cilium cluster mesh connectivity.
+      properties:
+        self:
+          type: string
+          description: Name of this cluster.
+        nodes:
+          type: object
+          description: Map of node names to their connectivity status.
+          additionalProperties:
+            $ref: '#/components/schemas/NodeStatus'
+    NodeAddress:
+      type: object
+      description: Network address information for a cluster node.
+      properties:
+        ip:
+          type: string
+          description: IP address of the node.
+        allocationCIDR:
+          type: string
+          description: CIDR block allocated to this node for pod IPs.
+    NodeStatus:
+      type: object
+      description: Connectivity and health status of a single cluster node.
+      properties:
+        name:
+          type: string
+          description: Node name.
+        primaryAddress:
+          $ref: '#/components/schemas/NodeAddress'
+        healthEndpointAddress:
+          $ref: '#/components/schemas/NodeAddress'
+    EndpointSpec:
+      type: object
+      description: Desired configuration for an endpoint.
+      properties:
+        addressing:
+          $ref: '#/components/schemas/AddressPair'
+        containerID:
+          type: string
+          description: Container runtime ID for this endpoint.
+        containerName:
+          type: string
+          description: Container name.
+        k8sNamespace:
+          type: string
+          description: Kubernetes namespace.
+        k8sPodName:
+          type: string
+          description: Kubernetes pod name.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Security labels associated with this endpoint.
+    IPAMStatus:
+      type: object
+      description: Current IPAM pool usage and allocation statistics.
+      properties:
+        ipv4:
+          type: array
+          items:
+            type: string
+          description: List of allocated IPv4 addresses.
+        ipv6:
+          type: array
+          items:
+            type: string
+          description: List of allocated IPv6 addresses.
+    ControllerStatuses:
+      type: object
+      description: Map of controller names to their current status.
+      additionalProperties:
+        $ref: '#/components/schemas/ControllerStatus'
+    Endpoint:
+      type: object
+      description: A Cilium-managed network endpoint, typically corresponding to a Kubernetes pod or container with associated identity and policy state.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Numeric endpoint ID assigned by Cilium.
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        spec:
+          $ref: '#/components/schemas/EndpointSpec'
+    Status:
+      type: object
+      description: Health status of a single Cilium subsystem or dependency.
+      properties:
+        state:
+          type: string
+          description: State of the subsystem. One of Ok, Warning, Failure, or Disabled.
+          enum:
+          - Ok
+          - Warning
+          - Failure
+          - Disabled
+        msg:
+          type: string
+          description: Additional message describing the current state.
+    EndpointHealth:
+      type: object
+      description: Health status of an endpoint's BPF programs and policy.
+      properties:
+        bpf:
+          type: string
+          description: Health status of the BPF program for this endpoint.
+        connected:
+          type: boolean
+          description: Whether the endpoint is connected to the network.
+        overallHealth:
+          type: string
+          description: Overall health status of the endpoint.
+        policy:
+          type: string
+          description: Health status of policy enforcement for this endpoint.
+    EndpointNetworking:
+      type: object
+      description: Network addressing information for an endpoint.
+      properties:
+        addressing:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPair'
+          description: IP addresses assigned to this endpoint.
+        node:
+          type: string
+          description: IP address of the node hosting this endpoint.
+  parameters:
+    BriefParam:
+      name: brief
+      in: query
+      required: false
+      description: Return brief response with reduced detail.
+      schema:
+        type: boolean
+    ClientIDParam:
+      name: client-id
+      in: query
+      required: false
+      description: Unique client ID for long-polling. Returns only changes since the last response to this client.
+      schema:
+        type: integer
+        format: int64
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

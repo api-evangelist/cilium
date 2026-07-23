@@ -1,0 +1,130 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Prefilter API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Prefilter
+  description: XDP prefilter CIDR management
+paths:
+  /prefilter:
+    get:
+      operationId: getPrefilterConfig
+      summary: Cilium Get prefilter configuration
+      description: Returns the current XDP prefilter configuration, including CIDR ranges that are configured for early packet dropping at the network driver level before reaching the Cilium BPF programs.
+      tags:
+      - Prefilter
+      responses:
+        '200':
+          description: Prefilter configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prefilter'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchPrefilterConfig
+      summary: Cilium Update prefilter configuration
+      description: Updates the XDP prefilter CIDR list, adding or removing network ranges from the prefilter set for early traffic dropping.
+      tags:
+      - Prefilter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrefilterSpec'
+      responses:
+        '200':
+          description: Prefilter configuration updated
+        '400':
+          description: Invalid CIDR specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deletePrefilterConfig
+      summary: Cilium Delete prefilter entries
+      description: Removes specific CIDR entries from the XDP prefilter configuration.
+      tags:
+      - Prefilter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrefilterSpec'
+      responses:
+        '200':
+          description: Prefilter entries deleted
+        '400':
+          description: Invalid CIDR specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    PrefilterSpec:
+      type: object
+      description: Prefilter CIDR list specification.
+      properties:
+        deny:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges to deny at the XDP layer.
+        allow:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges explicitly allowed (overrides deny).
+    Prefilter:
+      type: object
+      description: XDP prefilter configuration and statistics.
+      properties:
+        spec:
+          $ref: '#/components/schemas/PrefilterSpec'
+        status:
+          $ref: '#/components/schemas/PrefilterStatus'
+    PrefilterStatus:
+      type: object
+      description: Current state of the XDP prefilter.
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: Total number of CIDR entries in the prefilter.
+        realized:
+          $ref: '#/components/schemas/PrefilterSpec'
+    Error:
+      type: string
+      description: Human-readable error message.
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

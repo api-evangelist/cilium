@@ -1,0 +1,219 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Service API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Service
+paths:
+  /service:
+    get:
+      operationId: listServices
+      summary: Cilium List services
+      description: Returns all services managed by the Cilium load balancer, including their frontend VIP addresses and the set of backend endpoints with associated weight and health status.
+      tags:
+      - Service
+      responses:
+        '200':
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service/{id}:
+    get:
+      operationId: getService
+      summary: Cilium Get service by ID
+      description: Returns the configuration and status of a specific Cilium-managed service, identified by its numeric service ID.
+      tags:
+      - Service
+      parameters:
+      - $ref: '#/components/parameters/ServiceIDParam'
+      responses:
+        '200':
+          description: Service details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: putService
+      summary: Cilium Create or update service
+      description: Creates a new Cilium-managed service or updates an existing one, specifying the frontend VIP and port along with the set of backend endpoints for load balancing.
+      tags:
+      - Service
+      parameters:
+      - $ref: '#/components/parameters/ServiceIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceSpec'
+      responses:
+        '200':
+          description: Service updated
+        '201':
+          description: Service created
+        '400':
+          description: Invalid service specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteService
+      summary: Cilium Delete service
+      description: Removes a Cilium-managed service and all its associated load balancing configuration from the BPF datapath.
+      tags:
+      - Service
+      parameters:
+      - $ref: '#/components/parameters/ServiceIDParam'
+      responses:
+        '200':
+          description: Service deleted
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    ServiceSpecFlags:
+      type: object
+      description: Feature flags for a service.
+      properties:
+        type:
+          type: string
+          description: Service type (ClusterIP, NodePort, LoadBalancer, ExternalIPs, HostPort, LocalRedirect, Custom, HostNamespace).
+        trafficPolicy:
+          type: string
+          description: Traffic policy (Cluster, Local).
+        healthCheckNodePort:
+          type: integer
+          description: Port for health check NodePort.
+        name:
+          type: string
+          description: Service name.
+        namespace:
+          type: string
+          description: Service namespace.
+        natPolicy:
+          type: string
+          description: NAT policy applied to this service.
+    BackendAddress:
+      type: object
+      description: A single backend endpoint for a load balancer service.
+      properties:
+        ip:
+          type: string
+          description: Backend pod or endpoint IP address.
+        port:
+          type: integer
+          description: Backend port number.
+        nodeName:
+          type: string
+          description: Node where this backend resides.
+        state:
+          type: string
+          description: State of this backend (active, terminating, quarantined, maintenance).
+        weight:
+          type: integer
+          description: Load balancer weight for this backend.
+    ServiceSpec:
+      type: object
+      description: Specification for a Cilium service.
+      properties:
+        id:
+          type: integer
+          description: Numeric service ID.
+        frontend-address:
+          $ref: '#/components/schemas/FrontendAddress'
+        backend-addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendAddress'
+          description: Load balancer backend endpoints.
+        flags:
+          $ref: '#/components/schemas/ServiceSpecFlags'
+    Service:
+      type: object
+      description: A Cilium-managed load balancer service with frontend and backends.
+      properties:
+        spec:
+          $ref: '#/components/schemas/ServiceSpec'
+        status:
+          $ref: '#/components/schemas/ServiceStatus'
+    ServiceStatus:
+      type: object
+      description: Realized status of a Cilium service.
+      properties:
+        realized:
+          $ref: '#/components/schemas/ServiceSpec'
+    FrontendAddress:
+      type: object
+      description: Frontend VIP address and port for a service.
+      properties:
+        ip:
+          type: string
+          description: Frontend IP address (VIP).
+        port:
+          type: integer
+          description: Frontend port number.
+        protocol:
+          type: string
+          description: Protocol (TCP, UDP, SCTP).
+          enum:
+          - TCP
+          - UDP
+          - SCTP
+          - ANY
+        scope:
+          type: string
+          description: Scope of the frontend (external, internal, host).
+    Error:
+      type: string
+      description: Human-readable error message.
+  parameters:
+    ServiceIDParam:
+      name: id
+      in: path
+      required: true
+      description: Numeric service ID.
+      schema:
+        type: integer
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

@@ -1,0 +1,273 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: BGP
+  description: BGP control plane peers, routes, and route policies
+paths:
+  /bgp/peers:
+    get:
+      operationId: getBGPPeers
+      summary: Cilium List BGP peers
+      description: Returns the status of all BGP peers configured on this Cilium node, including session state, address families negotiated, and routing statistics.
+      tags:
+      - BGP
+      responses:
+        '200':
+          description: BGP peer list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpPeer'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bgp/routes:
+    get:
+      operationId: getBGPRoutes
+      summary: Cilium List BGP routes
+      description: Returns the BGP routing information base (RIB) for this Cilium node, including routes learned from peers and locally originated routes for pod CIDRs and services.
+      tags:
+      - BGP
+      parameters:
+      - $ref: '#/components/parameters/BGPTableTypeParam'
+      - $ref: '#/components/parameters/BGPVrfParam'
+      - $ref: '#/components/parameters/BGPAFIParam'
+      - $ref: '#/components/parameters/BGPSAFIParam'
+      - $ref: '#/components/parameters/BGPNeighborParam'
+      responses:
+        '200':
+          description: BGP route table
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpRoute'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bgp/route-policies:
+    get:
+      operationId: getBGPRoutePolicies
+      summary: Cilium List BGP route policies
+      description: Returns all BGP route policies configured on this node, used to filter and modify routes exchanged with BGP peers based on prefix lists, community strings, and other BGP attributes.
+      tags:
+      - BGP
+      parameters:
+      - $ref: '#/components/parameters/BGPRouterASNParam'
+      responses:
+        '200':
+          description: BGP route policy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BgpRoutePolicy'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    BgpRoutePolicy:
+      type: object
+      description: A BGP route policy for filtering or modifying routes.
+      properties:
+        name:
+          type: string
+          description: Policy name.
+        type:
+          type: string
+          description: Policy type (export or import).
+          enum:
+          - export
+          - import
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpRoutePolicyStatement'
+          description: Ordered list of policy statements.
+    BgpRoutePolicyStatement:
+      type: object
+      description: A single statement in a BGP route policy.
+      properties:
+        name:
+          type: string
+          description: Statement name.
+        conditions:
+          type: object
+          description: Matching conditions for this statement.
+        actions:
+          type: object
+          description: Actions to take when conditions match.
+    BgpPeer:
+      type: object
+      description: Status information for a single BGP peer.
+      properties:
+        local-asn:
+          type: integer
+          format: int64
+          description: Local BGP ASN.
+        peer-asn:
+          type: integer
+          format: int64
+          description: Remote peer ASN.
+        peer-address:
+          type: string
+          description: IP address of the BGP peer.
+        session-state:
+          type: string
+          description: Current BGP session state.
+          enum:
+          - unknown
+          - idle
+          - connect
+          - active
+          - opensent
+          - openconfirm
+          - established
+        families:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpFamily'
+          description: Address families negotiated with this peer.
+        timers:
+          type: object
+          description: BGP session timer information.
+    BgpRoute:
+      type: object
+      description: A single BGP route entry.
+      properties:
+        prefix:
+          type: string
+          description: Network prefix of the route.
+        router-id:
+          type: string
+          description: BGP router ID that originated this route.
+        neighbor:
+          type: string
+          description: Neighbor that advertised this route (adj-rib tables only).
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpPath'
+          description: BGP path attributes for this route.
+    BgpPath:
+      type: object
+      description: BGP path attributes for a route.
+      properties:
+        best:
+          type: boolean
+          description: Whether this is the best path for the prefix.
+        local-pref:
+          type: integer
+          format: int64
+          description: LOCAL_PREF attribute value.
+        med:
+          type: integer
+          format: int64
+          description: MULTI_EXIT_DISC attribute value.
+        origin:
+          type: string
+          description: Route origin attribute (igp, egp, incomplete).
+        nexthop:
+          type: string
+          description: Next-hop IP address for this path.
+        as-path:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: AS_PATH segments for this route.
+        communities:
+          type: object
+          description: BGP community attributes.
+    Error:
+      type: string
+      description: Human-readable error message.
+    BgpFamily:
+      type: object
+      description: A BGP address family (AFI/SAFI combination).
+      properties:
+        afi:
+          type: string
+          description: Address Family Identifier.
+        safi:
+          type: string
+          description: Subsequent Address Family Identifier.
+        received:
+          type: integer
+          format: int64
+          description: Number of routes received from peer.
+        advertised:
+          type: integer
+          format: int64
+          description: Number of routes advertised to peer.
+  parameters:
+    BGPSAFIParam:
+      name: safi
+      in: query
+      required: false
+      description: Subsequent Address Family Identifier (unicast or multicast).
+      schema:
+        type: string
+    BGPRouterASNParam:
+      name: router_asn
+      in: query
+      required: false
+      description: Filter policies for a specific BGP router ASN.
+      schema:
+        type: integer
+        format: int64
+    BGPVrfParam:
+      name: vrf
+      in: query
+      required: false
+      description: BGP VRF name.
+      schema:
+        type: string
+    BGPNeighborParam:
+      name: neighbor
+      in: query
+      required: false
+      description: Filter routes for a specific BGP neighbor address.
+      schema:
+        type: string
+    BGPAFIParam:
+      name: afi
+      in: query
+      required: false
+      description: Address Family Identifier (ipv4 or ipv6).
+      schema:
+        type: string
+    BGPTableTypeParam:
+      name: table_type
+      in: query
+      required: false
+      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
+      schema:
+        type: string
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

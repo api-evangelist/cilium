@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Lrp API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Lrp
+paths:
+  /lrp:
+    get:
+      operationId: listLocalRedirectPolicies
+      summary: Cilium List local redirect policies
+      description: Returns all local redirect policies (LRP) configured on this node, which redirect traffic destined for a frontend address to local backend endpoints rather than using the normal load balancer.
+      tags:
+      - Lrp
+      responses:
+        '200':
+          description: Local redirect policy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LRPSpec'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    LRPSpec:
+      type: object
+      description: Local redirect policy specification.
+      properties:
+        uid:
+          type: string
+          description: Unique identifier for this LRP.
+        name:
+          type: string
+          description: LRP name from the Kubernetes resource.
+        namespace:
+          type: string
+          description: Kubernetes namespace of this LRP.
+        frontend-type:
+          type: string
+          description: Type of frontend address (addr-port-proto, svc-frontend-all-ports, svc-frontend-named-ports).
+        frontend-mappings:
+          type: array
+          items:
+            type: object
+          description: Frontend to backend port mappings.
+    Error:
+      type: string
+      description: Human-readable error message.
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

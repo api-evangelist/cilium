@@ -1,0 +1,319 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Policy API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Policy
+  description: Network policy, security identities, and FQDN/DNS policy
+paths:
+  /identity:
+    get:
+      operationId: listIdentities
+      summary: Cilium List security identities
+      description: Returns a list of all security identities known to the Cilium agent, each consisting of a numeric ID and the associated label set used to derive that identity for policy enforcement.
+      tags:
+      - Policy
+      parameters:
+      - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: List of identities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /identity/{id}:
+    get:
+      operationId: getIdentity
+      summary: Cilium Get identity by ID
+      description: Returns the security identity corresponding to the given numeric identity ID, including its associated label set.
+      tags:
+      - Policy
+      parameters:
+      - $ref: '#/components/parameters/IdentityIDParam'
+      responses:
+        '200':
+          description: Identity details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '400':
+          description: Invalid identity ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Identity not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /identity/endpoints:
+    get:
+      operationId: getLocalEndpointIdentities
+      summary: Cilium List local endpoint identities
+      description: Returns the set of numeric security identities that are currently in use by local endpoints managed by this Cilium agent.
+      tags:
+      - Policy
+      responses:
+        '200':
+          description: Local endpoint identity list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /policy/selectors:
+    get:
+      operationId: getPolicySelectors
+      summary: Cilium Get policy selectors
+      description: Returns all policy selectors and the set of security identities that each selector currently matches, useful for debugging policy enforcement.
+      tags:
+      - Policy
+      responses:
+        '200':
+          description: Policy selector list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SelectorCache'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fqdn/cache:
+    get:
+      operationId: getFQDNCache
+      summary: Cilium Get FQDN DNS cache
+      description: Returns the current DNS lookup cache used by Cilium for FQDN-based network policy enforcement, including resolved IP addresses and TTL information for each DNS name.
+      tags:
+      - Policy
+      parameters:
+      - $ref: '#/components/parameters/MatchPatternParam'
+      - $ref: '#/components/parameters/CIDRParam'
+      - $ref: '#/components/parameters/SourceParam'
+      responses:
+        '200':
+          description: FQDN cache entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DNSLookup'
+        '400':
+          description: Invalid filter parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteFQDNCache
+      summary: Cilium Clear FQDN DNS cache
+      description: Removes entries from the FQDN DNS cache. Can delete all entries or filter by pattern. This forces re-resolution of DNS names on next policy evaluation.
+      tags:
+      - Policy
+      parameters:
+      - $ref: '#/components/parameters/MatchPatternParam'
+      responses:
+        '200':
+          description: Cache entries deleted
+        '400':
+          description: Invalid filter pattern
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fqdn/names:
+    get:
+      operationId: getFQDNNames
+      summary: Cilium Get FQDN selector names
+      description: Returns all DNS names currently tracked by Cilium FQDN selectors, including the selectors that reference each name and the current set of IP addresses associated with each name.
+      tags:
+      - Policy
+      responses:
+        '200':
+          description: FQDN name list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameManager'
+        '400':
+          description: Request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    LabelsParam:
+      name: labels
+      in: query
+      required: false
+      description: Filter by label selector (key=value pairs).
+      schema:
+        type: array
+        items:
+          type: string
+    MatchPatternParam:
+      name: matchpattern
+      in: query
+      required: false
+      description: FQDN name match pattern (shell-style glob).
+      schema:
+        type: string
+    IdentityIDParam:
+      name: id
+      in: path
+      required: true
+      description: Numeric security identity ID.
+      schema:
+        type: string
+    SourceParam:
+      name: source
+      in: query
+      required: false
+      description: Filter by DNS entry source (e.g., dns, connection).
+      schema:
+        type: string
+    CIDRParam:
+      name: cidr
+      in: query
+      required: false
+      description: Filter by CIDR network range.
+      schema:
+        type: string
+  schemas:
+    SelectorCache:
+      type: object
+      description: A policy selector and the identities it currently matches.
+      properties:
+        selector:
+          type: string
+          description: Label selector expression.
+        users:
+          type: integer
+          description: Number of policy rules using this selector.
+        identities:
+          type: array
+          items:
+            type: integer
+          description: List of identity IDs currently matched by this selector.
+    NameManager:
+      type: object
+      description: FQDN name manager state including all tracked DNS names.
+      properties:
+        FQDNs:
+          type: array
+          items:
+            type: object
+            properties:
+              fqdn:
+                type: string
+                description: DNS name being tracked.
+              ips:
+                type: array
+                items:
+                  type: string
+                description: Current IP addresses for this name.
+          description: List of tracked FQDN entries.
+    Identity:
+      type: object
+      description: A Cilium security identity, derived from the set of labels associated with a workload and used for policy enforcement decisions.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique numeric identity ID.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels that define this identity.
+        labelsSHA256:
+          type: string
+          description: SHA256 hash of the label set for change detection.
+    Error:
+      type: string
+      description: Human-readable error message.
+    DNSLookup:
+      type: object
+      description: A DNS lookup entry in the FQDN cache.
+      properties:
+        fqdn:
+          type: string
+          description: Fully qualified domain name.
+        ips:
+          type: array
+          items:
+            type: string
+          description: IP addresses resolved for this FQDN.
+        lookupTime:
+          type: string
+          format: date-time
+          description: Time when this DNS lookup was performed.
+        ttl:
+          type: integer
+          description: DNS TTL in seconds.
+        expirationTime:
+          type: string
+          format: date-time
+          description: Time when this cache entry expires.
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/

@@ -1,0 +1,631 @@
+openapi: 3.1.0
+info:
+  title: Cilium BGP Endpoint API
+  description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
+  version: v1beta1
+  contact:
+    name: Cilium Community
+    url: https://cilium.io/get-help/
+  termsOfService: https://cilium.io/privacy/
+servers:
+- url: http://localhost/v1
+  description: Local Cilium Agent (Unix socket or HTTP)
+tags:
+- name: Endpoint
+  description: Endpoint lifecycle management, configuration, and status
+paths:
+  /endpoint:
+    get:
+      operationId: listEndpoints
+      summary: Cilium List endpoints
+      description: Returns a list of all managed endpoints on this Cilium node, including their identities, IP addresses, labels, and policy enforcement status.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: List of endpoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endpoint'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteEndpoints
+      summary: Cilium Delete endpoints by label selector
+      description: Deletes all endpoints that match the given label selector. Used to clean up endpoints associated with terminated workloads.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/LabelsParam'
+      responses:
+        '200':
+          description: Endpoints deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointChangeRequest'
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No endpoints found matching labels
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}:
+    get:
+      operationId: getEndpoint
+      summary: Cilium Get endpoint by ID
+      description: Returns the full state of a specific endpoint including its identity, IP addressing, label configuration, policy enforcement status, and health information.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint'
+        '400':
+          description: Invalid endpoint ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: putEndpoint
+      summary: Cilium Create or replace endpoint
+      description: Creates a new endpoint or replaces an existing one with the provided configuration. Used by container runtimes and CNI plugins to register new workload endpoints with the Cilium agent.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointChangeRequest'
+      responses:
+        '201':
+          description: Endpoint created
+        '400':
+          description: Invalid endpoint configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Endpoint already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpoint
+      summary: Cilium Modify endpoint
+      description: Applies partial changes to an existing endpoint configuration, such as updating labels or other mutable properties, without replacing the full endpoint state.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointChangeRequest'
+      responses:
+        '200':
+          description: Endpoint updated
+        '400':
+          description: Invalid modification request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteEndpoint
+      summary: Cilium Delete endpoint
+      description: Removes a managed endpoint from the Cilium agent, cleaning up all associated BPF maps, policy state, and IP allocations.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint deleted
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/config:
+    get:
+      operationId: getEndpointConfig
+      summary: Cilium Get endpoint configuration
+      description: Returns the current configuration of a specific endpoint, including policy enforcement settings and enabled feature flags.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointConfigurationSpec'
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpointConfig
+      summary: Cilium Modify endpoint configuration
+      description: Updates the mutable configuration settings of a specific endpoint, such as policy enforcement mode and per-endpoint feature toggles.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointConfigurationSpec'
+      responses:
+        '200':
+          description: Configuration updated
+        '400':
+          description: Invalid configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/labels:
+    get:
+      operationId: getEndpointLabels
+      summary: Cilium Get endpoint labels
+      description: Returns the current set of labels applied to a specific endpoint, including both static and dynamic labels used for identity derivation and policy matching.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelConfiguration'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: patchEndpointLabels
+      summary: Cilium Modify endpoint labels
+      description: Updates the labels associated with a specific endpoint, which may trigger identity recalculation and policy re-evaluation.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelConfigurationSpec'
+      responses:
+        '200':
+          description: Labels updated
+        '400':
+          description: Invalid label format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/log:
+    get:
+      operationId: getEndpointLog
+      summary: Cilium Get endpoint status log
+      description: Returns the historical status log of a specific endpoint, recording state transitions, policy changes, and other significant events in the endpoint lifecycle.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint status log
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EndpointStatusChange'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /endpoint/{id}/healthz:
+    get:
+      operationId: getEndpointHealth
+      summary: Cilium Get endpoint health
+      description: Returns the health status of a specific endpoint, including BPF program status, policy enforcement state, and connectivity checks.
+      tags:
+      - Endpoint
+      parameters:
+      - $ref: '#/components/parameters/EndpointIDParam'
+      responses:
+        '200':
+          description: Endpoint health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointHealth'
+        '400':
+          description: Invalid endpoint ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Endpoint not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    LabelConfigurationStatus:
+      type: object
+      description: Current label state of an endpoint.
+      properties:
+        derived:
+          type: array
+          items:
+            type: string
+          description: Labels derived from orchestration system.
+        disabled:
+          type: array
+          items:
+            type: string
+          description: Labels explicitly disabled.
+        realized:
+          $ref: '#/components/schemas/LabelConfigurationSpec'
+        security-relevant:
+          type: array
+          items:
+            type: string
+          description: Labels used for security identity derivation.
+    EndpointSpec:
+      type: object
+      description: Desired configuration for an endpoint.
+      properties:
+        addressing:
+          $ref: '#/components/schemas/AddressPair'
+        containerID:
+          type: string
+          description: Container runtime ID for this endpoint.
+        containerName:
+          type: string
+          description: Container name.
+        k8sNamespace:
+          type: string
+          description: Kubernetes namespace.
+        k8sPodName:
+          type: string
+          description: Kubernetes pod name.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Security labels associated with this endpoint.
+    LabelConfiguration:
+      type: object
+      description: Full label configuration for an endpoint.
+      properties:
+        status:
+          $ref: '#/components/schemas/LabelConfigurationStatus'
+    EndpointStatusChange:
+      type: object
+      description: A single entry in an endpoint's status change log.
+      properties:
+        code:
+          type: string
+          description: Status change code.
+          enum:
+          - ok
+          - failed
+        message:
+          type: string
+          description: Human-readable description of the status change.
+        state:
+          type: string
+          description: Endpoint state after this change.
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp of the status change.
+    Endpoint:
+      type: object
+      description: A Cilium-managed network endpoint, typically corresponding to a Kubernetes pod or container with associated identity and policy state.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Numeric endpoint ID assigned by Cilium.
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        spec:
+          $ref: '#/components/schemas/EndpointSpec'
+    EndpointChangeRequest:
+      type: object
+      description: Request payload for creating or modifying an endpoint.
+      properties:
+        addressing:
+          $ref: '#/components/schemas/AddressPair'
+        containerID:
+          type: string
+          description: Container runtime ID.
+        containerName:
+          type: string
+          description: Container name.
+        k8sNamespace:
+          type: string
+          description: Kubernetes namespace.
+        k8sPodName:
+          type: string
+          description: Kubernetes pod name.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Security labels to associate with this endpoint.
+        state:
+          type: string
+          description: Desired endpoint state.
+    EndpointNetworking:
+      type: object
+      description: Network addressing information for an endpoint.
+      properties:
+        addressing:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPair'
+          description: IP addresses assigned to this endpoint.
+        node:
+          type: string
+          description: IP address of the node hosting this endpoint.
+    EndpointHealth:
+      type: object
+      description: Health status of an endpoint's BPF programs and policy.
+      properties:
+        bpf:
+          type: string
+          description: Health status of the BPF program for this endpoint.
+        connected:
+          type: boolean
+          description: Whether the endpoint is connected to the network.
+        overallHealth:
+          type: string
+          description: Overall health status of the endpoint.
+        policy:
+          type: string
+          description: Health status of policy enforcement for this endpoint.
+    EndpointConfigurationSpec:
+      type: object
+      description: Configuration options for a specific endpoint.
+      properties:
+        options:
+          type: object
+          description: Map of option names to their values.
+          additionalProperties:
+            type: string
+    Identity:
+      type: object
+      description: A Cilium security identity, derived from the set of labels associated with a workload and used for policy enforcement decisions.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique numeric identity ID.
+        labels:
+          type: array
+          items:
+            type: string
+          description: Labels that define this identity.
+        labelsSHA256:
+          type: string
+          description: SHA256 hash of the label set for change detection.
+    EndpointPolicyStatus:
+      type: object
+      description: Policy enforcement status for an endpoint.
+      properties:
+        allowed:
+          type: object
+          description: Map of allowed traffic flows.
+        denied:
+          type: object
+          description: Map of denied traffic flows.
+        realized:
+          $ref: '#/components/schemas/EndpointPolicy'
+        spec:
+          $ref: '#/components/schemas/EndpointPolicy'
+    LabelConfigurationSpec:
+      type: object
+      description: Desired label configuration for an endpoint.
+      properties:
+        user:
+          type: array
+          items:
+            type: string
+          description: User-provided labels to add to the endpoint.
+    Error:
+      type: string
+      description: Human-readable error message.
+    EndpointPolicy:
+      type: object
+      description: Desired or realized policy for an endpoint.
+      properties:
+        allowed-egress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs that egress traffic is allowed to reach.
+        allowed-ingress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs allowed to send ingress traffic.
+        cidr-policy:
+          type: object
+          description: CIDR-based policy configuration.
+        id:
+          type: integer
+          description: Policy revision number.
+    EndpointStatus:
+      type: object
+      description: Current status of an endpoint.
+      properties:
+        identity:
+          $ref: '#/components/schemas/Identity'
+        networking:
+          $ref: '#/components/schemas/EndpointNetworking'
+        policy:
+          $ref: '#/components/schemas/EndpointPolicyStatus'
+        state:
+          type: string
+          description: Current lifecycle state of the endpoint.
+          enum:
+          - waiting-for-identity
+          - not-ready
+          - waiting-to-regenerate
+          - regenerating
+          - restoring
+          - ready
+          - disconnecting
+          - disconnected
+          - invalid
+        health:
+          $ref: '#/components/schemas/EndpointHealth'
+  parameters:
+    LabelsParam:
+      name: labels
+      in: query
+      required: false
+      description: Filter by label selector (key=value pairs).
+      schema:
+        type: array
+        items:
+          type: string
+    EndpointIDParam:
+      name: id
+      in: path
+      required: true
+      description: Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme.
+      schema:
+        type: string
+externalDocs:
+  description: Cilium API Documentation
+  url: https://docs.cilium.io/en/stable/api/
