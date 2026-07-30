@@ -8,7 +8,19 @@ tags:
   - Networking
   - Security
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cilium.png
 access: 3rd-Party
 created: '2026-03-16'
 modified: '2026-05-19'
@@ -18,120 +30,220 @@ description: >-
   workloads, fueled by the revolutionary kernel technology eBPF. Cilium provides network security, load balancing, and
   observability for Kubernetes clusters.
 apis:
-  - aid: cilium:cilium-api
-    name: Cilium API
-    tags:
-      - eBPF
-      - Kubernetes
-      - Networking
-      - Security
-    humanURL: https://docs.cilium.io/en/stable/api/
-    baseURL: https://localhost/v1
-    properties:
-      - url: https://docs.cilium.io/en/stable/api/
-        type: Documentation
-      - url: https://github.com/cilium/cilium/blob/main/api/v1/openapi.yaml
-        type: OpenAPI
-      - url: openapi/cilium-api-openapi.yml
-        type: OpenAPI
-      - url: https://docs.cilium.io/en/stable/gettingstarted/
-        type: GettingStarted
-      - url: https://github.com/cilium/cilium/releases
-        type: ChangeLog
-    description: >-
-      The Cilium REST API provides access to Cilium daemon and agent endpoints for managing Kubernetes network policy,
-      security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP
-      interface, and covers endpoints, identities, cluster nodes, and health status.
-  - aid: cilium:hubble-api
-    name: Hubble API
-    tags:
-      - eBPF
-      - Kubernetes
-      - Networking
-      - Observability
-    humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
-    properties:
-      - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
-        type: Documentation
-      - url: https://docs.cilium.io/en/stable/internals/hubble/
-        type: Reference
-      - url: asyncapi/cilium-hubble-asyncapi.yml
-        type: AsyncAPI
-      - url: https://github.com/cilium/hubble
-        type: GitHubRepository
-      - url: https://github.com/cilium/hubble/releases
-        type: ChangeLog
-    description: >-
-      The Hubble API is a gRPC-based observability API built on top of Cilium and eBPF that provides deep visibility
-      into network flows, DNS queries, HTTP requests, and service communication within Kubernetes clusters. It exposes
-      Observer and Peer gRPC services for querying flows, nodes, namespaces, and server status across single nodes or
-      entire clusters via Hubble Relay.
-  - aid: cilium:tetragon-api
-    name: Tetragon API
-    tags:
-      - eBPF
-      - Kubernetes
-      - Observability
-      - Security
-    humanURL: https://tetragon.io/docs/reference/grpc-api/
-    properties:
-      - url: https://tetragon.io/docs/reference/grpc-api/
-        type: Documentation
-      - url: https://tetragon.io/docs/
-        type: Reference
-      - url: https://github.com/cilium/tetragon
-        type: GitHubRepository
-      - url: https://tetragon.io/docs/getting-started/
-        type: GettingStarted
-      - url: https://github.com/cilium/tetragon/releases
-        type: ChangeLog
-    description: >-
-      The Tetragon gRPC API provides access to eBPF-based security observability and runtime enforcement capabilities.
-      It enables querying of kernel-level events including process execution, file access, and network activity, and
-      supports defining tracing policies via Kubernetes custom resources for real-time enforcement and event streaming.
-  - aid: cilium:cilium-operator-api
-    name: Cilium Operator API
-    tags:
-      - eBPF
-      - Kubernetes
-      - Networking
-      - Operations
-    humanURL: https://docs.cilium.io/en/stable/internals/
-    baseURL: https://localhost/v1
-    properties:
-      - url: https://docs.cilium.io/en/stable/internals/
-        type: Documentation
-      - url: https://github.com/cilium/cilium/blob/main/api/v1/operator/openapi.yaml
-        type: OpenAPI
-      - url: https://github.com/cilium/cilium/releases
-        type: ChangeLog
-    description: >-
-      The Cilium Operator API provides a REST interface for the Cilium operator component, which handles cluster-wide
-      tasks such as garbage collection of Cilium endpoints and identities, node IPAM management, and coordination of
-      cluster mesh operations. It exposes health and status endpoints for operator lifecycle management in Kubernetes
-      deployments.
-  - aid: cilium:hubble-relay-api
-    name: Hubble Relay API
-    tags:
-      - gRPC
-      - Kubernetes
-      - Networking
-      - Observability
-    humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
-    properties:
-      - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
-        type: Documentation
-      - url: https://github.com/cilium/cilium/tree/main/api/v1/relay
-        type: Reference
-      - url: https://github.com/cilium/cilium
-        type: GitHubRepository
-      - url: https://github.com/cilium/cilium/releases
-        type: ChangeLog
-    description: >-
-      The Hubble Relay API is a gRPC service that aggregates and relays network flow data from multiple Hubble agents
-      running across Kubernetes cluster nodes. It provides a single cluster-wide endpoint for the Hubble Observer
-      service, enabling centralized queries of flow data, DNS events, and HTTP metrics from all nodes through Hubble
-      Relay without connecting to each node individually.
+- aid: cilium:hubble-api
+  name: Hubble API
+  tags:
+  - eBPF
+  - Kubernetes
+  - Networking
+  - Observability
+  humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
+  properties:
+  - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
+    type: Documentation
+  - url: https://docs.cilium.io/en/stable/internals/hubble/
+    type: Reference
+  - url: asyncapi/cilium-hubble-asyncapi.yml
+    type: AsyncAPI
+  - url: https://github.com/cilium/hubble
+    type: GitHubRepository
+  - url: https://github.com/cilium/hubble/releases
+    type: ChangeLog
+  description: >-
+    The Hubble API is a gRPC-based observability API built on top of Cilium and eBPF that provides deep
+    visibility into network flows, DNS queries, HTTP requests, and service communication within Kubernetes
+    clusters. It exposes Observer and Peer gRPC services for querying flows, nodes, namespaces, and server
+    status across single nodes or entire clusters via Hubble Relay.
+- aid: cilium:tetragon-api
+  name: Tetragon API
+  tags:
+  - eBPF
+  - Kubernetes
+  - Observability
+  - Security
+  humanURL: https://tetragon.io/docs/reference/grpc-api/
+  properties:
+  - url: https://tetragon.io/docs/reference/grpc-api/
+    type: Documentation
+  - url: https://tetragon.io/docs/
+    type: Reference
+  - url: https://github.com/cilium/tetragon
+    type: GitHubRepository
+  - url: https://tetragon.io/docs/getting-started/
+    type: GettingStarted
+  - url: https://github.com/cilium/tetragon/releases
+    type: ChangeLog
+  description: >-
+    The Tetragon gRPC API provides access to eBPF-based security observability and runtime enforcement
+    capabilities. It enables querying of kernel-level events including process execution, file access,
+    and network activity, and supports defining tracing policies via Kubernetes custom resources for real-time
+    enforcement and event streaming.
+- aid: cilium:hubble-relay-api
+  name: Hubble Relay API
+  tags:
+  - gRPC
+  - Kubernetes
+  - Networking
+  - Observability
+  humanURL: https://docs.cilium.io/en/stable/observability/hubble/index.html
+  properties:
+  - url: https://docs.cilium.io/en/stable/observability/hubble/index.html
+    type: Documentation
+  - url: https://github.com/cilium/cilium/tree/main/api/v1/relay
+    type: Reference
+  - url: https://github.com/cilium/cilium
+    type: GitHubRepository
+  - url: https://github.com/cilium/cilium/releases
+    type: ChangeLog
+  description: >-
+    The Hubble Relay API is a gRPC service that aggregates and relays network flow data from multiple
+    Hubble agents running across Kubernetes cluster nodes. It provides a single cluster-wide endpoint
+    for the Hubble Observer service, enabling centralized queries of flow data, DNS events, and HTTP metrics
+    from all nodes through Hubble Relay without connecting to each node individually.
+- aid: cilium:cilium-bgp-api
+  name: Cilium BGP API
+  description: BGP control plane peers, routes, and route policies
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - BGP
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-bgp-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-daemon-api
+  name: Cilium Daemon API
+  description: Cilium daemon configuration, health, and cluster management
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Daemon
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-daemon-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-endpoint-api
+  name: Cilium Endpoint API
+  description: Endpoint lifecycle management, configuration, and status
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Endpoint
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-endpoint-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-ipam-api
+  name: Cilium IPAM API
+  description: IP address management and allocation
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - IPAM
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-ipam-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-lrp-api
+  name: Cilium Lrp API
+  description: The Lrp API from Cilium — 1 operation(s) for lrp.
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Lrp
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-lrp-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-policy-api
+  name: Cilium Policy API
+  description: Network policy, security identities, and FQDN/DNS policy
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-prefilter-api
+  name: Cilium Prefilter API
+  description: XDP prefilter CIDR management
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Prefilter
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-prefilter-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
+- aid: cilium:cilium-service-api
+  name: Cilium Service API
+  description: The Service API from Cilium — 2 operation(s) for service.
+  humanURL: https://docs.cilium.io/en/stable/api/
+  baseURL: https://localhost/v1
+  tags:
+  - Service
+  properties:
+  - type: OpenAPI
+    url: openapi/cilium-service-api-openapi.yml
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/api/
+  - type: GettingStarted
+    url: https://docs.cilium.io/en/stable/gettingstarted/
+  - type: ChangeLog
+    url: https://github.com/cilium/cilium/releases
+  - type: Documentation
+    url: https://docs.cilium.io/en/stable/internals/
 common:
   - type: AgenticAccess
     url: agentic-access/cilium-agentic-access.yml
