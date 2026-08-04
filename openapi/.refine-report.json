@@ -1,0 +1,28 @@
+{
+  "provider": "cilium",
+  "sources": [
+    "cilium-bgp-api-openapi.yml",
+    "cilium-daemon-api-openapi.yml",
+    "cilium-endpoint-api-openapi.yml",
+    "cilium-ipam-api-openapi.yml",
+    "cilium-lrp-api-openapi.yml",
+    "cilium-policy-api-openapi.yml",
+    "cilium-prefilter-api-openapi.yml",
+    "cilium-service-api-openapi.yml"
+  ],
+  "outputs": [
+    "cilium-bgp-api-openapi.yml",
+    "cilium-daemon-api-openapi.yml",
+    "cilium-endpoint-api-openapi.yml",
+    "cilium-ipam-api-openapi.yml",
+    "cilium-lrp-api-openapi.yml",
+    "cilium-policy-api-openapi.yml",
+    "cilium-prefilter-api-openapi.yml",
+    "cilium-service-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
