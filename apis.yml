@@ -245,6 +245,17 @@ apis:
   - type: Documentation
     url: https://docs.cilium.io/en/stable/internals/
 common:
+  - type: IssueTracker
+    url: https://github.com/cilium/cilium/issues
+  - type: SecurityPolicy
+    url: https://github.com/cilium/cilium/blob/main/SECURITY.md
+  - type: CodeOfConduct
+    url: https://github.com/cilium/cilium/blob/main/CODE_OF_CONDUCT.md
+  - type: ContributionGuide
+    url: https://github.com/cilium/cilium/blob/main/CONTRIBUTING.md
+  - type: License
+    name: Apache-2.0
+    url: https://github.com/cilium/cilium/blob/main/LICENSE
   - type: AgenticAccess
     url: agentic-access/cilium-agentic-access.yml
   - type: DomainSecurity
@@ -286,7 +297,7 @@ common:
   - type: AsyncAPI
     url: asyncapi/cilium-hubble-asyncapi.yml
   - type: OpenAPI
-    url: openapi/cilium-api-openapi.yml
+    url: openapi/_original/cilium-api-openapi.yml
   - type: Spectral
     url: spectral/cilium-spectral.yml
 maintainers:
