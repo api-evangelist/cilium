@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Policy API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List security identities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Returns a list of all security identities known to the Cilium agent, each consisting of a numeric ID and the associated label set used to derive that identity for policy enforcement."
+        },
+        {
+          "info": {
+            "name": "Cilium Get identity by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric security identity ID."
+              }
+            ]
+          },
+          "docs": "Returns the security identity corresponding to the given numeric identity ID, including its associated label set."
+        },
+        {
+          "info": {
+            "name": "Cilium List local endpoint identities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/identity/endpoints"
+          },
+          "docs": "Returns the set of numeric security identities that are currently in use by local endpoints managed by this Cilium agent."
+        },
+        {
+          "info": {
+            "name": "Cilium Get policy selectors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/policy/selectors"
+          },
+          "docs": "Returns all policy selectors and the set of security identities that each selector currently matches, useful for debugging policy enforcement."
+        },
+        {
+          "info": {
+            "name": "Cilium Get FQDN DNS cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/fqdn/cache",
+            "params": [
+              {
+                "name": "matchpattern",
+                "value": "",
+                "type": "query",
+                "description": "FQDN name match pattern (shell-style glob)."
+              },
+              {
+                "name": "cidr",
+                "value": "",
+                "type": "query",
+                "description": "Filter by CIDR network range."
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter by DNS entry source (e.g., dns, connection)."
+              }
+            ]
+          },
+          "docs": "Returns the current DNS lookup cache used by Cilium for FQDN-based network policy enforcement, including resolved IP addresses and TTL information for each DNS name."
+        },
+        {
+          "info": {
+            "name": "Cilium Clear FQDN DNS cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/fqdn/cache",
+            "params": [
+              {
+                "name": "matchpattern",
+                "value": "",
+                "type": "query",
+                "description": "FQDN name match pattern (shell-style glob)."
+              }
+            ]
+          },
+          "docs": "Removes entries from the FQDN DNS cache. Can delete all entries or filter by pattern. This forces re-resolution of DNS names on next policy evaluation."
+        },
+        {
+          "info": {
+            "name": "Cilium Get FQDN selector names",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/fqdn/names"
+          },
+          "docs": "Returns all DNS names currently tracked by Cilium FQDN selectors, including the selectors that reference each name and the current set of IP addresses associated with each name."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,479 @@
+{
+  "item": [
+    {
+      "id": "79d06486-dd5b-4456-9671-eb6893331418",
+      "name": "Prefilter",
+      "description": {
+        "content": "XDP prefilter CIDR management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "188ed6f8-4374-40ba-9aca-df358ff57ec3",
+          "name": "Cilium Get prefilter configuration",
+          "request": {
+            "name": "Cilium Get prefilter configuration",
+            "description": {
+              "content": "Returns the current XDP prefilter configuration, including CIDR ranges that are configured for early packet dropping at the network driver level before reaching the Cilium BPF programs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prefilter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4207c9dd-fdef-4600-a1ef-b39541d60f79",
+              "name": "Prefilter configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spec\": {\n    \"deny\": [\n      \"string\",\n      \"string\"\n    ],\n    \"allow\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"status\": {\n    \"count\": 9686,\n    \"realized\": {\n      \"deny\": [\n        \"string\",\n        \"string\"\n      ],\n      \"allow\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34cdbb87-68bd-4276-a4a4-0a5bf55bbff0",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67a25082-75ba-4d35-a2c9-20c34c4b7cdb",
+          "name": "Cilium Update prefilter configuration",
+          "request": {
+            "name": "Cilium Update prefilter configuration",
+            "description": {
+              "content": "Updates the XDP prefilter CIDR list, adding or removing network ranges from the prefilter set for early traffic dropping.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prefilter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f7a950c5-2c89-45fa-b766-5cf4d7d83edb",
+              "name": "Prefilter configuration updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "61f0cb97-cb05-447a-b7a2-24fe46fb4ea3",
+              "name": "Invalid CIDR specification",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af24f571-65cf-4094-951f-349c7255d3c4",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45459faf-c61b-4df7-89ac-f2226f997d3b",
+          "name": "Cilium Delete prefilter entries",
+          "request": {
+            "name": "Cilium Delete prefilter entries",
+            "description": {
+              "content": "Removes specific CIDR entries from the XDP prefilter configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prefilter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "88843663-645a-4647-9ee6-dc01a8a4f9cc",
+              "name": "Prefilter entries deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c6a12c5b-a49c-46f5-81fe-eec21a7e21e7",
+              "name": "Invalid CIDR specification",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8c0b529-ab14-46eb-927e-6f4a19ddb983",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prefilter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deny\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e732c79f-dc2e-4f0e-9a4c-d35663b38fe1",
+    "name": "Cilium BGP Prefilter API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

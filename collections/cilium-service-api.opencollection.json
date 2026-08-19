@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Service API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Service",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/service"
+          },
+          "docs": "Returns all services managed by the Cilium load balancer, including their frontend VIP addresses and the set of backend endpoints with associated weight and health status."
+        },
+        {
+          "info": {
+            "name": "Cilium Get service by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and status of a specific Cilium-managed service, identified by its numeric service ID."
+        },
+        {
+          "info": {
+            "name": "Cilium Create or update service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Cilium-managed service or updates an existing one, specifying the frontend VIP and port along with the set of backend endpoints for load balancing."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/service/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric service ID."
+              }
+            ]
+          },
+          "docs": "Removes a Cilium-managed service and all its associated load balancing configuration from the BPF datapath."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

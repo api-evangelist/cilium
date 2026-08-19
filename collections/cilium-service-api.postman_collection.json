@@ -1,0 +1,724 @@
+{
+  "item": [
+    {
+      "id": "04dc5737-e48a-4f40-a951-e083650212b2",
+      "name": "Service",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "164cdd56-457d-4896-8c8b-f0a6570e6320",
+          "name": "Cilium List services",
+          "request": {
+            "name": "Cilium List services",
+            "description": {
+              "content": "Returns all services managed by the Cilium load balancer, including their frontend VIP addresses and the set of backend endpoints with associated weight and health status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "service"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "55e5eaeb-6d2a-4ff6-a94c-e1d8bbe00c86",
+              "name": "List of services",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"spec\": {\n      \"id\": 3447,\n      \"frontend-address\": {\n        \"ip\": \"string\",\n        \"port\": 7800,\n        \"protocol\": \"TCP\",\n        \"scope\": \"string\"\n      },\n      \"backend-addresses\": [\n        {\n          \"ip\": \"string\",\n          \"port\": 9972,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 6830\n        },\n        {\n          \"ip\": \"string\",\n          \"port\": 9319,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 4871\n        }\n      ],\n      \"flags\": {\n        \"type\": \"string\",\n        \"trafficPolicy\": \"string\",\n        \"healthCheckNodePort\": 2957,\n        \"name\": \"string\",\n        \"namespace\": \"string\",\n        \"natPolicy\": \"string\"\n      }\n    },\n    \"status\": {\n      \"realized\": {\n        \"id\": 8778,\n        \"frontend-address\": {\n          \"ip\": \"string\",\n          \"port\": 3713,\n          \"protocol\": \"SCTP\",\n          \"scope\": \"string\"\n        },\n        \"backend-addresses\": [\n          {\n            \"ip\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"nodeName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"ip\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"nodeName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"flags\": {\n          \"type\": \"string\",\n          \"trafficPolicy\": \"string\",\n          \"healthCheckNodePort\": 534,\n          \"name\": \"string\",\n          \"namespace\": \"string\",\n          \"natPolicy\": \"string\"\n        }\n      }\n    }\n  },\n  {\n    \"spec\": {\n      \"id\": 3510,\n      \"frontend-address\": {\n        \"ip\": \"string\",\n        \"port\": 6679,\n        \"protocol\": \"TCP\",\n        \"scope\": \"string\"\n      },\n      \"backend-addresses\": [\n        {\n          \"ip\": \"string\",\n          \"port\": 980,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 131\n        },\n        {\n          \"ip\": \"string\",\n          \"port\": 1767,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 4353\n        }\n      ],\n      \"flags\": {\n        \"type\": \"string\",\n        \"trafficPolicy\": \"string\",\n        \"healthCheckNodePort\": 2584,\n        \"name\": \"string\",\n        \"namespace\": \"string\",\n        \"natPolicy\": \"string\"\n      }\n    },\n    \"status\": {\n      \"realized\": {\n        \"id\": 3207,\n        \"frontend-address\": {\n          \"ip\": \"string\",\n          \"port\": 484,\n          \"protocol\": \"ANY\",\n          \"scope\": \"string\"\n        },\n        \"backend-addresses\": [\n          {\n            \"ip\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"nodeName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"ip\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"nodeName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"flags\": {\n          \"type\": \"string\",\n          \"trafficPolicy\": \"string\",\n          \"healthCheckNodePort\": 6788,\n          \"name\": \"string\",\n          \"namespace\": \"string\",\n          \"natPolicy\": \"string\"\n        }\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ac8241e-868c-4523-9c55-f188897e542c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d5437d3-8f70-47d9-b14b-9228c71211fa",
+          "name": "Cilium Get service by ID",
+          "request": {
+            "name": "Cilium Get service by ID",
+            "description": {
+              "content": "Returns the configuration and status of a specific Cilium-managed service, identified by its numeric service ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "service",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Numeric service ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bb076e39-b249-48aa-9d46-53b7d1003da5",
+              "name": "Service details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spec\": {\n    \"id\": 4287,\n    \"frontend-address\": {\n      \"ip\": \"string\",\n      \"port\": 1145,\n      \"protocol\": \"TCP\",\n      \"scope\": \"string\"\n    },\n    \"backend-addresses\": [\n      {\n        \"ip\": \"string\",\n        \"port\": 5477,\n        \"nodeName\": \"string\",\n        \"state\": \"string\",\n        \"weight\": 6249\n      },\n      {\n        \"ip\": \"string\",\n        \"port\": 794,\n        \"nodeName\": \"string\",\n        \"state\": \"string\",\n        \"weight\": 2718\n      }\n    ],\n    \"flags\": {\n      \"type\": \"string\",\n      \"trafficPolicy\": \"string\",\n      \"healthCheckNodePort\": 8587,\n      \"name\": \"string\",\n      \"namespace\": \"string\",\n      \"natPolicy\": \"string\"\n    }\n  },\n  \"status\": {\n    \"realized\": {\n      \"id\": 9918,\n      \"frontend-address\": {\n        \"ip\": \"string\",\n        \"port\": 9698,\n        \"protocol\": \"TCP\",\n        \"scope\": \"string\"\n      },\n      \"backend-addresses\": [\n        {\n          \"ip\": \"string\",\n          \"port\": 6780,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 4311\n        },\n        {\n          \"ip\": \"string\",\n          \"port\": 5456,\n          \"nodeName\": \"string\",\n          \"state\": \"string\",\n          \"weight\": 8843\n        }\n      ],\n      \"flags\": {\n        \"type\": \"string\",\n        \"trafficPolicy\": \"string\",\n        \"healthCheckNodePort\": 6665,\n        \"name\": \"string\",\n        \"namespace\": \"string\",\n        \"natPolicy\": \"string\"\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c412233b-1cba-4929-8e71-3194f52154e3",
+              "name": "Service not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f8e804ea-c64d-4c90-9131-013c8f760de7",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f7af9b18-99cf-4679-9a1a-b1143a9ca144",
+          "name": "Cilium Create or update service",
+          "request": {
+            "name": "Cilium Create or update service",
+            "description": {
+              "content": "Creates a new Cilium-managed service or updates an existing one, specifying the frontend VIP and port along with the set of backend endpoints for load balancing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "service",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Numeric service ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<integer>\",\n  \"frontend-address\": {\n    \"ip\": \"<string>\",\n    \"port\": \"<integer>\",\n    \"protocol\": \"<string>\",\n    \"scope\": \"<string>\"\n  },\n  \"backend-addresses\": [\n    {\n      \"ip\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"nodeName\": \"<string>\",\n      \"state\": \"<string>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"ip\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"nodeName\": \"<string>\",\n      \"state\": \"<string>\",\n      \"weight\": \"<integer>\"\n    }\n  ],\n  \"flags\": {\n    \"type\": \"<string>\",\n    \"trafficPolicy\": \"<string>\",\n    \"healthCheckNodePort\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"natPolicy\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b5c4f839-2527-4bbe-aa7f-fc6bfb6fc40d",
+              "name": "Service updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"frontend-address\": {\n    \"ip\": \"string\",\n    \"port\": 1245,\n    \"protocol\": \"TCP\",\n    \"scope\": \"string\"\n  },\n  \"backend-addresses\": [\n    {\n      \"ip\": \"string\",\n      \"port\": 3751,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 8086\n    },\n    {\n      \"ip\": \"string\",\n      \"port\": 5470,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 4426\n    }\n  ],\n  \"flags\": {\n    \"type\": \"string\",\n    \"trafficPolicy\": \"string\",\n    \"healthCheckNodePort\": 6779,\n    \"name\": \"string\",\n    \"namespace\": \"string\",\n    \"natPolicy\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9cf853a4-de7b-49fc-b543-67aa8baef1aa",
+              "name": "Service created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"frontend-address\": {\n    \"ip\": \"string\",\n    \"port\": 1245,\n    \"protocol\": \"TCP\",\n    \"scope\": \"string\"\n  },\n  \"backend-addresses\": [\n    {\n      \"ip\": \"string\",\n      \"port\": 3751,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 8086\n    },\n    {\n      \"ip\": \"string\",\n      \"port\": 5470,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 4426\n    }\n  ],\n  \"flags\": {\n    \"type\": \"string\",\n    \"trafficPolicy\": \"string\",\n    \"healthCheckNodePort\": 6779,\n    \"name\": \"string\",\n    \"namespace\": \"string\",\n    \"natPolicy\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e50e27cb-fa0f-45ad-86cf-f4ff3fe8a4a6",
+              "name": "Invalid service specification",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"frontend-address\": {\n    \"ip\": \"string\",\n    \"port\": 1245,\n    \"protocol\": \"TCP\",\n    \"scope\": \"string\"\n  },\n  \"backend-addresses\": [\n    {\n      \"ip\": \"string\",\n      \"port\": 3751,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 8086\n    },\n    {\n      \"ip\": \"string\",\n      \"port\": 5470,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 4426\n    }\n  ],\n  \"flags\": {\n    \"type\": \"string\",\n    \"trafficPolicy\": \"string\",\n    \"healthCheckNodePort\": 6779,\n    \"name\": \"string\",\n    \"namespace\": \"string\",\n    \"natPolicy\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9297b389-243e-495b-a623-cdced9d213ff",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"frontend-address\": {\n    \"ip\": \"string\",\n    \"port\": 1245,\n    \"protocol\": \"TCP\",\n    \"scope\": \"string\"\n  },\n  \"backend-addresses\": [\n    {\n      \"ip\": \"string\",\n      \"port\": 3751,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 8086\n    },\n    {\n      \"ip\": \"string\",\n      \"port\": 5470,\n      \"nodeName\": \"string\",\n      \"state\": \"string\",\n      \"weight\": 4426\n    }\n  ],\n  \"flags\": {\n    \"type\": \"string\",\n    \"trafficPolicy\": \"string\",\n    \"healthCheckNodePort\": 6779,\n    \"name\": \"string\",\n    \"namespace\": \"string\",\n    \"natPolicy\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e8e10659-3d6f-4f85-96f5-a222e99ab793",
+          "name": "Cilium Delete service",
+          "request": {
+            "name": "Cilium Delete service",
+            "description": {
+              "content": "Removes a Cilium-managed service and all its associated load balancing configuration from the BPF datapath.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "service",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Numeric service ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8d4b571f-f8c8-418a-92fb-d29cf4b0edf0",
+              "name": "Service deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bc29177a-c568-4aab-8a98-2e333aefdc9a",
+              "name": "Service not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "412038c7-30c9-4e51-9a21-bdcac60baebf",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Numeric service ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2eaabd67-4676-469c-878f-83b34116c825",
+    "name": "Cilium BGP Service API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

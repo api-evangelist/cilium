@@ -1,0 +1,446 @@
+{
+  "item": [
+    {
+      "id": "0fb93fb5-c2e5-45b5-9164-d6da088c287c",
+      "name": "BGP",
+      "description": {
+        "content": "BGP control plane peers, routes, and route policies",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f1ff3822-c33a-4441-b14c-f5d98ffefbe0",
+          "name": "Cilium List BGP peers",
+          "request": {
+            "name": "Cilium List BGP peers",
+            "description": {
+              "content": "Returns the status of all BGP peers configured on this Cilium node, including session state, address families negotiated, and routing statistics.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bgp",
+                "peers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7fb3af1a-34ad-40fb-a12d-95dd35948fa3",
+              "name": "BGP peer list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "peers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"local-asn\": 2881,\n    \"peer-asn\": 1153,\n    \"peer-address\": \"string\",\n    \"session-state\": \"established\",\n    \"families\": [\n      {\n        \"afi\": \"string\",\n        \"safi\": \"string\",\n        \"received\": 2970,\n        \"advertised\": 2621\n      },\n      {\n        \"afi\": \"string\",\n        \"safi\": \"string\",\n        \"received\": 3617,\n        \"advertised\": 3170\n      }\n    ],\n    \"timers\": {}\n  },\n  {\n    \"local-asn\": 3064,\n    \"peer-asn\": 6773,\n    \"peer-address\": \"string\",\n    \"session-state\": \"connect\",\n    \"families\": [\n      {\n        \"afi\": \"string\",\n        \"safi\": \"string\",\n        \"received\": 6017,\n        \"advertised\": 5314\n      },\n      {\n        \"afi\": \"string\",\n        \"safi\": \"string\",\n        \"received\": 4625,\n        \"advertised\": 780\n      }\n    ],\n    \"timers\": {}\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef4ca4ac-9c29-4d15-ac7a-872513d32ce1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "peers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5cb609fb-4bb2-4add-9e4d-6c175889b514",
+          "name": "Cilium List BGP routes",
+          "request": {
+            "name": "Cilium List BGP routes",
+            "description": {
+              "content": "Returns the BGP routing information base (RIB) for this Cilium node, including routes learned from peers and locally originated routes for pod CIDRs and services.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bgp",
+                "routes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "table_type",
+                  "value": "<string>",
+                  "description": "BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out)."
+                },
+                {
+                  "disabled": false,
+                  "key": "vrf",
+                  "value": "<string>",
+                  "description": "BGP VRF name."
+                },
+                {
+                  "disabled": false,
+                  "key": "afi",
+                  "value": "<string>",
+                  "description": "Address Family Identifier (ipv4 or ipv6)."
+                },
+                {
+                  "disabled": false,
+                  "key": "safi",
+                  "value": "<string>",
+                  "description": "Subsequent Address Family Identifier (unicast or multicast)."
+                },
+                {
+                  "disabled": false,
+                  "key": "neighbor",
+                  "value": "<string>",
+                  "description": "Filter routes for a specific BGP neighbor address."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc28e182-a40b-43cc-bbef-2d750466df8e",
+              "name": "BGP route table",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "table_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vrf",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "afi",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safi",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "neighbor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"prefix\": \"string\",\n    \"router-id\": \"string\",\n    \"neighbor\": \"string\",\n    \"paths\": [\n      {\n        \"best\": true,\n        \"local-pref\": 9312,\n        \"med\": 2341,\n        \"origin\": \"string\",\n        \"nexthop\": \"string\",\n        \"as-path\": [\n          7007,\n          4344\n        ],\n        \"communities\": {}\n      },\n      {\n        \"best\": false,\n        \"local-pref\": 2425,\n        \"med\": 2332,\n        \"origin\": \"string\",\n        \"nexthop\": \"string\",\n        \"as-path\": [\n          2192,\n          499\n        ],\n        \"communities\": {}\n      }\n    ]\n  },\n  {\n    \"prefix\": \"string\",\n    \"router-id\": \"string\",\n    \"neighbor\": \"string\",\n    \"paths\": [\n      {\n        \"best\": true,\n        \"local-pref\": 4308,\n        \"med\": 9162,\n        \"origin\": \"string\",\n        \"nexthop\": \"string\",\n        \"as-path\": [\n          5935,\n          1472\n        ],\n        \"communities\": {}\n      },\n      {\n        \"best\": true,\n        \"local-pref\": 1082,\n        \"med\": 1524,\n        \"origin\": \"string\",\n        \"nexthop\": \"string\",\n        \"as-path\": [\n          4644,\n          2547\n        ],\n        \"communities\": {}\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0c518cb-26fa-45bf-8fa8-e78e63dfd30e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "table_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vrf",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "afi",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safi",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "neighbor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "603f9da7-955f-4301-9491-870a32357ae2",
+          "name": "Cilium List BGP route policies",
+          "request": {
+            "name": "Cilium List BGP route policies",
+            "description": {
+              "content": "Returns all BGP route policies configured on this node, used to filter and modify routes exchanged with BGP peers based on prefix lists, community strings, and other BGP attributes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bgp",
+                "route-policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "router_asn",
+                  "value": "<long>",
+                  "description": "Filter policies for a specific BGP router ASN."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "04855bd1-c338-4878-9a4e-b0155f890564",
+              "name": "BGP route policy list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "route-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "router_asn",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"type\": \"export\",\n    \"statements\": [\n      {\n        \"name\": \"string\",\n        \"conditions\": {},\n        \"actions\": {}\n      },\n      {\n        \"name\": \"string\",\n        \"conditions\": {},\n        \"actions\": {}\n      }\n    ]\n  },\n  {\n    \"name\": \"string\",\n    \"type\": \"import\",\n    \"statements\": [\n      {\n        \"name\": \"string\",\n        \"conditions\": {},\n        \"actions\": {}\n      },\n      {\n        \"name\": \"string\",\n        \"conditions\": {},\n        \"actions\": {}\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc63fb83-aae7-42ad-915e-043662f0883a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bgp",
+                    "route-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "router_asn",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "765460cd-1643-443a-a4d7-d1519c2861d9",
+    "name": "Cilium BGP API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

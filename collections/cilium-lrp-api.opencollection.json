@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Lrp API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lrp",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List local redirect policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/lrp"
+          },
+          "docs": "Returns all local redirect policies (LRP) configured on this node, which redirect traffic destined for a frontend address to local backend endpoints rather than using the normal load balancer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

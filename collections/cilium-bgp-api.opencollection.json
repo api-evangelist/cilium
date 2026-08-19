@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "BGP",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List BGP peers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/peers"
+          },
+          "docs": "Returns the status of all BGP peers configured on this Cilium node, including session state, address families negotiated, and routing statistics."
+        },
+        {
+          "info": {
+            "name": "Cilium List BGP routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/routes",
+            "params": [
+              {
+                "name": "table_type",
+                "value": "",
+                "type": "query",
+                "description": "BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out)."
+              },
+              {
+                "name": "vrf",
+                "value": "",
+                "type": "query",
+                "description": "BGP VRF name."
+              },
+              {
+                "name": "afi",
+                "value": "",
+                "type": "query",
+                "description": "Address Family Identifier (ipv4 or ipv6)."
+              },
+              {
+                "name": "safi",
+                "value": "",
+                "type": "query",
+                "description": "Subsequent Address Family Identifier (unicast or multicast)."
+              },
+              {
+                "name": "neighbor",
+                "value": "",
+                "type": "query",
+                "description": "Filter routes for a specific BGP neighbor address."
+              }
+            ]
+          },
+          "docs": "Returns the BGP routing information base (RIB) for this Cilium node, including routes learned from peers and locally originated routes for pod CIDRs and services."
+        },
+        {
+          "info": {
+            "name": "Cilium List BGP route policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/bgp/route-policies",
+            "params": [
+              {
+                "name": "router_asn",
+                "value": "",
+                "type": "query",
+                "description": "Filter policies for a specific BGP router ASN."
+              }
+            ]
+          },
+          "docs": "Returns all BGP route policies configured on this node, used to filter and modify routes exchanged with BGP peers based on prefix lists, community strings, and other BGP attributes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

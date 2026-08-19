@@ -1,0 +1,2666 @@
+{
+  "item": [
+    {
+      "id": "a940d8bb-57b4-471e-bab3-5b34f9d417fd",
+      "name": "Endpoint",
+      "description": {
+        "content": "Endpoint lifecycle management, configuration, and status",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0c60a42a-bc0e-4308-be0f-6ead81ff04ae",
+          "name": "Cilium List endpoints",
+          "request": {
+            "name": "Cilium List endpoints",
+            "description": {
+              "content": "Returns a list of all managed endpoints on this Cilium node, including their identities, IP addresses, labels, and policy enforcement status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                },
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42cad820-2647-41a2-ae87-7951a22044b7",
+              "name": "List of endpoints",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 9286,\n    \"status\": {\n      \"identity\": {\n        \"id\": 3627,\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ],\n        \"labelsSHA256\": \"string\"\n      },\n      \"networking\": {\n        \"addressing\": [\n          {\n            \"ipv4\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"ipv6\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"ipv4\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"ipv6\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"node\": \"string\"\n      },\n      \"policy\": {\n        \"allowed\": {},\n        \"denied\": {},\n        \"realized\": {\n          \"allowed-egress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"allowed-ingress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"cidr-policy\": {},\n          \"id\": 2817\n        },\n        \"spec\": {\n          \"allowed-egress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"allowed-ingress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"cidr-policy\": {},\n          \"id\": 411\n        }\n      },\n      \"state\": \"ready\",\n      \"health\": {\n        \"bpf\": \"string\",\n        \"connected\": false,\n        \"overallHealth\": \"string\",\n        \"policy\": \"string\"\n      }\n    },\n    \"spec\": {\n      \"addressing\": {\n        \"ipv4\": \"string\",\n        \"ipv6\": \"string\"\n      },\n      \"containerID\": \"string\",\n      \"containerName\": \"string\",\n      \"k8sNamespace\": \"string\",\n      \"k8sPodName\": \"string\",\n      \"labels\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  },\n  {\n    \"id\": 3927,\n    \"status\": {\n      \"identity\": {\n        \"id\": 733,\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ],\n        \"labelsSHA256\": \"string\"\n      },\n      \"networking\": {\n        \"addressing\": [\n          {\n            \"ipv4\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"ipv6\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"ipv4\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"ipv6\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"node\": \"string\"\n      },\n      \"policy\": {\n        \"allowed\": {},\n        \"denied\": {},\n        \"realized\": {\n          \"allowed-egress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"allowed-ingress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"cidr-policy\": {},\n          \"id\": 7849\n        },\n        \"spec\": {\n          \"allowed-egress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"allowed-ingress-identities\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"cidr-policy\": {},\n          \"id\": 9815\n        }\n      },\n      \"state\": \"disconnected\",\n      \"health\": {\n        \"bpf\": \"string\",\n        \"connected\": false,\n        \"overallHealth\": \"string\",\n        \"policy\": \"string\"\n      }\n    },\n    \"spec\": {\n      \"addressing\": {\n        \"ipv4\": \"string\",\n        \"ipv6\": \"string\"\n      },\n      \"containerID\": \"string\",\n      \"containerName\": \"string\",\n      \"k8sNamespace\": \"string\",\n      \"k8sPodName\": \"string\",\n      \"labels\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6c790a7-2c6f-4da8-8c4b-bd0b0c3d6d8b",
+              "name": "Invalid label format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7b6de92-bb91-4f4d-b84e-77989631ab01",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50b7c731-937a-495d-94b0-65c7ced1455e",
+          "name": "Cilium Delete endpoints by label selector",
+          "request": {
+            "name": "Cilium Delete endpoints by label selector",
+            "description": {
+              "content": "Deletes all endpoints that match the given label selector. Used to clean up endpoints associated with terminated workloads.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                },
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3bf1f412-3361-4fbb-a2dc-9bc1c0992b13",
+              "name": "Endpoints deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"string\",\n  \"containerName\": \"string\",\n  \"k8sNamespace\": \"string\",\n  \"k8sPodName\": \"string\",\n  \"labels\": [\n    \"string\",\n    \"string\"\n  ],\n  \"state\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4ad0aba-0869-49f5-9f82-d35be557ef56",
+              "name": "Invalid label format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9229662-dc17-463c-a477-e981cba36a8b",
+              "name": "No endpoints found matching labels",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f82d37c2-4f20-414f-8afc-246813fcfdd1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "836d220a-9b03-4422-bb04-89cd9e5bf3f4",
+          "name": "Cilium Get endpoint by ID",
+          "request": {
+            "name": "Cilium Get endpoint by ID",
+            "description": {
+              "content": "Returns the full state of a specific endpoint including its identity, IP addressing, label configuration, policy enforcement status, and health information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6fa7d7d7-39a2-4e9c-ac48-d1ad643996db",
+              "name": "Endpoint details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7101,\n  \"status\": {\n    \"identity\": {\n      \"id\": 491,\n      \"labels\": [\n        \"string\",\n        \"string\"\n      ],\n      \"labelsSHA256\": \"string\"\n    },\n    \"networking\": {\n      \"addressing\": [\n        {\n          \"ipv4\": \"string\",\n          \"ipv6\": \"string\"\n        },\n        {\n          \"ipv4\": \"string\",\n          \"ipv6\": \"string\"\n        }\n      ],\n      \"node\": \"string\"\n    },\n    \"policy\": {\n      \"allowed\": {},\n      \"denied\": {},\n      \"realized\": {\n        \"allowed-egress-identities\": [\n          2671,\n          8425\n        ],\n        \"allowed-ingress-identities\": [\n          7095,\n          1293\n        ],\n        \"cidr-policy\": {},\n        \"id\": 625\n      },\n      \"spec\": {\n        \"allowed-egress-identities\": [\n          8579,\n          8552\n        ],\n        \"allowed-ingress-identities\": [\n          8402,\n          1854\n        ],\n        \"cidr-policy\": {},\n        \"id\": 7819\n      }\n    },\n    \"state\": \"regenerating\",\n    \"health\": {\n      \"bpf\": \"string\",\n      \"connected\": true,\n      \"overallHealth\": \"string\",\n      \"policy\": \"string\"\n    }\n  },\n  \"spec\": {\n    \"addressing\": {\n      \"ipv4\": \"string\",\n      \"ipv6\": \"string\"\n    },\n    \"containerID\": \"string\",\n    \"containerName\": \"string\",\n    \"k8sNamespace\": \"string\",\n    \"k8sPodName\": \"string\",\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebc614ea-f85a-48aa-8b01-d10f2acd50fe",
+              "name": "Invalid endpoint ID format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8cf75cd-b18b-41bb-9a13-157f004458d2",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cc6095b1-ac52-411f-8407-40f0980e9abe",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aad73bba-ecaf-46d2-8cd7-21539b7100cd",
+          "name": "Cilium Create or replace endpoint",
+          "request": {
+            "name": "Cilium Create or replace endpoint",
+            "description": {
+              "content": "Creates a new endpoint or replaces an existing one with the provided configuration. Used by container runtimes and CNI plugins to register new workload endpoints with the Cilium agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"<string>\",\n    \"ipv6\": \"<string>\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2fb1f217-9873-45e8-b246-33fe3a0561d7",
+              "name": "Endpoint created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ee03ed9b-d58e-4164-a1e4-fce812af7e09",
+              "name": "Invalid endpoint configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90ac0b0b-f3f6-4e2a-99c4-6298293dc1fe",
+              "name": "Endpoint already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f5f6381-cd9d-4623-9d79-c95ec527dc5d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8183bde-eae6-4085-bff1-824fa7865466",
+          "name": "Cilium Modify endpoint",
+          "request": {
+            "name": "Cilium Modify endpoint",
+            "description": {
+              "content": "Applies partial changes to an existing endpoint configuration, such as updating labels or other mutable properties, without replacing the full endpoint state.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"<string>\",\n    \"ipv6\": \"<string>\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b45f9410-82be-47bb-94c8-2ce553dbcfef",
+              "name": "Endpoint updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aa57f013-cb0b-4697-b350-57c67fc57d38",
+              "name": "Invalid modification request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff0928eb-5043-4c25-acae-a1b85cf6b5be",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "36ea2476-54be-4f9c-a0b9-883f35362426",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addressing\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"containerID\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"k8sNamespace\": \"<string>\",\n  \"k8sPodName\": \"<string>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"state\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90b69c4e-0ac5-4832-ac2e-0bec2fd90e66",
+          "name": "Cilium Delete endpoint",
+          "request": {
+            "name": "Cilium Delete endpoint",
+            "description": {
+              "content": "Removes a managed endpoint from the Cilium agent, cleaning up all associated BPF maps, policy state, and IP allocations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6000ca9a-6e3c-4473-9be6-880e7e8fe991",
+              "name": "Endpoint deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cfba8633-dc95-4889-8e89-e5c184b22d24",
+              "name": "Invalid endpoint ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "932c1dec-42c0-47cb-9a62-95aa9a7d978f",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d2ed5b7b-84cf-47d5-b339-4ff6da6d8396",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3851d5d4-7a52-4b34-838b-f69dd97c11ac",
+          "name": "Cilium Get endpoint configuration",
+          "request": {
+            "name": "Cilium Get endpoint configuration",
+            "description": {
+              "content": "Returns the current configuration of a specific endpoint, including policy enforcement settings and enabled feature flags.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8c451832-7b05-4103-952a-0f89b4fe8bf7",
+              "name": "Endpoint configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"options\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0f96094-73f0-46d7-a9a1-a91323714590",
+              "name": "Invalid endpoint ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c76991e-abf5-4e8f-ba56-5251050577cf",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e06bbac2-d861-44fd-a866-d728b4705805",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b198e09f-1a94-4903-b4aa-09afa676baa5",
+          "name": "Cilium Modify endpoint configuration",
+          "request": {
+            "name": "Cilium Modify endpoint configuration",
+            "description": {
+              "content": "Updates the mutable configuration settings of a specific endpoint, such as policy enforcement mode and per-endpoint feature toggles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f14bf3cc-fc85-4414-8e60-a6efb55aaa12",
+              "name": "Configuration updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "42b861c3-96be-49d8-a920-5dacc89ff979",
+              "name": "Invalid configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5fe0485-36b1-4acc-967c-ab84b84a45c4",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "543b3481-289f-42e2-9351-5b5470e0b719",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28f2f69e-aeb3-4f9b-901b-4407545957c6",
+          "name": "Cilium Get endpoint labels",
+          "request": {
+            "name": "Cilium Get endpoint labels",
+            "description": {
+              "content": "Returns the current set of labels applied to a specific endpoint, including both static and dynamic labels used for identity derivation and policy matching.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "labels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a6d5cde-9b0e-4a03-8137-66ae5c3238fd",
+              "name": "Endpoint labels",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": {\n    \"derived\": [\n      \"string\",\n      \"string\"\n    ],\n    \"disabled\": [\n      \"string\",\n      \"string\"\n    ],\n    \"realized\": {\n      \"user\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"security-relevant\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0213b857-2b79-4799-8993-15a9a14b436e",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd3c660e-a5a5-4aa0-b85f-c47d1f74284f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ea3f34a6-ad2a-47f3-85ed-4477f7e5e2de",
+          "name": "Cilium Modify endpoint labels",
+          "request": {
+            "name": "Cilium Modify endpoint labels",
+            "description": {
+              "content": "Updates the labels associated with a specific endpoint, which may trigger identity recalculation and policy re-evaluation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "labels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "746cff63-cf57-400b-8104-10d7211ec0d8",
+              "name": "Labels updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2036a8e5-66e6-458a-8b9f-e537702ef5fc",
+              "name": "Invalid label format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ad8e3bc-d19e-4ac5-86b0-cf84ec5c9877",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8461845d-8ac1-4e31-938c-177e3b423a7d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fec868d5-dfbd-49a6-9edd-c9e72cba8a3e",
+          "name": "Cilium Get endpoint status log",
+          "request": {
+            "name": "Cilium Get endpoint status log",
+            "description": {
+              "content": "Returns the historical status log of a specific endpoint, recording state transitions, policy changes, and other significant events in the endpoint lifecycle.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "log"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5d08dc3a-7588-4408-b2c5-dab48d990a03",
+              "name": "Endpoint status log",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"code\": \"failed\",\n    \"message\": \"string\",\n    \"state\": \"string\",\n    \"timestamp\": \"string\"\n  },\n  {\n    \"code\": \"ok\",\n    \"message\": \"string\",\n    \"state\": \"string\",\n    \"timestamp\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0fba607b-9fb4-4814-88f5-b1023769de55",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8f85a7a0-8031-4955-9c5a-44a8b303e142",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64d353db-ea20-42d8-b74f-c9cde392fed5",
+          "name": "Cilium Get endpoint health",
+          "request": {
+            "name": "Cilium Get endpoint health",
+            "description": {
+              "content": "Returns the health status of a specific endpoint, including BPF program status, policy enforcement state, and connectivity checks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoint",
+                ":id",
+                "healthz"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7d30cd20-6dd1-47d5-a107-fb7b9cc6fec0",
+              "name": "Endpoint health status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bpf\": \"string\",\n  \"connected\": true,\n  \"overallHealth\": \"string\",\n  \"policy\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30e16c5f-c4e1-4d4b-ba75-63a949466199",
+              "name": "Invalid endpoint ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96928099-d039-443b-b76b-29b0d723d4ad",
+              "name": "Endpoint not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "13f1d855-59d5-4acf-936d-a4be52ec7193",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoint",
+                    ":id",
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "02003ecc-4716-4ba4-96d7-73149d5ab0ca",
+    "name": "Cilium BGP Endpoint API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP IPAM API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "IPAM",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Allocate IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost/v1/ipam",
+            "params": [
+              {
+                "name": "family",
+                "value": "",
+                "type": "query",
+                "description": "IP address family to allocate (ipv4 or ipv6)."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              },
+              {
+                "name": "expiration",
+                "value": "",
+                "type": "query",
+                "description": "Whether the allocation should expire if not confirmed."
+              }
+            ]
+          },
+          "docs": "Allocates a new IP address from the configured IPAM pool for assignment to a new endpoint. Returns the allocated IP address and relevant routing information."
+        },
+        {
+          "info": {
+            "name": "Cilium Allocate specific IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost/v1/ipam/:ip",
+            "params": [
+              {
+                "name": "ip",
+                "value": "",
+                "type": "path",
+                "description": "IP address to allocate or release."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              },
+              {
+                "name": "expiration",
+                "value": "",
+                "type": "query",
+                "description": "Whether the allocation should expire if not confirmed."
+              }
+            ]
+          },
+          "docs": "Allocates a specific IP address in the IPAM pool, reserving it for assignment to an endpoint. Fails if the IP is already allocated or out of the configured pool range."
+        },
+        {
+          "info": {
+            "name": "Cilium Release IP address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/ipam/:ip",
+            "params": [
+              {
+                "name": "ip",
+                "value": "",
+                "type": "path",
+                "description": "IP address to allocate or release."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Owner identifier for the IP allocation."
+              }
+            ]
+          },
+          "docs": "Returns a previously allocated IP address back to the IPAM pool, making it available for future allocations."
+        },
+        {
+          "info": {
+            "name": "Cilium List IP addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/ip"
+          },
+          "docs": "Returns information about all IP addresses known to the Cilium agent, including their allocation state, associated endpoint, and routing information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

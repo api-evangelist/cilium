@@ -1,0 +1,785 @@
+{
+  "item": [
+    {
+      "id": "6c4693ff-3506-409c-8ffd-d32247799ba3",
+      "name": "IPAM",
+      "description": {
+        "content": "IP address management and allocation",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "614ceac4-b0de-4d15-a673-1a05f5749ecb",
+          "name": "Cilium Allocate IP address",
+          "request": {
+            "name": "Cilium Allocate IP address",
+            "description": {
+              "content": "Allocates a new IP address from the configured IPAM pool for assignment to a new endpoint. Returns the allocated IP address and relevant routing information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ipam"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "family",
+                  "value": "<string>",
+                  "description": "IP address family to allocate (ipv4 or ipv6)."
+                },
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Owner identifier for the IP allocation."
+                },
+                {
+                  "disabled": false,
+                  "key": "expiration",
+                  "value": "<boolean>",
+                  "description": "Whether the allocation should expire if not confirmed."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cec9b4ec-3108-4dff-b2d6-a4b833419033",
+              "name": "IP address allocated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "family",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": {\n    \"ipv4\": \"string\",\n    \"ipv6\": \"string\"\n  },\n  \"host-addressing\": {\n    \"ipv4\": {\n      \"address-type\": \"string\",\n      \"alloc-range\": \"string\",\n      \"enabled\": true,\n      \"ip\": \"string\"\n    },\n    \"ipv6\": {\n      \"address-type\": \"string\",\n      \"alloc-range\": \"string\",\n      \"enabled\": true,\n      \"ip\": \"string\"\n    }\n  },\n  \"ipv4\": {\n    \"ip\": \"string\",\n    \"gateway\": \"string\",\n    \"interface-number\": 1140,\n    \"masquerade-enabled\": true\n  },\n  \"ipv6\": {\n    \"ip\": \"string\",\n    \"gateway\": \"string\",\n    \"interface-number\": 4778,\n    \"masquerade-enabled\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec56c5d1-8149-4a07-b31d-019251409854",
+              "name": "IPAM provider unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "family",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c714ccb1-77ae-49b8-af37-fa52bc4c71ee",
+          "name": "Cilium Allocate specific IP address",
+          "request": {
+            "name": "Cilium Allocate specific IP address",
+            "description": {
+              "content": "Allocates a specific IP address in the IPAM pool, reserving it for assignment to an endpoint. Fails if the IP is already allocated or out of the configured pool range.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ipam",
+                ":ip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Owner identifier for the IP allocation."
+                },
+                {
+                  "disabled": false,
+                  "key": "expiration",
+                  "value": "<boolean>",
+                  "description": "Whether the allocation should expire if not confirmed."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ip",
+                  "description": "(Required) IP address to allocate or release."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3507da86-2821-4f25-ac37-15e1be91ee68",
+              "name": "IP address allocated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b89e42c-3064-4bf5-8dd4-7dcda396ed13",
+              "name": "Invalid IP address",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dbf17a48-cd2e-4563-ac26-314567497275",
+              "name": "IP address already allocated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ef0ac8e-f8e1-4e7d-8332-5f9b043aef31",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiration",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5ac8adb-ea12-4ca3-886f-65e112a07664",
+          "name": "Cilium Release IP address",
+          "request": {
+            "name": "Cilium Release IP address",
+            "description": {
+              "content": "Returns a previously allocated IP address back to the IPAM pool, making it available for future allocations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ipam",
+                ":ip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Owner identifier for the IP allocation."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ip",
+                  "description": "(Required) IP address to allocate or release."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1a289174-66ec-4437-b259-e95281f62710",
+              "name": "IP address released",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "85e9e10c-76b8-4724-96d6-404e2e078f8d",
+              "name": "Invalid IP address",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b299bfa-d0b8-4048-811d-578ef9665038",
+              "name": "IP address not found or not allocated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "abc7f1ee-5966-4b3e-9a5b-d9544e3cc761",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ipam",
+                    ":ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ip",
+                      "description": "(Required) IP address to allocate or release."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6343f329-5fc7-4b6a-8e9a-a625b16e0aff",
+          "name": "Cilium List IP addresses",
+          "request": {
+            "name": "Cilium List IP addresses",
+            "description": {
+              "content": "Returns information about all IP addresses known to the Cilium agent, including their allocation state, associated endpoint, and routing information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "685f0032-986e-42dc-b6f7-29486d109c9d",
+              "name": "IP address list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"cidr\": \"string\",\n    \"identity\": 596,\n    \"owned\": true\n  },\n  {\n    \"cidr\": \"string\",\n    \"identity\": 3234,\n    \"owned\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ae4000e-833e-4ffc-871f-2c5064dbe6bd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2588ffd5-5365-4e07-9015-ae39eab7fddc",
+    "name": "Cilium BGP IPAM API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

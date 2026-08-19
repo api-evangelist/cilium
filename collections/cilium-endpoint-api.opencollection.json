@@ -1,0 +1,262 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Endpoint API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Endpoint",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium List endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Returns a list of all managed endpoints on this Cilium node, including their identities, IP addresses, labels, and policy enforcement status."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete endpoints by label selector",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/endpoint",
+            "params": [
+              {
+                "name": "labels",
+                "value": "",
+                "type": "query",
+                "description": "Filter by label selector (key=value pairs)."
+              }
+            ]
+          },
+          "docs": "Deletes all endpoints that match the given label selector. Used to clean up endpoints associated with terminated workloads."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the full state of a specific endpoint including its identity, IP addressing, label configuration, policy enforcement status, and health information."
+        },
+        {
+          "info": {
+            "name": "Cilium Create or replace endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new endpoint or replaces an existing one with the provided configuration. Used by container runtimes and CNI plugins to register new workload endpoints with the Cilium agent."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies partial changes to an existing endpoint configuration, such as updating labels or other mutable properties, without replacing the full endpoint state."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/endpoint/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Removes a managed endpoint from the Cilium agent, cleaning up all associated BPF maps, policy state, and IP allocations."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/config",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the current configuration of a specific endpoint, including policy enforcement settings and enabled feature flags."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id/config",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the mutable configuration settings of a specific endpoint, such as policy enforcement mode and per-endpoint feature toggles."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/labels",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the current set of labels applied to a specific endpoint, including both static and dynamic labels used for identity derivation and policy matching."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify endpoint labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/endpoint/:id/labels",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the labels associated with a specific endpoint, which may trigger identity recalculation and policy re-evaluation."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint status log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/log",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the historical status log of a specific endpoint, recording state transitions, policy changes, and other significant events in the endpoint lifecycle."
+        },
+        {
+          "info": {
+            "name": "Cilium Get endpoint health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/endpoint/:id/healthz",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Endpoint identifier. Can be a numeric ID, container ID, Docker endpoint ID, or container name prefixed with the appropriate scheme."
+              }
+            ]
+          },
+          "docs": "Returns the health status of a specific endpoint, including BPF program status, policy enforcement state, and connectivity checks."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

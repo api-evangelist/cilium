@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Prefilter API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Prefilter",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Get prefilter configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/prefilter"
+          },
+          "docs": "Returns the current XDP prefilter configuration, including CIDR ranges that are configured for early packet dropping at the network driver level before reaching the Cilium BPF programs."
+        },
+        {
+          "info": {
+            "name": "Cilium Update prefilter configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/prefilter",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the XDP prefilter CIDR list, adding or removing network ranges from the prefilter set for early traffic dropping."
+        },
+        {
+          "info": {
+            "name": "Cilium Delete prefilter entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost/v1/prefilter",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes specific CIDR entries from the XDP prefilter configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

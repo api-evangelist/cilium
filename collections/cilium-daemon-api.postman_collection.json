@@ -1,0 +1,873 @@
+{
+  "item": [
+    {
+      "id": "3fbc70af-16b5-4db5-aba8-9d5f5c5ace4d",
+      "name": "Daemon",
+      "description": {
+        "content": "Cilium daemon configuration, health, and cluster management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "40125e09-e608-480a-b1c6-8b77237de4d6",
+          "name": "Cilium Get daemon health status",
+          "request": {
+            "name": "Cilium Get daemon health status",
+            "description": {
+              "content": "Returns the overall health status of the Cilium daemon including connectivity to the kvstore, container runtime, Kubernetes API server, and the status of each configured subsystem.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "healthz"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "brief",
+                  "value": "<boolean>",
+                  "description": "Return brief response with reduced detail."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4ead7daa-58db-403c-b251-a624e7a86d90",
+              "name": "Daemon health status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "brief",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cilium\": {\n    \"state\": \"Disabled\",\n    \"msg\": \"string\"\n  },\n  \"cluster\": {\n    \"self\": \"string\",\n    \"nodes\": {\n      \"key_0\": {\n        \"name\": \"string\",\n        \"primaryAddress\": {\n          \"ip\": \"string\",\n          \"allocationCIDR\": \"string\"\n        },\n        \"healthEndpointAddress\": {\n          \"ip\": \"string\",\n          \"allocationCIDR\": \"string\"\n        }\n      },\n      \"key_1\": {\n        \"name\": \"string\",\n        \"primaryAddress\": {\n          \"ip\": \"string\",\n          \"allocationCIDR\": \"string\"\n        },\n        \"healthEndpointAddress\": {\n          \"ip\": \"string\",\n          \"allocationCIDR\": \"string\"\n        }\n      }\n    }\n  },\n  \"container-runtime\": {\n    \"state\": \"Disabled\",\n    \"msg\": \"string\"\n  },\n  \"controllers\": {\n    \"key_0\": {\n      \"name\": \"string\",\n      \"status\": {\n        \"consecutiveFailureCount\": 6303,\n        \"failureCount\": 5793,\n        \"lastFailureTimestamp\": \"2005-07-29T18:40:20.424Z\",\n        \"lastSuccessTimestamp\": \"2018-03-30T11:07:36.137Z\",\n        \"successCount\": 7377\n      }\n    },\n    \"key_1\": {\n      \"name\": \"string\",\n      \"status\": {\n        \"consecutiveFailureCount\": 5666,\n        \"failureCount\": 6621,\n        \"lastFailureTimestamp\": \"1954-04-22T07:23:02.996Z\",\n        \"lastSuccessTimestamp\": \"1949-08-03T00:28:12.141Z\",\n        \"successCount\": 5924\n      }\n    },\n    \"key_2\": {\n      \"name\": \"string\",\n      \"status\": {\n        \"consecutiveFailureCount\": 2475,\n        \"failureCount\": 6953,\n        \"lastFailureTimestamp\": \"1992-01-02T19:03:38.109Z\",\n        \"lastSuccessTimestamp\": \"1961-11-17T20:09:34.946Z\",\n        \"successCount\": 1060\n      }\n    },\n    \"key_3\": {\n      \"name\": \"string\",\n      \"status\": {\n        \"consecutiveFailureCount\": 8682,\n        \"failureCount\": 9248,\n        \"lastFailureTimestamp\": \"1976-12-06T09:49:56.956Z\",\n        \"lastSuccessTimestamp\": \"2001-06-18T08:04:36.979Z\",\n        \"successCount\": 5915\n      }\n    }\n  },\n  \"ipam\": {\n    \"ipv4\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ipv6\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"kube-proxy-replacement\": {\n    \"mode\": \"string\"\n  },\n  \"kubernetes\": {\n    \"state\": \"string\",\n    \"msg\": \"string\",\n    \"k8s-api-versions\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"kvstore\": {\n    \"state\": \"Disabled\",\n    \"msg\": \"string\"\n  },\n  \"nodeMonitor\": {\n    \"cpus\": 1778,\n    \"lost\": 5777,\n    \"unknown\": 9804\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb47b78e-2cdb-437c-a6e1-73ca38fabaae",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "healthz"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "brief",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee58d8bc-dedf-4d1a-a9b5-40fd6bd8b248",
+          "name": "Cilium Get daemon configuration",
+          "request": {
+            "name": "Cilium Get daemon configuration",
+            "description": {
+              "content": "Returns the current runtime configuration of the Cilium daemon, including mutable and immutable settings such as policy enforcement mode, enabled features, and address pool information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5949b4e1-632c-4059-8a6c-53157185e515",
+              "name": "Daemon configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spec\": {\n    \"options\": {\n      \"key_0\": \"string\"\n    },\n    \"policyEnforcement\": \"always\"\n  },\n  \"status\": {\n    \"immutable\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"realized\": {\n      \"options\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"policyEnforcement\": \"always\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "702479c1-8f2a-40e9-9e15-2e7802d7f22a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ef45491f-51ea-4473-8626-29b391f680ab",
+          "name": "Cilium Modify daemon configuration",
+          "request": {
+            "name": "Cilium Modify daemon configuration",
+            "description": {
+              "content": "Modifies the mutable runtime configuration of the Cilium daemon. Supports updating policy enforcement mode and feature toggles without restarting the agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"policyEnforcement\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1c364505-6ac7-4367-978d-903f50ecf972",
+              "name": "Configuration updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"policyEnforcement\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b9157759-35b2-44ab-b757-09d6056c8bb6",
+              "name": "Invalid configuration parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"policyEnforcement\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb5ff72d-e8f7-4304-b7cc-ab79ab9d7dda",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"options\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"policyEnforcement\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9bb583fc-7ec4-4a10-88ad-adea12ddc8f6",
+          "name": "Cilium List cluster nodes",
+          "request": {
+            "name": "Cilium List cluster nodes",
+            "description": {
+              "content": "Returns information about all nodes in the Cilium cluster, including their addresses, health status, and connectivity information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cluster",
+                "nodes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "client-id",
+                  "value": "<long>",
+                  "description": "Unique client ID for long-polling. Returns only changes since the last response to this client."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4de789d2-77d0-43c5-b4a4-e7ea5c070106",
+              "name": "Cluster node list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client-id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"self\": \"string\",\n  \"nodes\": [\n    {\n      \"name\": \"string\",\n      \"primaryAddress\": {\n        \"ip\": \"string\",\n        \"allocationCIDR\": \"string\"\n      },\n      \"health-endpoint-address\": {\n        \"ip\": \"string\",\n        \"allocationCIDR\": \"string\"\n      },\n      \"encryption\": {}\n    },\n    {\n      \"name\": \"string\",\n      \"primaryAddress\": {\n        \"ip\": \"string\",\n        \"allocationCIDR\": \"string\"\n      },\n      \"health-endpoint-address\": {\n        \"ip\": \"string\",\n        \"allocationCIDR\": \"string\"\n      },\n      \"encryption\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65edd775-fe53-4a30-bf1e-75ed57b1fc8c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client-id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3374688-b821-4037-894a-e9fa55fcd959",
+          "name": "Cilium Get debugging information",
+          "request": {
+            "name": "Cilium Get debugging information",
+            "description": {
+              "content": "Returns comprehensive debugging information about the Cilium daemon, including BPF map state, policy state, endpoint information, and environment details useful for troubleshooting.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "debuginfo"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "393cfb2d-eee2-4e37-90bd-2848db2a7ded",
+              "name": "Debug information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "debuginfo"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cilium-version\": \"string\",\n  \"kernel-version\": \"string\",\n  \"policy-information\": {},\n  \"endpoint-list\": [\n    {\n      \"id\": 3634,\n      \"status\": {\n        \"identity\": {\n          \"id\": 3901,\n          \"labels\": [\n            \"string\",\n            \"string\"\n          ],\n          \"labelsSHA256\": \"string\"\n        },\n        \"networking\": {\n          \"addressing\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"node\": \"string\"\n        },\n        \"policy\": {\n          \"allowed\": {},\n          \"denied\": {},\n          \"realized\": {\n            \"allowed-egress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowed-ingress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cidr-policy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"spec\": {\n            \"allowed-egress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowed-ingress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cidr-policy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"state\": \"waiting-for-identity\",\n        \"health\": {\n          \"bpf\": \"string\",\n          \"connected\": true,\n          \"overallHealth\": \"string\",\n          \"policy\": \"string\"\n        }\n      },\n      \"spec\": {\n        \"addressing\": {\n          \"ipv4\": \"string\",\n          \"ipv6\": \"string\"\n        },\n        \"containerID\": \"string\",\n        \"containerName\": \"string\",\n        \"k8sNamespace\": \"string\",\n        \"k8sPodName\": \"string\",\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    },\n    {\n      \"id\": 5288,\n      \"status\": {\n        \"identity\": {\n          \"id\": 3555,\n          \"labels\": [\n            \"string\",\n            \"string\"\n          ],\n          \"labelsSHA256\": \"string\"\n        },\n        \"networking\": {\n          \"addressing\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"node\": \"string\"\n        },\n        \"policy\": {\n          \"allowed\": {},\n          \"denied\": {},\n          \"realized\": {\n            \"allowed-egress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowed-ingress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cidr-policy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"spec\": {\n            \"allowed-egress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"allowed-ingress-identities\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cidr-policy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"state\": \"regenerating\",\n        \"health\": {\n          \"bpf\": \"string\",\n          \"connected\": false,\n          \"overallHealth\": \"string\",\n          \"policy\": \"string\"\n        }\n      },\n      \"spec\": {\n        \"addressing\": {\n          \"ipv4\": \"string\",\n          \"ipv6\": \"string\"\n        },\n        \"containerID\": \"string\",\n        \"containerName\": \"string\",\n        \"k8sNamespace\": \"string\",\n        \"k8sPodName\": \"string\",\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5a28a4c-0236-4968-8c6b-0b5b494c4511",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "debuginfo"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51aba051-dde7-4ea6-b253-54c92ba88a9e",
+          "name": "Cilium List BPF maps",
+          "request": {
+            "name": "Cilium List BPF maps",
+            "description": {
+              "content": "Returns a list of all open BPF maps used by the Cilium datapath, including their names, types, key/value sizes, and current entry counts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "map"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e081d7c7-51cf-4f00-8d9a-01718a30eb03",
+              "name": "BPF map list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "map"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"path\": \"string\",\n    \"cache\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\",\n        \"desiredAction\": \"string\"\n      },\n      {\n        \"key\": \"string\",\n        \"value\": \"string\",\n        \"desiredAction\": \"string\"\n      }\n    ]\n  },\n  {\n    \"path\": \"string\",\n    \"cache\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\",\n        \"desiredAction\": \"string\"\n      },\n      {\n        \"key\": \"string\",\n        \"value\": \"string\",\n        \"desiredAction\": \"string\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba6d5740-da84-4433-b19e-9acdfe7facc8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "map"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9766c0ae-1dc6-4306-9d63-375ec0561ea9",
+          "name": "Cilium Get node IDs",
+          "request": {
+            "name": "Cilium Get node IDs",
+            "description": {
+              "content": "Returns the mapping of node names to their allocated numeric node IDs used in the BPF datapath for traffic identification and policy enforcement.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "node",
+                "ids"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "75044891-258c-48f4-a059-b70813228c76",
+              "name": "Node ID mappings",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "node",
+                    "ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 683,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cidr\": \"string\"\n  },\n  {\n    \"id\": 6499,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cidr\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd9a05f8-c531-4ad2-aa36-b7e3ad9fe6cb",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "node",
+                    "ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c0d56b90-9b9a-486f-8d23-03ae83090396",
+    "name": "Cilium BGP Daemon API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}

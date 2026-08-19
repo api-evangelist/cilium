@@ -1,0 +1,115 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cilium BGP Daemon API",
+    "version": "v1beta1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Daemon",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cilium Get daemon health status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/healthz",
+            "params": [
+              {
+                "name": "brief",
+                "value": "",
+                "type": "query",
+                "description": "Return brief response with reduced detail."
+              }
+            ]
+          },
+          "docs": "Returns the overall health status of the Cilium daemon including connectivity to the kvstore, container runtime, Kubernetes API server, and the status of each configured subsystem."
+        },
+        {
+          "info": {
+            "name": "Cilium Get daemon configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/config"
+          },
+          "docs": "Returns the current runtime configuration of the Cilium daemon, including mutable and immutable settings such as policy enforcement mode, enabled features, and address pool information."
+        },
+        {
+          "info": {
+            "name": "Cilium Modify daemon configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost/v1/config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies the mutable runtime configuration of the Cilium daemon. Supports updating policy enforcement mode and feature toggles without restarting the agent."
+        },
+        {
+          "info": {
+            "name": "Cilium List cluster nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/cluster/nodes",
+            "params": [
+              {
+                "name": "client-id",
+                "value": "",
+                "type": "query",
+                "description": "Unique client ID for long-polling. Returns only changes since the last response to this client."
+              }
+            ]
+          },
+          "docs": "Returns information about all nodes in the Cilium cluster, including their addresses, health status, and connectivity information."
+        },
+        {
+          "info": {
+            "name": "Cilium Get debugging information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/debuginfo"
+          },
+          "docs": "Returns comprehensive debugging information about the Cilium daemon, including BPF map state, policy state, endpoint information, and environment details useful for troubleshooting."
+        },
+        {
+          "info": {
+            "name": "Cilium List BPF maps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/map"
+          },
+          "docs": "Returns a list of all open BPF maps used by the Cilium datapath, including their names, types, key/value sizes, and current entry counts."
+        },
+        {
+          "info": {
+            "name": "Cilium Get node IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost/v1/node/ids"
+          },
+          "docs": "Returns the mapping of node names to their allocated numeric node IDs used in the BPF datapath for traffic identification and policy enforcement."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

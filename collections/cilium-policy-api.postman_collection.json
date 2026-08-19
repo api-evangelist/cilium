@@ -1,0 +1,1148 @@
+{
+  "item": [
+    {
+      "id": "69c93c73-ec8a-455f-ba34-42aaa5d9c78f",
+      "name": "Policy",
+      "description": {
+        "content": "Network policy, security identities, and FQDN/DNS policy",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0b502080-6262-4b6d-bab9-639c4f91efae",
+          "name": "Cilium List security identities",
+          "request": {
+            "name": "Cilium List security identities",
+            "description": {
+              "content": "Returns a list of all security identities known to the Cilium agent, each consisting of a numeric ID and the associated label set used to derive that identity for policy enforcement.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "identity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                },
+                {
+                  "disabled": false,
+                  "key": "labels",
+                  "value": "<string>",
+                  "description": "Filter by label selector (key=value pairs)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "77bb1439-75d8-4238-bec5-2b1875a1f898",
+              "name": "List of identities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1446,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"labelsSHA256\": \"string\"\n  },\n  {\n    \"id\": 4661,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"labelsSHA256\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03da43b3-eb3c-4955-838c-929182c5f3b6",
+              "name": "Invalid label format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "426a6d87-540a-4933-ad0a-3ddba4f5cc01",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "labels",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed89c895-a992-491a-ac18-20889206fc12",
+          "name": "Cilium Get identity by ID",
+          "request": {
+            "name": "Cilium Get identity by ID",
+            "description": {
+              "content": "Returns the security identity corresponding to the given numeric identity ID, including its associated label set.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "identity",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Numeric security identity ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc3b6b37-4499-4d34-ae03-51ba828a9d33",
+              "name": "Identity details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Numeric security identity ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 655,\n  \"labels\": [\n    \"string\",\n    \"string\"\n  ],\n  \"labelsSHA256\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "43575aac-bed2-491e-b191-a2ae285c354d",
+              "name": "Invalid identity ID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Numeric security identity ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04c517c2-8716-4a1a-9271-d7fca5ff23ac",
+              "name": "Identity not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Numeric security identity ID."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d9e01682-9c37-4f1b-8685-0ef0bdd32203",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Numeric security identity ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db1f9b8a-c33f-44be-b822-7c9f73d693ef",
+          "name": "Cilium List local endpoint identities",
+          "request": {
+            "name": "Cilium List local endpoint identities",
+            "description": {
+              "content": "Returns the set of numeric security identities that are currently in use by local endpoints managed by this Cilium agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "identity",
+                "endpoints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5937f433-3c96-4767-9ae7-f102a136d984",
+              "name": "Local endpoint identity list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "endpoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1446,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"labelsSHA256\": \"string\"\n  },\n  {\n    \"id\": 4661,\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"labelsSHA256\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba41d4ab-da42-4524-865d-72db2eaa5e1d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "endpoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe1ee84a-c1eb-4c14-9256-1b6ed0a748ce",
+          "name": "Cilium Get policy selectors",
+          "request": {
+            "name": "Cilium Get policy selectors",
+            "description": {
+              "content": "Returns all policy selectors and the set of security identities that each selector currently matches, useful for debugging policy enforcement.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "policy",
+                "selectors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "004dff18-5b59-418e-aa61-39d63106d627",
+              "name": "Policy selector list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "selectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"selector\": \"string\",\n    \"users\": 6569,\n    \"identities\": [\n      2875,\n      6235\n    ]\n  },\n  {\n    \"selector\": \"string\",\n    \"users\": 2581,\n    \"identities\": [\n      8597,\n      3623\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16ef09b1-4700-4377-a504-89f88133edd7",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    "selectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97b39f84-19fa-447a-95ee-f71e221cfe67",
+          "name": "Cilium Get FQDN DNS cache",
+          "request": {
+            "name": "Cilium Get FQDN DNS cache",
+            "description": {
+              "content": "Returns the current DNS lookup cache used by Cilium for FQDN-based network policy enforcement, including resolved IP addresses and TTL information for each DNS name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fqdn",
+                "cache"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "matchpattern",
+                  "value": "<string>",
+                  "description": "FQDN name match pattern (shell-style glob)."
+                },
+                {
+                  "disabled": false,
+                  "key": "cidr",
+                  "value": "<string>",
+                  "description": "Filter by CIDR network range."
+                },
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "Filter by DNS entry source (e.g., dns, connection)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "44a675dd-4e26-4d4e-91aa-c346aa9295a8",
+              "name": "FQDN cache entries",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cidr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"fqdn\": \"string\",\n    \"ips\": [\n      \"string\",\n      \"string\"\n    ],\n    \"lookupTime\": \"2022-05-20T05:56:16.645Z\",\n    \"ttl\": 4794,\n    \"expirationTime\": \"1961-06-19T11:43:50.980Z\"\n  },\n  {\n    \"fqdn\": \"string\",\n    \"ips\": [\n      \"string\",\n      \"string\"\n    ],\n    \"lookupTime\": \"1957-09-03T23:42:24.145Z\",\n    \"ttl\": 2171,\n    \"expirationTime\": \"1999-05-28T03:13:45.754Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c478d5d0-a77f-4dab-a306-03bd834d3d7e",
+              "name": "Invalid filter parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cidr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9a9b441-4442-4161-a717-9929336118dc",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cidr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3666cac5-1d88-48fc-96c3-46aadb29479c",
+          "name": "Cilium Clear FQDN DNS cache",
+          "request": {
+            "name": "Cilium Clear FQDN DNS cache",
+            "description": {
+              "content": "Removes entries from the FQDN DNS cache. Can delete all entries or filter by pattern. This forces re-resolution of DNS names on next policy evaluation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fqdn",
+                "cache"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "matchpattern",
+                  "value": "<string>",
+                  "description": "FQDN name match pattern (shell-style glob)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "caaa708a-f162-4cd7-81e4-46478cea791c",
+              "name": "Cache entries deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e24d231d-5065-431b-90e6-0aa907f1cdec",
+              "name": "Invalid filter pattern",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c60b6fb-636a-4c15-a8c5-42f4cac89427",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "cache"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchpattern",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1513a69-27e7-4da6-8b6d-913e1e794ccb",
+          "name": "Cilium Get FQDN selector names",
+          "request": {
+            "name": "Cilium Get FQDN selector names",
+            "description": {
+              "content": "Returns all DNS names currently tracked by Cilium FQDN selectors, including the selectors that reference each name and the current set of IP addresses associated with each name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fqdn",
+                "names"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aa6b2c5b-1aff-4c63-b4a7-04c7bd1fb0f5",
+              "name": "FQDN name list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "names"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"FQDNs\": [\n    {\n      \"fqdn\": \"string\",\n      \"ips\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    {\n      \"fqdn\": \"string\",\n      \"ips\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e802463-de14-4fde-b1ac-3ce0cb3b2746",
+              "name": "Request error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "names"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71ca1982-3712-4a7c-928f-19bf0d2440d1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fqdn",
+                    "names"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b411dd3b-d49f-43b7-8e64-ee0597fcb95b",
+    "name": "Cilium BGP Policy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.\n\nContact Support:\n Name: Cilium Community",
+      "type": "text/plain"
+    }
+  }
+}
