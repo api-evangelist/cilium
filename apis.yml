@@ -2,6 +2,12 @@ aid: cilium
 url: https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml
 name: Cilium
 tags:
+  - Cloud-Native
+  - eBPF
+  - Kubernetes
+  - Networking
+  - Security
+tags_raw:
   - Cloud Native
   - eBPF
   - Kubernetes
@@ -141,7 +147,8 @@ apis:
   description: Endpoint lifecycle management, configuration, and status
   humanURL: https://docs.cilium.io/en/stable/api/
   baseURL: https://localhost/v1
-  tags:
+  tags: []
+  tags_raw:
   - Endpoint
   properties:
   - type: OpenAPI
