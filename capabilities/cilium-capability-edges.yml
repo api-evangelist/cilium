@@ -1,0 +1,62 @@
+slug: cilium
+provider: Cilium
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: IPAM
+  spec_file: cilium-ipam-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.9
+  evidence: POST /ipam allocateIPAddress Cilium Allocate IP address
+  reason: IP address allocation and release is core network infrastructure management.
+- tag: BGP
+  spec_file: cilium-bgp-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: Cilium List BGP peers / Cilium List BGP routes / Cilium List BGP route policies
+  reason: BGP peering and routing inspection for cluster networking is network infrastructure management
+    — IT Infrastructure Management (compute, storage, network, cloud).
+- tag: Endpoint
+  spec_file: cilium-endpoint-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: Cilium List endpoints / Cilium Create or replace endpoint / Cilium Get endpoint health
+  reason: '''Endpoint'' here is a Cilium network workload endpoint (labels, networking, policy status),
+    i.e. container network infrastructure objects — IT Infrastructure Management, not customer endpoints
+    or security endpoint protection.'
+- tag: Daemon
+  spec_file: cilium-daemon-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: Cilium Get daemon health status / Cilium Get daemon configuration / Cilium List cluster nodes
+  reason: Agent health, configuration and node listing are day-to-day operational monitoring/administration
+    of infrastructure components, fitting IT Operations Management; could equally be infrastructure, hence
+    moderate confidence.
+- tag: Lrp
+  spec_file: cilium-lrp-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /lrp listLocalRedirectPolicies Cilium List local redirect policies
+  reason: Local redirect policies are network traffic-steering configuration in the datapath; single read-only
+    operation so evidence is thin but clearly network infrastructure.
