@@ -44,7 +44,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cilium.png
 access: 3rd-Party
 created: '2026-03-16'
 modified: '2026-05-19'
-position: Consumer
+position: Consuming
 description: >-
   Cilium is an open source, cloud native solution for providing, securing, and observing network connectivity between
   workloads, fueled by the revolutionary kernel technology eBPF. Cilium provides network security, load balancing, and
