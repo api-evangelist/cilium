@@ -253,6 +253,8 @@ apis:
   humanURL: https://docs.cilium.io/en/stable/api/
   baseURL: https://localhost/v1
   tags:
+  - Services
+  tags_raw:
   - Service
   properties:
   - type: OpenAPI
