@@ -1,6 +1,9 @@
 aid: cilium
 url: https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml
 name: Cilium
+x-docs-platform: readthedocs
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-21
 tags:
   - Cloud-Native
   - eBPF
