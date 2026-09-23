@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cilium BGP IPAM API
+  title: Cilium IPAM API
   description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
   version: v1beta1
   contact:
@@ -119,25 +119,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  parameters:
+    IPAMExpirationParam:
+      name: expiration
+      in: query
+      required: false
+      description: Whether the allocation should expire if not confirmed.
+      schema:
+        type: boolean
+    IPAMFamilyParam:
+      name: family
+      in: query
+      required: false
+      description: IP address family to allocate (ipv4 or ipv6).
+      schema:
+        type: string
+        enum:
+        - ipv4
+        - ipv6
+    IPParam:
+      name: ip
+      in: path
+      required: true
+      description: IP address to allocate or release.
+      schema:
+        type: string
+    IPAMOwnerParam:
+      name: owner
+      in: query
+      required: false
+      description: Owner identifier for the IP allocation.
+      schema:
+        type: string
   schemas:
-    AddressPair:
-      type: object
-      description: IPv4 and IPv6 address pair for an endpoint.
-      properties:
-        ipv4:
-          type: string
-          description: IPv4 address.
-        ipv6:
-          type: string
-          description: IPv6 address.
-    NodeAddressing:
-      type: object
-      description: IP addressing information for the host node.
-      properties:
-        ipv4:
-          $ref: '#/components/schemas/NodeAddressingElement'
-        ipv6:
-          $ref: '#/components/schemas/NodeAddressingElement'
+    Error:
+      type: string
+      description: Human-readable error message.
     IPListEntry:
       type: object
       description: Information about a single IP address known to the Cilium agent.
@@ -152,22 +169,28 @@ components:
         owned:
           type: boolean
           description: Whether this IP is allocated by the local IPAM.
-    NodeAddressingElement:
+    IPAMResponse:
       type: object
-      description: Node addressing for a single address family.
+      description: Response from an IP address allocation request.
       properties:
-        address-type:
+        address:
+          $ref: '#/components/schemas/AddressPair'
+        host-addressing:
+          $ref: '#/components/schemas/NodeAddressing'
+        ipv4:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+        ipv6:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
           type: string
-          description: Type of address (internal, external).
-        alloc-range:
+          description: IPv4 address.
+        ipv6:
           type: string
-          description: CIDR allocation range for pods.
-        enabled:
-          type: boolean
-          description: Whether this address family is enabled.
-        ip:
-          type: string
-          description: Node IP address.
+          description: IPv6 address.
     IPAMAddressResponse:
       type: object
       description: Details of a single allocated IP address.
@@ -184,53 +207,30 @@ components:
         masquerade-enabled:
           type: boolean
           description: Whether masquerading is enabled for this IP.
-    IPAMResponse:
+    NodeAddressingElement:
       type: object
-      description: Response from an IP address allocation request.
+      description: Node addressing for a single address family.
       properties:
-        address:
-          $ref: '#/components/schemas/AddressPair'
-        host-addressing:
-          $ref: '#/components/schemas/NodeAddressing'
+        address-type:
+          type: string
+          description: Type of address (internal, external).
+        alloc-range:
+          type: string
+          description: CIDR allocation range for pods.
+        enabled:
+          type: boolean
+          description: Whether this address family is enabled.
+        ip:
+          type: string
+          description: Node IP address.
+    NodeAddressing:
+      type: object
+      description: IP addressing information for the host node.
+      properties:
         ipv4:
-          $ref: '#/components/schemas/IPAMAddressResponse'
+          $ref: '#/components/schemas/NodeAddressingElement'
         ipv6:
-          $ref: '#/components/schemas/IPAMAddressResponse'
-    Error:
-      type: string
-      description: Human-readable error message.
-  parameters:
-    IPParam:
-      name: ip
-      in: path
-      required: true
-      description: IP address to allocate or release.
-      schema:
-        type: string
-    IPAMOwnerParam:
-      name: owner
-      in: query
-      required: false
-      description: Owner identifier for the IP allocation.
-      schema:
-        type: string
-    IPAMFamilyParam:
-      name: family
-      in: query
-      required: false
-      description: IP address family to allocate (ipv4 or ipv6).
-      schema:
-        type: string
-        enum:
-        - ipv4
-        - ipv6
-    IPAMExpirationParam:
-      name: expiration
-      in: query
-      required: false
-      description: Whether the allocation should expire if not confirmed.
-      schema:
-        type: boolean
+          $ref: '#/components/schemas/NodeAddressingElement'
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/

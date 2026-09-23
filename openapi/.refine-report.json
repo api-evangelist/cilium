@@ -1,14 +1,7 @@
 {
   "provider": "cilium",
   "sources": [
-    "cilium-bgp-api-openapi.yml",
-    "cilium-daemon-api-openapi.yml",
-    "cilium-endpoint-api-openapi.yml",
-    "cilium-ipam-api-openapi.yml",
-    "cilium-lrp-api-openapi.yml",
-    "cilium-policy-api-openapi.yml",
-    "cilium-prefilter-api-openapi.yml",
-    "cilium-service-api-openapi.yml"
+    "_original/cilium-api-openapi.yml"
   ],
   "outputs": [
     "cilium-bgp-api-openapi.yml",
@@ -23,6 +16,26 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "cilium-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "cilium-api-openapi.yml: tagged paths GET /service -> Service",
+    "cilium-api-openapi.yml: tagged paths GET /service/{id} -> Service",
+    "cilium-api-openapi.yml: tagged paths PUT /service/{id} -> Service",
+    "cilium-api-openapi.yml: tagged paths DELETE /service/{id} -> Service",
+    "cilium-api-openapi.yml: tagged paths GET /lrp -> Lrp",
+    "cilium-api-openapi.yml: declared missing tag: Lrp",
+    "cilium-api-openapi.yml: declared missing tag: Service",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "cilium-bgp-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-daemon-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-endpoint-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-ipam-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-lrp-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-policy-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-prefilter-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cilium-service-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

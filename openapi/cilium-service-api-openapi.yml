@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cilium BGP Service API
+  title: Cilium Service API
   description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
   version: v1beta1
   contact:
@@ -111,6 +111,79 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ServiceStatus:
+      type: object
+      description: Realized status of a Cilium service.
+      properties:
+        realized:
+          $ref: '#/components/schemas/ServiceSpec'
+    Error:
+      type: string
+      description: Human-readable error message.
+    Service:
+      type: object
+      description: A Cilium-managed load balancer service with frontend and backends.
+      properties:
+        spec:
+          $ref: '#/components/schemas/ServiceSpec'
+        status:
+          $ref: '#/components/schemas/ServiceStatus'
+    FrontendAddress:
+      type: object
+      description: Frontend VIP address and port for a service.
+      properties:
+        ip:
+          type: string
+          description: Frontend IP address (VIP).
+        port:
+          type: integer
+          description: Frontend port number.
+        protocol:
+          type: string
+          description: Protocol (TCP, UDP, SCTP).
+          enum:
+          - TCP
+          - UDP
+          - SCTP
+          - ANY
+        scope:
+          type: string
+          description: Scope of the frontend (external, internal, host).
+    ServiceSpec:
+      type: object
+      description: Specification for a Cilium service.
+      properties:
+        id:
+          type: integer
+          description: Numeric service ID.
+        frontend-address:
+          $ref: '#/components/schemas/FrontendAddress'
+        backend-addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendAddress'
+          description: Load balancer backend endpoints.
+        flags:
+          $ref: '#/components/schemas/ServiceSpecFlags'
+    BackendAddress:
+      type: object
+      description: A single backend endpoint for a load balancer service.
+      properties:
+        ip:
+          type: string
+          description: Backend pod or endpoint IP address.
+        port:
+          type: integer
+          description: Backend port number.
+        nodeName:
+          type: string
+          description: Node where this backend resides.
+        state:
+          type: string
+          description: State of this backend (active, terminating, quarantined, maintenance).
+        weight:
+          type: integer
+          description: Load balancer weight for this backend.
     ServiceSpecFlags:
       type: object
       description: Feature flags for a service.
@@ -133,79 +206,6 @@ components:
         natPolicy:
           type: string
           description: NAT policy applied to this service.
-    BackendAddress:
-      type: object
-      description: A single backend endpoint for a load balancer service.
-      properties:
-        ip:
-          type: string
-          description: Backend pod or endpoint IP address.
-        port:
-          type: integer
-          description: Backend port number.
-        nodeName:
-          type: string
-          description: Node where this backend resides.
-        state:
-          type: string
-          description: State of this backend (active, terminating, quarantined, maintenance).
-        weight:
-          type: integer
-          description: Load balancer weight for this backend.
-    ServiceSpec:
-      type: object
-      description: Specification for a Cilium service.
-      properties:
-        id:
-          type: integer
-          description: Numeric service ID.
-        frontend-address:
-          $ref: '#/components/schemas/FrontendAddress'
-        backend-addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendAddress'
-          description: Load balancer backend endpoints.
-        flags:
-          $ref: '#/components/schemas/ServiceSpecFlags'
-    Service:
-      type: object
-      description: A Cilium-managed load balancer service with frontend and backends.
-      properties:
-        spec:
-          $ref: '#/components/schemas/ServiceSpec'
-        status:
-          $ref: '#/components/schemas/ServiceStatus'
-    ServiceStatus:
-      type: object
-      description: Realized status of a Cilium service.
-      properties:
-        realized:
-          $ref: '#/components/schemas/ServiceSpec'
-    FrontendAddress:
-      type: object
-      description: Frontend VIP address and port for a service.
-      properties:
-        ip:
-          type: string
-          description: Frontend IP address (VIP).
-        port:
-          type: integer
-          description: Frontend port number.
-        protocol:
-          type: string
-          description: Protocol (TCP, UDP, SCTP).
-          enum:
-          - TCP
-          - UDP
-          - SCTP
-          - ANY
-        scope:
-          type: string
-          description: Scope of the frontend (external, internal, host).
-    Error:
-      type: string
-      description: Human-readable error message.
   parameters:
     ServiceIDParam:
       name: id

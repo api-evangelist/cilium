@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cilium BGP Prefilter API
+  title: Cilium Prefilter API
   description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
   version: v1beta1
   contact:
@@ -90,6 +90,24 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    PrefilterStatus:
+      type: object
+      description: Current state of the XDP prefilter.
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: Total number of CIDR entries in the prefilter.
+        realized:
+          $ref: '#/components/schemas/PrefilterSpec'
+    Prefilter:
+      type: object
+      description: XDP prefilter configuration and statistics.
+      properties:
+        spec:
+          $ref: '#/components/schemas/PrefilterSpec'
+        status:
+          $ref: '#/components/schemas/PrefilterStatus'
     PrefilterSpec:
       type: object
       description: Prefilter CIDR list specification.
@@ -104,24 +122,6 @@ components:
           items:
             type: string
           description: CIDR ranges explicitly allowed (overrides deny).
-    Prefilter:
-      type: object
-      description: XDP prefilter configuration and statistics.
-      properties:
-        spec:
-          $ref: '#/components/schemas/PrefilterSpec'
-        status:
-          $ref: '#/components/schemas/PrefilterStatus'
-    PrefilterStatus:
-      type: object
-      description: Current state of the XDP prefilter.
-      properties:
-        count:
-          type: integer
-          format: int64
-          description: Total number of CIDR entries in the prefilter.
-        realized:
-          $ref: '#/components/schemas/PrefilterSpec'
     Error:
       type: string
       description: Human-readable error message.

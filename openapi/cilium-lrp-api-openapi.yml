@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cilium BGP Lrp API
+  title: Cilium Lrp API
   description: The Cilium REST API provides access to the Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface. It covers endpoint management, identity management, policy configuration, IP address management, service configuration, BGP operations, and daemon health status.
   version: v1beta1
   contact:
@@ -37,6 +37,9 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: string
+      description: Human-readable error message.
     LRPSpec:
       type: object
       description: Local redirect policy specification.
@@ -58,9 +61,6 @@ components:
           items:
             type: object
           description: Frontend to backend port mappings.
-    Error:
-      type: string
-      description: Human-readable error message.
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/
