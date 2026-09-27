@@ -201,6 +201,9 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: string
+      description: Human-readable error message.
     DNSLookup:
       type: object
       description: A DNS lookup entry in the FQDN cache.
@@ -224,6 +227,21 @@ components:
           type: string
           format: date-time
           description: Time when this cache entry expires.
+    SelectorCache:
+      type: object
+      description: A policy selector and the identities it currently matches.
+      properties:
+        selector:
+          type: string
+          description: Label selector expression.
+        users:
+          type: integer
+          description: Number of policy rules using this selector.
+        identities:
+          type: array
+          items:
+            type: integer
+          description: List of identity IDs currently matched by this selector.
     Identity:
       type: object
       description: A Cilium security identity, derived from the set of labels associated with a workload and used for policy enforcement decisions.
@@ -258,44 +276,12 @@ components:
                   type: string
                 description: Current IP addresses for this name.
           description: List of tracked FQDN entries.
-    Error:
-      type: string
-      description: Human-readable error message.
-    SelectorCache:
-      type: object
-      description: A policy selector and the identities it currently matches.
-      properties:
-        selector:
-          type: string
-          description: Label selector expression.
-        users:
-          type: integer
-          description: Number of policy rules using this selector.
-        identities:
-          type: array
-          items:
-            type: integer
-          description: List of identity IDs currently matched by this selector.
   parameters:
-    IdentityIDParam:
-      name: id
-      in: path
-      required: true
-      description: Numeric security identity ID.
-      schema:
-        type: string
     CIDRParam:
       name: cidr
       in: query
       required: false
       description: Filter by CIDR network range.
-      schema:
-        type: string
-    MatchPatternParam:
-      name: matchpattern
-      in: query
-      required: false
-      description: FQDN name match pattern (shell-style glob).
       schema:
         type: string
     LabelsParam:
@@ -312,6 +298,20 @@ components:
       in: query
       required: false
       description: Filter by DNS entry source (e.g., dns, connection).
+      schema:
+        type: string
+    MatchPatternParam:
+      name: matchpattern
+      in: query
+      required: false
+      description: FQDN name match pattern (shell-style glob).
+      schema:
+        type: string
+    IdentityIDParam:
+      name: id
+      in: path
+      required: true
+      description: Numeric security identity ID.
       schema:
         type: string
 externalDocs:

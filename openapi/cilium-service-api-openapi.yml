@@ -111,12 +111,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ServiceStatus:
-      type: object
-      description: Realized status of a Cilium service.
-      properties:
-        realized:
-          $ref: '#/components/schemas/ServiceSpec'
     Error:
       type: string
       description: Human-readable error message.
@@ -128,43 +122,6 @@ components:
           $ref: '#/components/schemas/ServiceSpec'
         status:
           $ref: '#/components/schemas/ServiceStatus'
-    FrontendAddress:
-      type: object
-      description: Frontend VIP address and port for a service.
-      properties:
-        ip:
-          type: string
-          description: Frontend IP address (VIP).
-        port:
-          type: integer
-          description: Frontend port number.
-        protocol:
-          type: string
-          description: Protocol (TCP, UDP, SCTP).
-          enum:
-          - TCP
-          - UDP
-          - SCTP
-          - ANY
-        scope:
-          type: string
-          description: Scope of the frontend (external, internal, host).
-    ServiceSpec:
-      type: object
-      description: Specification for a Cilium service.
-      properties:
-        id:
-          type: integer
-          description: Numeric service ID.
-        frontend-address:
-          $ref: '#/components/schemas/FrontendAddress'
-        backend-addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendAddress'
-          description: Load balancer backend endpoints.
-        flags:
-          $ref: '#/components/schemas/ServiceSpecFlags'
     BackendAddress:
       type: object
       description: A single backend endpoint for a load balancer service.
@@ -184,6 +141,12 @@ components:
         weight:
           type: integer
           description: Load balancer weight for this backend.
+    ServiceStatus:
+      type: object
+      description: Realized status of a Cilium service.
+      properties:
+        realized:
+          $ref: '#/components/schemas/ServiceSpec'
     ServiceSpecFlags:
       type: object
       description: Feature flags for a service.
@@ -206,6 +169,43 @@ components:
         natPolicy:
           type: string
           description: NAT policy applied to this service.
+    ServiceSpec:
+      type: object
+      description: Specification for a Cilium service.
+      properties:
+        id:
+          type: integer
+          description: Numeric service ID.
+        frontend-address:
+          $ref: '#/components/schemas/FrontendAddress'
+        backend-addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendAddress'
+          description: Load balancer backend endpoints.
+        flags:
+          $ref: '#/components/schemas/ServiceSpecFlags'
+    FrontendAddress:
+      type: object
+      description: Frontend VIP address and port for a service.
+      properties:
+        ip:
+          type: string
+          description: Frontend IP address (VIP).
+        port:
+          type: integer
+          description: Frontend port number.
+        protocol:
+          type: string
+          description: Protocol (TCP, UDP, SCTP).
+          enum:
+          - TCP
+          - UDP
+          - SCTP
+          - ANY
+        scope:
+          type: string
+          description: Scope of the frontend (external, internal, host).
   parameters:
     ServiceIDParam:
       name: id

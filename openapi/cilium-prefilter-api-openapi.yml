@@ -90,6 +90,23 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: string
+      description: Human-readable error message.
+    PrefilterSpec:
+      type: object
+      description: Prefilter CIDR list specification.
+      properties:
+        deny:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges to deny at the XDP layer.
+        allow:
+          type: array
+          items:
+            type: string
+          description: CIDR ranges explicitly allowed (overrides deny).
     PrefilterStatus:
       type: object
       description: Current state of the XDP prefilter.
@@ -108,23 +125,6 @@ components:
           $ref: '#/components/schemas/PrefilterSpec'
         status:
           $ref: '#/components/schemas/PrefilterStatus'
-    PrefilterSpec:
-      type: object
-      description: Prefilter CIDR list specification.
-      properties:
-        deny:
-          type: array
-          items:
-            type: string
-          description: CIDR ranges to deny at the XDP layer.
-        allow:
-          type: array
-          items:
-            type: string
-          description: CIDR ranges explicitly allowed (overrides deny).
-    Error:
-      type: string
-      description: Human-readable error message.
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/
