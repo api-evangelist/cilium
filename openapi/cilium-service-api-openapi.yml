@@ -111,42 +111,52 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ServiceSpec:
+      type: object
+      description: Specification for a Cilium service.
+      properties:
+        id:
+          type: integer
+          description: Numeric service ID.
+        frontend-address:
+          $ref: '#/components/schemas/FrontendAddress'
+        backend-addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendAddress'
+          description: Load balancer backend endpoints.
+        flags:
+          $ref: '#/components/schemas/ServiceSpecFlags'
     Error:
       type: string
       description: Human-readable error message.
-    Service:
-      type: object
-      description: A Cilium-managed load balancer service with frontend and backends.
-      properties:
-        spec:
-          $ref: '#/components/schemas/ServiceSpec'
-        status:
-          $ref: '#/components/schemas/ServiceStatus'
-    BackendAddress:
-      type: object
-      description: A single backend endpoint for a load balancer service.
-      properties:
-        ip:
-          type: string
-          description: Backend pod or endpoint IP address.
-        port:
-          type: integer
-          description: Backend port number.
-        nodeName:
-          type: string
-          description: Node where this backend resides.
-        state:
-          type: string
-          description: State of this backend (active, terminating, quarantined, maintenance).
-        weight:
-          type: integer
-          description: Load balancer weight for this backend.
     ServiceStatus:
       type: object
       description: Realized status of a Cilium service.
       properties:
         realized:
           $ref: '#/components/schemas/ServiceSpec'
+    FrontendAddress:
+      type: object
+      description: Frontend VIP address and port for a service.
+      properties:
+        ip:
+          type: string
+          description: Frontend IP address (VIP).
+        port:
+          type: integer
+          description: Frontend port number.
+        protocol:
+          type: string
+          description: Protocol (TCP, UDP, SCTP).
+          enum:
+          - TCP
+          - UDP
+          - SCTP
+          - ANY
+        scope:
+          type: string
+          description: Scope of the frontend (external, internal, host).
     ServiceSpecFlags:
       type: object
       description: Feature flags for a service.
@@ -169,43 +179,33 @@ components:
         natPolicy:
           type: string
           description: NAT policy applied to this service.
-    ServiceSpec:
+    BackendAddress:
       type: object
-      description: Specification for a Cilium service.
-      properties:
-        id:
-          type: integer
-          description: Numeric service ID.
-        frontend-address:
-          $ref: '#/components/schemas/FrontendAddress'
-        backend-addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendAddress'
-          description: Load balancer backend endpoints.
-        flags:
-          $ref: '#/components/schemas/ServiceSpecFlags'
-    FrontendAddress:
-      type: object
-      description: Frontend VIP address and port for a service.
+      description: A single backend endpoint for a load balancer service.
       properties:
         ip:
           type: string
-          description: Frontend IP address (VIP).
+          description: Backend pod or endpoint IP address.
         port:
           type: integer
-          description: Frontend port number.
-        protocol:
+          description: Backend port number.
+        nodeName:
           type: string
-          description: Protocol (TCP, UDP, SCTP).
-          enum:
-          - TCP
-          - UDP
-          - SCTP
-          - ANY
-        scope:
+          description: Node where this backend resides.
+        state:
           type: string
-          description: Scope of the frontend (external, internal, host).
+          description: State of this backend (active, terminating, quarantined, maintenance).
+        weight:
+          type: integer
+          description: Load balancer weight for this backend.
+    Service:
+      type: object
+      description: A Cilium-managed load balancer service with frontend and backends.
+      properties:
+        spec:
+          $ref: '#/components/schemas/ServiceSpec'
+        status:
+          $ref: '#/components/schemas/ServiceStatus'
   parameters:
     ServiceIDParam:
       name: id

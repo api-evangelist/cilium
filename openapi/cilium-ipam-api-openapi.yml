@@ -120,63 +120,9 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    AddressPair:
-      type: object
-      description: IPv4 and IPv6 address pair for an endpoint.
-      properties:
-        ipv4:
-          type: string
-          description: IPv4 address.
-        ipv6:
-          type: string
-          description: IPv6 address.
     Error:
       type: string
       description: Human-readable error message.
-    IPAMResponse:
-      type: object
-      description: Response from an IP address allocation request.
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressPair'
-        host-addressing:
-          $ref: '#/components/schemas/NodeAddressing'
-        ipv4:
-          $ref: '#/components/schemas/IPAMAddressResponse'
-        ipv6:
-          $ref: '#/components/schemas/IPAMAddressResponse'
-    NodeAddressingElement:
-      type: object
-      description: Node addressing for a single address family.
-      properties:
-        address-type:
-          type: string
-          description: Type of address (internal, external).
-        alloc-range:
-          type: string
-          description: CIDR allocation range for pods.
-        enabled:
-          type: boolean
-          description: Whether this address family is enabled.
-        ip:
-          type: string
-          description: Node IP address.
-    IPAMAddressResponse:
-      type: object
-      description: Details of a single allocated IP address.
-      properties:
-        ip:
-          type: string
-          description: The allocated IP address.
-        gateway:
-          type: string
-          description: Gateway IP address for this allocation.
-        interface-number:
-          type: integer
-          description: Network interface number.
-        masquerade-enabled:
-          type: boolean
-          description: Whether masquerading is enabled for this IP.
     NodeAddressing:
       type: object
       description: IP addressing information for the host node.
@@ -199,17 +145,61 @@ components:
         owned:
           type: boolean
           description: Whether this IP is allocated by the local IPAM.
+    NodeAddressingElement:
+      type: object
+      description: Node addressing for a single address family.
+      properties:
+        address-type:
+          type: string
+          description: Type of address (internal, external).
+        alloc-range:
+          type: string
+          description: CIDR allocation range for pods.
+        enabled:
+          type: boolean
+          description: Whether this address family is enabled.
+        ip:
+          type: string
+          description: Node IP address.
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    IPAMResponse:
+      type: object
+      description: Response from an IP address allocation request.
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressPair'
+        host-addressing:
+          $ref: '#/components/schemas/NodeAddressing'
+        ipv4:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+        ipv6:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+    IPAMAddressResponse:
+      type: object
+      description: Details of a single allocated IP address.
+      properties:
+        ip:
+          type: string
+          description: The allocated IP address.
+        gateway:
+          type: string
+          description: Gateway IP address for this allocation.
+        interface-number:
+          type: integer
+          description: Network interface number.
+        masquerade-enabled:
+          type: boolean
+          description: Whether masquerading is enabled for this IP.
   parameters:
-    IPAMFamilyParam:
-      name: family
-      in: query
-      required: false
-      description: IP address family to allocate (ipv4 or ipv6).
-      schema:
-        type: string
-        enum:
-        - ipv4
-        - ipv6
     IPAMExpirationParam:
       name: expiration
       in: query
@@ -231,6 +221,16 @@ components:
       description: IP address to allocate or release.
       schema:
         type: string
+    IPAMFamilyParam:
+      name: family
+      in: query
+      required: false
+      description: IP address family to allocate (ipv4 or ipv6).
+      schema:
+        type: string
+        enum:
+        - ipv4
+        - ipv6
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/

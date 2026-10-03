@@ -368,19 +368,15 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    AddressPair:
-      type: object
-      description: IPv4 and IPv6 address pair for an endpoint.
-      properties:
-        ipv4:
-          type: string
-          description: IPv4 address.
-        ipv6:
-          type: string
-          description: IPv6 address.
     Error:
       type: string
       description: Human-readable error message.
+    LabelConfiguration:
+      type: object
+      description: Full label configuration for an endpoint.
+      properties:
+        status:
+          $ref: '#/components/schemas/LabelConfigurationStatus'
     LabelConfigurationStatus:
       type: object
       description: Current label state of an endpoint.
@@ -402,18 +398,79 @@ components:
           items:
             type: string
           description: Labels used for security identity derivation.
-    Endpoint:
+    EndpointStatus:
       type: object
-      description: A Cilium-managed network endpoint, typically corresponding to a Kubernetes pod or container with associated identity and policy state.
+      description: Current status of an endpoint.
       properties:
-        id:
-          type: integer
-          format: int64
-          description: Numeric endpoint ID assigned by Cilium.
-        status:
-          $ref: '#/components/schemas/EndpointStatus'
+        identity:
+          $ref: '#/components/schemas/Identity'
+        networking:
+          $ref: '#/components/schemas/EndpointNetworking'
+        policy:
+          $ref: '#/components/schemas/EndpointPolicyStatus'
+        state:
+          type: string
+          description: Current lifecycle state of the endpoint.
+          enum:
+          - waiting-for-identity
+          - not-ready
+          - waiting-to-regenerate
+          - regenerating
+          - restoring
+          - ready
+          - disconnecting
+          - disconnected
+          - invalid
+        health:
+          $ref: '#/components/schemas/EndpointHealth'
+    EndpointConfigurationSpec:
+      type: object
+      description: Configuration options for a specific endpoint.
+      properties:
+        options:
+          type: object
+          description: Map of option names to their values.
+          additionalProperties:
+            type: string
+    EndpointPolicyStatus:
+      type: object
+      description: Policy enforcement status for an endpoint.
+      properties:
+        allowed:
+          type: object
+          description: Map of allowed traffic flows.
+        denied:
+          type: object
+          description: Map of denied traffic flows.
+        realized:
+          $ref: '#/components/schemas/EndpointPolicy'
         spec:
-          $ref: '#/components/schemas/EndpointSpec'
+          $ref: '#/components/schemas/EndpointPolicy'
+    EndpointHealth:
+      type: object
+      description: Health status of an endpoint's BPF programs and policy.
+      properties:
+        bpf:
+          type: string
+          description: Health status of the BPF program for this endpoint.
+        connected:
+          type: boolean
+          description: Whether the endpoint is connected to the network.
+        overallHealth:
+          type: string
+          description: Overall health status of the endpoint.
+        policy:
+          type: string
+          description: Health status of policy enforcement for this endpoint.
+    LabelConfigurationSpec:
+      type: object
+      description: Desired label configuration for an endpoint.
+      properties:
+        user:
+          type: array
+          items:
+            type: string
+          description: User-provided labels to add to the endpoint.
     EndpointStatusChange:
       type: object
       description: A single entry in an endpoint's status change log.
@@ -456,89 +513,6 @@ components:
           items:
             type: string
           description: Security labels associated with this endpoint.
-    LabelConfigurationSpec:
-      type: object
-      description: Desired label configuration for an endpoint.
-      properties:
-        user:
-          type: array
-          items:
-            type: string
-          description: User-provided labels to add to the endpoint.
-    EndpointPolicy:
-      type: object
-      description: Desired or realized policy for an endpoint.
-      properties:
-        allowed-egress-identities:
-          type: array
-          items:
-            type: integer
-          description: Identity IDs that egress traffic is allowed to reach.
-        allowed-ingress-identities:
-          type: array
-          items:
-            type: integer
-          description: Identity IDs allowed to send ingress traffic.
-        cidr-policy:
-          type: object
-          description: CIDR-based policy configuration.
-        id:
-          type: integer
-          description: Policy revision number.
-    EndpointPolicyStatus:
-      type: object
-      description: Policy enforcement status for an endpoint.
-      properties:
-        allowed:
-          type: object
-          description: Map of allowed traffic flows.
-        denied:
-          type: object
-          description: Map of denied traffic flows.
-        realized:
-          $ref: '#/components/schemas/EndpointPolicy'
-        spec:
-          $ref: '#/components/schemas/EndpointPolicy'
-    EndpointConfigurationSpec:
-      type: object
-      description: Configuration options for a specific endpoint.
-      properties:
-        options:
-          type: object
-          description: Map of option names to their values.
-          additionalProperties:
-            type: string
-    EndpointStatus:
-      type: object
-      description: Current status of an endpoint.
-      properties:
-        identity:
-          $ref: '#/components/schemas/Identity'
-        networking:
-          $ref: '#/components/schemas/EndpointNetworking'
-        policy:
-          $ref: '#/components/schemas/EndpointPolicyStatus'
-        state:
-          type: string
-          description: Current lifecycle state of the endpoint.
-          enum:
-          - waiting-for-identity
-          - not-ready
-          - waiting-to-regenerate
-          - regenerating
-          - restoring
-          - ready
-          - disconnecting
-          - disconnected
-          - invalid
-        health:
-          $ref: '#/components/schemas/EndpointHealth'
-    LabelConfiguration:
-      type: object
-      description: Full label configuration for an endpoint.
-      properties:
-        status:
-          $ref: '#/components/schemas/LabelConfigurationStatus'
     Identity:
       type: object
       description: A Cilium security identity, derived from the set of labels associated with a workload and used for policy enforcement decisions.
@@ -555,34 +529,6 @@ components:
         labelsSHA256:
           type: string
           description: SHA256 hash of the label set for change detection.
-    EndpointNetworking:
-      type: object
-      description: Network addressing information for an endpoint.
-      properties:
-        addressing:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressPair'
-          description: IP addresses assigned to this endpoint.
-        node:
-          type: string
-          description: IP address of the node hosting this endpoint.
-    EndpointHealth:
-      type: object
-      description: Health status of an endpoint's BPF programs and policy.
-      properties:
-        bpf:
-          type: string
-          description: Health status of the BPF program for this endpoint.
-        connected:
-          type: boolean
-          description: Whether the endpoint is connected to the network.
-        overallHealth:
-          type: string
-          description: Overall health status of the endpoint.
-        policy:
-          type: string
-          description: Health status of policy enforcement for this endpoint.
     EndpointChangeRequest:
       type: object
       description: Request payload for creating or modifying an endpoint.
@@ -609,6 +555,60 @@ components:
         state:
           type: string
           description: Desired endpoint state.
+    EndpointPolicy:
+      type: object
+      description: Desired or realized policy for an endpoint.
+      properties:
+        allowed-egress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs that egress traffic is allowed to reach.
+        allowed-ingress-identities:
+          type: array
+          items:
+            type: integer
+          description: Identity IDs allowed to send ingress traffic.
+        cidr-policy:
+          type: object
+          description: CIDR-based policy configuration.
+        id:
+          type: integer
+          description: Policy revision number.
+    AddressPair:
+      type: object
+      description: IPv4 and IPv6 address pair for an endpoint.
+      properties:
+        ipv4:
+          type: string
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
+    EndpointNetworking:
+      type: object
+      description: Network addressing information for an endpoint.
+      properties:
+        addressing:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPair'
+          description: IP addresses assigned to this endpoint.
+        node:
+          type: string
+          description: IP address of the node hosting this endpoint.
+    Endpoint:
+      type: object
+      description: A Cilium-managed network endpoint, typically corresponding to a Kubernetes pod or container with associated identity and policy state.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Numeric endpoint ID assigned by Cilium.
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        spec:
+          $ref: '#/components/schemas/EndpointSpec'
   parameters:
     LabelsParam:
       name: labels

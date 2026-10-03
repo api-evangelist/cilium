@@ -90,24 +90,27 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    BgpRoutePolicy:
+    Error:
+      type: string
+      description: Human-readable error message.
+    BgpFamily:
       type: object
-      description: A BGP route policy for filtering or modifying routes.
+      description: A BGP address family (AFI/SAFI combination).
       properties:
-        name:
+        afi:
           type: string
-          description: Policy name.
-        type:
+          description: Address Family Identifier.
+        safi:
           type: string
-          description: Policy type (export or import).
-          enum:
-          - export
-          - import
-        statements:
-          type: array
-          items:
-            $ref: '#/components/schemas/BgpRoutePolicyStatement'
-          description: Ordered list of policy statements.
+          description: Subsequent Address Family Identifier.
+        received:
+          type: integer
+          format: int64
+          description: Number of routes received from peer.
+        advertised:
+          type: integer
+          format: int64
+          description: Number of routes advertised to peer.
     BgpPath:
       type: object
       description: BGP path attributes for a route.
@@ -138,6 +141,37 @@ components:
         communities:
           type: object
           description: BGP community attributes.
+    BgpRoute:
+      type: object
+      description: A single BGP route entry.
+      properties:
+        prefix:
+          type: string
+          description: Network prefix of the route.
+        router-id:
+          type: string
+          description: BGP router ID that originated this route.
+        neighbor:
+          type: string
+          description: Neighbor that advertised this route (adj-rib tables only).
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpPath'
+          description: BGP path attributes for this route.
+    BgpRoutePolicyStatement:
+      type: object
+      description: A single statement in a BGP route policy.
+      properties:
+        name:
+          type: string
+          description: Statement name.
+        conditions:
+          type: object
+          description: Matching conditions for this statement.
+        actions:
+          type: object
+          description: Actions to take when conditions match.
     BgpPeer:
       type: object
       description: Status information for a single BGP peer.
@@ -172,73 +206,25 @@ components:
         timers:
           type: object
           description: BGP session timer information.
-    Error:
-      type: string
-      description: Human-readable error message.
-    BgpRoute:
+    BgpRoutePolicy:
       type: object
-      description: A single BGP route entry.
-      properties:
-        prefix:
-          type: string
-          description: Network prefix of the route.
-        router-id:
-          type: string
-          description: BGP router ID that originated this route.
-        neighbor:
-          type: string
-          description: Neighbor that advertised this route (adj-rib tables only).
-        paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/BgpPath'
-          description: BGP path attributes for this route.
-    BgpFamily:
-      type: object
-      description: A BGP address family (AFI/SAFI combination).
-      properties:
-        afi:
-          type: string
-          description: Address Family Identifier.
-        safi:
-          type: string
-          description: Subsequent Address Family Identifier.
-        received:
-          type: integer
-          format: int64
-          description: Number of routes received from peer.
-        advertised:
-          type: integer
-          format: int64
-          description: Number of routes advertised to peer.
-    BgpRoutePolicyStatement:
-      type: object
-      description: A single statement in a BGP route policy.
+      description: A BGP route policy for filtering or modifying routes.
       properties:
         name:
           type: string
-          description: Statement name.
-        conditions:
-          type: object
-          description: Matching conditions for this statement.
-        actions:
-          type: object
-          description: Actions to take when conditions match.
+          description: Policy name.
+        type:
+          type: string
+          description: Policy type (export or import).
+          enum:
+          - export
+          - import
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpRoutePolicyStatement'
+          description: Ordered list of policy statements.
   parameters:
-    BGPNeighborParam:
-      name: neighbor
-      in: query
-      required: false
-      description: Filter routes for a specific BGP neighbor address.
-      schema:
-        type: string
-    BGPTableTypeParam:
-      name: table_type
-      in: query
-      required: false
-      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
-      schema:
-        type: string
     BGPRouterASNParam:
       name: router_asn
       in: query
@@ -247,13 +233,6 @@ components:
       schema:
         type: integer
         format: int64
-    BGPVrfParam:
-      name: vrf
-      in: query
-      required: false
-      description: BGP VRF name.
-      schema:
-        type: string
     BGPSAFIParam:
       name: safi
       in: query
@@ -266,6 +245,27 @@ components:
       in: query
       required: false
       description: Address Family Identifier (ipv4 or ipv6).
+      schema:
+        type: string
+    BGPTableTypeParam:
+      name: table_type
+      in: query
+      required: false
+      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
+      schema:
+        type: string
+    BGPNeighborParam:
+      name: neighbor
+      in: query
+      required: false
+      description: Filter routes for a specific BGP neighbor address.
+      schema:
+        type: string
+    BGPVrfParam:
+      name: vrf
+      in: query
+      required: false
+      description: BGP VRF name.
       schema:
         type: string
 externalDocs:
