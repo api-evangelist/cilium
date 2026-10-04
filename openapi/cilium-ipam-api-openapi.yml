@@ -120,31 +120,16 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: string
-      description: Human-readable error message.
-    NodeAddressing:
+    AddressPair:
       type: object
-      description: IP addressing information for the host node.
+      description: IPv4 and IPv6 address pair for an endpoint.
       properties:
         ipv4:
-          $ref: '#/components/schemas/NodeAddressingElement'
-        ipv6:
-          $ref: '#/components/schemas/NodeAddressingElement'
-    IPListEntry:
-      type: object
-      description: Information about a single IP address known to the Cilium agent.
-      properties:
-        cidr:
           type: string
-          description: CIDR block containing this IP address.
-        identity:
-          type: integer
-          format: int64
-          description: Security identity associated with this IP address.
-        owned:
-          type: boolean
-          description: Whether this IP is allocated by the local IPAM.
+          description: IPv4 address.
+        ipv6:
+          type: string
+          description: IPv6 address.
     NodeAddressingElement:
       type: object
       description: Node addressing for a single address family.
@@ -161,28 +146,6 @@ components:
         ip:
           type: string
           description: Node IP address.
-    AddressPair:
-      type: object
-      description: IPv4 and IPv6 address pair for an endpoint.
-      properties:
-        ipv4:
-          type: string
-          description: IPv4 address.
-        ipv6:
-          type: string
-          description: IPv6 address.
-    IPAMResponse:
-      type: object
-      description: Response from an IP address allocation request.
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressPair'
-        host-addressing:
-          $ref: '#/components/schemas/NodeAddressing'
-        ipv4:
-          $ref: '#/components/schemas/IPAMAddressResponse'
-        ipv6:
-          $ref: '#/components/schemas/IPAMAddressResponse'
     IPAMAddressResponse:
       type: object
       description: Details of a single allocated IP address.
@@ -199,6 +162,43 @@ components:
         masquerade-enabled:
           type: boolean
           description: Whether masquerading is enabled for this IP.
+    Error:
+      type: string
+      description: Human-readable error message.
+    IPListEntry:
+      type: object
+      description: Information about a single IP address known to the Cilium agent.
+      properties:
+        cidr:
+          type: string
+          description: CIDR block containing this IP address.
+        identity:
+          type: integer
+          format: int64
+          description: Security identity associated with this IP address.
+        owned:
+          type: boolean
+          description: Whether this IP is allocated by the local IPAM.
+    NodeAddressing:
+      type: object
+      description: IP addressing information for the host node.
+      properties:
+        ipv4:
+          $ref: '#/components/schemas/NodeAddressingElement'
+        ipv6:
+          $ref: '#/components/schemas/NodeAddressingElement'
+    IPAMResponse:
+      type: object
+      description: Response from an IP address allocation request.
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressPair'
+        host-addressing:
+          $ref: '#/components/schemas/NodeAddressing'
+        ipv4:
+          $ref: '#/components/schemas/IPAMAddressResponse'
+        ipv6:
+          $ref: '#/components/schemas/IPAMAddressResponse'
   parameters:
     IPAMExpirationParam:
       name: expiration
@@ -207,18 +207,18 @@ components:
       description: Whether the allocation should expire if not confirmed.
       schema:
         type: boolean
-    IPAMOwnerParam:
-      name: owner
-      in: query
-      required: false
-      description: Owner identifier for the IP allocation.
-      schema:
-        type: string
     IPParam:
       name: ip
       in: path
       required: true
       description: IP address to allocate or release.
+      schema:
+        type: string
+    IPAMOwnerParam:
+      name: owner
+      in: query
+      required: false
+      description: Owner identifier for the IP allocation.
       schema:
         type: string
     IPAMFamilyParam:

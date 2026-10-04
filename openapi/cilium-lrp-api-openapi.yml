@@ -37,6 +37,9 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: string
+      description: Human-readable error message.
     LRPSpec:
       type: object
       description: Local redirect policy specification.
@@ -58,9 +61,6 @@ components:
           items:
             type: object
           description: Frontend to backend port mappings.
-    Error:
-      type: string
-      description: Human-readable error message.
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/
