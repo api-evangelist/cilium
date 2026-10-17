@@ -111,47 +111,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    BackendAddress:
-      type: object
-      description: A single backend endpoint for a load balancer service.
-      properties:
-        ip:
-          type: string
-          description: Backend pod or endpoint IP address.
-        port:
-          type: integer
-          description: Backend port number.
-        nodeName:
-          type: string
-          description: Node where this backend resides.
-        state:
-          type: string
-          description: State of this backend (active, terminating, quarantined, maintenance).
-        weight:
-          type: integer
-          description: Load balancer weight for this backend.
-    ServiceSpecFlags:
-      type: object
-      description: Feature flags for a service.
-      properties:
-        type:
-          type: string
-          description: Service type (ClusterIP, NodePort, LoadBalancer, ExternalIPs, HostPort, LocalRedirect, Custom, HostNamespace).
-        trafficPolicy:
-          type: string
-          description: Traffic policy (Cluster, Local).
-        healthCheckNodePort:
-          type: integer
-          description: Port for health check NodePort.
-        name:
-          type: string
-          description: Service name.
-        namespace:
-          type: string
-          description: Service namespace.
-        natPolicy:
-          type: string
-          description: NAT policy applied to this service.
     FrontendAddress:
       type: object
       description: Frontend VIP address and port for a service.
@@ -176,6 +135,53 @@ components:
     Error:
       type: string
       description: Human-readable error message.
+    ServiceSpecFlags:
+      type: object
+      description: Feature flags for a service.
+      properties:
+        type:
+          type: string
+          description: Service type (ClusterIP, NodePort, LoadBalancer, ExternalIPs, HostPort, LocalRedirect, Custom, HostNamespace).
+        trafficPolicy:
+          type: string
+          description: Traffic policy (Cluster, Local).
+        healthCheckNodePort:
+          type: integer
+          description: Port for health check NodePort.
+        name:
+          type: string
+          description: Service name.
+        namespace:
+          type: string
+          description: Service namespace.
+        natPolicy:
+          type: string
+          description: NAT policy applied to this service.
+    ServiceStatus:
+      type: object
+      description: Realized status of a Cilium service.
+      properties:
+        realized:
+          $ref: '#/components/schemas/ServiceSpec'
+    BackendAddress:
+      type: object
+      description: A single backend endpoint for a load balancer service.
+      properties:
+        ip:
+          type: string
+          description: Backend pod or endpoint IP address.
+        port:
+          type: integer
+          description: Backend port number.
+        nodeName:
+          type: string
+          description: Node where this backend resides.
+        state:
+          type: string
+          description: State of this backend (active, terminating, quarantined, maintenance).
+        weight:
+          type: integer
+          description: Load balancer weight for this backend.
     ServiceSpec:
       type: object
       description: Specification for a Cilium service.
@@ -200,12 +206,6 @@ components:
           $ref: '#/components/schemas/ServiceSpec'
         status:
           $ref: '#/components/schemas/ServiceStatus'
-    ServiceStatus:
-      type: object
-      description: Realized status of a Cilium service.
-      properties:
-        realized:
-          $ref: '#/components/schemas/ServiceSpec'
   parameters:
     ServiceIDParam:
       name: id

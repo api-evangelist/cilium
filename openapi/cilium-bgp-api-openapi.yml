@@ -89,56 +89,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  parameters:
+    BGPRouterASNParam:
+      name: router_asn
+      in: query
+      required: false
+      description: Filter policies for a specific BGP router ASN.
+      schema:
+        type: integer
+        format: int64
+    BGPVrfParam:
+      name: vrf
+      in: query
+      required: false
+      description: BGP VRF name.
+      schema:
+        type: string
+    BGPTableTypeParam:
+      name: table_type
+      in: query
+      required: false
+      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
+      schema:
+        type: string
+    BGPNeighborParam:
+      name: neighbor
+      in: query
+      required: false
+      description: Filter routes for a specific BGP neighbor address.
+      schema:
+        type: string
+    BGPSAFIParam:
+      name: safi
+      in: query
+      required: false
+      description: Subsequent Address Family Identifier (unicast or multicast).
+      schema:
+        type: string
+    BGPAFIParam:
+      name: afi
+      in: query
+      required: false
+      description: Address Family Identifier (ipv4 or ipv6).
+      schema:
+        type: string
   schemas:
-    BgpRoutePolicyStatement:
-      type: object
-      description: A single statement in a BGP route policy.
-      properties:
-        name:
-          type: string
-          description: Statement name.
-        conditions:
-          type: object
-          description: Matching conditions for this statement.
-        actions:
-          type: object
-          description: Actions to take when conditions match.
-    BgpRoute:
-      type: object
-      description: A single BGP route entry.
-      properties:
-        prefix:
-          type: string
-          description: Network prefix of the route.
-        router-id:
-          type: string
-          description: BGP router ID that originated this route.
-        neighbor:
-          type: string
-          description: Neighbor that advertised this route (adj-rib tables only).
-        paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/BgpPath'
-          description: BGP path attributes for this route.
-    BgpFamily:
-      type: object
-      description: A BGP address family (AFI/SAFI combination).
-      properties:
-        afi:
-          type: string
-          description: Address Family Identifier.
-        safi:
-          type: string
-          description: Subsequent Address Family Identifier.
-        received:
-          type: integer
-          format: int64
-          description: Number of routes received from peer.
-        advertised:
-          type: integer
-          format: int64
-          description: Number of routes advertised to peer.
     BgpRoutePolicy:
       type: object
       description: A BGP route policy for filtering or modifying routes.
@@ -157,39 +152,19 @@ components:
           items:
             $ref: '#/components/schemas/BgpRoutePolicyStatement'
           description: Ordered list of policy statements.
-    BgpPath:
+    BgpRoutePolicyStatement:
       type: object
-      description: BGP path attributes for a route.
+      description: A single statement in a BGP route policy.
       properties:
-        best:
-          type: boolean
-          description: Whether this is the best path for the prefix.
-        local-pref:
-          type: integer
-          format: int64
-          description: LOCAL_PREF attribute value.
-        med:
-          type: integer
-          format: int64
-          description: MULTI_EXIT_DISC attribute value.
-        origin:
+        name:
           type: string
-          description: Route origin attribute (igp, egp, incomplete).
-        nexthop:
-          type: string
-          description: Next-hop IP address for this path.
-        as-path:
-          type: array
-          items:
-            type: integer
-            format: int64
-          description: AS_PATH segments for this route.
-        communities:
+          description: Statement name.
+        conditions:
           type: object
-          description: BGP community attributes.
-    Error:
-      type: string
-      description: Human-readable error message.
+          description: Matching conditions for this statement.
+        actions:
+          type: object
+          description: Actions to take when conditions match.
     BgpPeer:
       type: object
       description: Status information for a single BGP peer.
@@ -224,50 +199,75 @@ components:
         timers:
           type: object
           description: BGP session timer information.
-  parameters:
-    BGPAFIParam:
-      name: afi
-      in: query
-      required: false
-      description: Address Family Identifier (ipv4 or ipv6).
-      schema:
-        type: string
-    BGPVrfParam:
-      name: vrf
-      in: query
-      required: false
-      description: BGP VRF name.
-      schema:
-        type: string
-    BGPNeighborParam:
-      name: neighbor
-      in: query
-      required: false
-      description: Filter routes for a specific BGP neighbor address.
-      schema:
-        type: string
-    BGPTableTypeParam:
-      name: table_type
-      in: query
-      required: false
-      description: BGP RIB table type (loc-rib or adj-rib-in or adj-rib-out).
-      schema:
-        type: string
-    BGPRouterASNParam:
-      name: router_asn
-      in: query
-      required: false
-      description: Filter policies for a specific BGP router ASN.
-      schema:
-        type: integer
-        format: int64
-    BGPSAFIParam:
-      name: safi
-      in: query
-      required: false
-      description: Subsequent Address Family Identifier (unicast or multicast).
-      schema:
-        type: string
+    BgpRoute:
+      type: object
+      description: A single BGP route entry.
+      properties:
+        prefix:
+          type: string
+          description: Network prefix of the route.
+        router-id:
+          type: string
+          description: BGP router ID that originated this route.
+        neighbor:
+          type: string
+          description: Neighbor that advertised this route (adj-rib tables only).
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpPath'
+          description: BGP path attributes for this route.
+    BgpPath:
+      type: object
+      description: BGP path attributes for a route.
+      properties:
+        best:
+          type: boolean
+          description: Whether this is the best path for the prefix.
+        local-pref:
+          type: integer
+          format: int64
+          description: LOCAL_PREF attribute value.
+        med:
+          type: integer
+          format: int64
+          description: MULTI_EXIT_DISC attribute value.
+        origin:
+          type: string
+          description: Route origin attribute (igp, egp, incomplete).
+        nexthop:
+          type: string
+          description: Next-hop IP address for this path.
+        as-path:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: AS_PATH segments for this route.
+        communities:
+          type: object
+          description: BGP community attributes.
+    BgpFamily:
+      type: object
+      description: A BGP address family (AFI/SAFI combination).
+      properties:
+        afi:
+          type: string
+          description: Address Family Identifier.
+        safi:
+          type: string
+          description: Subsequent Address Family Identifier.
+        received:
+          type: integer
+          format: int64
+          description: Number of routes received from peer.
+        advertised:
+          type: integer
+          format: int64
+          description: Number of routes advertised to peer.
+    Error:
+      type: string
+      description: Human-readable error message.
 externalDocs:
   description: Cilium API Documentation
   url: https://docs.cilium.io/en/stable/api/
