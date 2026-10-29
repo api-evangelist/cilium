@@ -1,4 +1,4 @@
-# Cilium (cilium)
+# Cilium
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,167 +66,174 @@
 
 Cilium is an open source, cloud native solution for providing, securing, and observing network connectivity between workloads, fueled by the revolutionary kernel technology eBPF. Cilium provides network security, load balancing, and observability for Kubernetes clusters.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/cilium/refs/heads/main/apis.yml)
+**Areas:** Cloud-Native · eBPF · Kubernetes · Networking · Security
 
-## Scope
+## Cilium on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Cilium is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cilium/](https://apis.io/providers/cilium/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (11)
 
-- Cloud Native
-- eBPF
-- Kubernetes
-- Networking
-- Security
+- [Hubble API](https://apis.io/apis/cilium/hubble-api/) — The Hubble API is a gRPC-based observability API built on top of Cilium and eBPF that provides deep visibility into network flows, DNS queries, HTTP…
+- [Tetragon API](https://apis.io/apis/cilium/tetragon-api/) — The Tetragon gRPC API provides access to eBPF-based security observability and runtime enforcement capabilities. It enables querying of kernel-level events…
+- [Hubble Relay API](https://apis.io/apis/cilium/hubble-relay-api/) — The Hubble Relay API is a gRPC service that aggregates and relays network flow data from multiple Hubble agents running across Kubernetes cluster nodes. It…
+- [Cilium BGP API](https://apis.io/apis/cilium/cilium-bgp-api/) — BGP control plane peers, routes, and route policies
+- [Cilium Daemon API](https://apis.io/apis/cilium/cilium-daemon-api/) — Cilium daemon configuration, health, and cluster management
+- [Cilium Endpoint API](https://apis.io/apis/cilium/cilium-endpoint-api/) — Endpoint lifecycle management, configuration, and status
+- [Cilium IPAM API](https://apis.io/apis/cilium/cilium-ipam-api/) — IP address management and allocation
+- [Cilium Lrp API](https://apis.io/apis/cilium/cilium-lrp-api/) — The Lrp API from Cilium — 1 operation(s) for lrp.
+- [Cilium Policy API](https://apis.io/apis/cilium/cilium-policy-api/) — Network policy, security identities, and FQDN/DNS policy
+- [Cilium Prefilter API](https://apis.io/apis/cilium/cilium-prefilter-api/) — XDP prefilter CIDR management
+- [Cilium Service API](https://apis.io/apis/cilium/cilium-service-api/) — The Service API from Cilium — 2 operation(s) for service.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-16
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Cilium API
+Event-driven and webhook contracts.
 
-The Cilium REST API provides access to Cilium daemon and agent endpoints for managing Kubernetes network policy, security, and connectivity. The API is served by the cilium-agent process over a local Unix domain socket and HTTP interface, and covers endpoints, identities, cluster nodes, and health status.
+- [Cilium Hubble Events](https://apis.io/asyncapis/cilium/cilium-hubble-asyncapi/)
 
-- **Human URL:** [https://docs.cilium.io/en/stable/api/](https://docs.cilium.io/en/stable/api/)
-- **Base URL:** `https://localhost/v1`
+#### Event channels (5)
 
-#### Tags
+Individual events and webhooks the provider emits.
 
-- eBPF
-- Kubernetes
-- Networking
-- Security
+- [/observer.Observer/GetAgentEvents](https://apis.io/channels/cilium/observer-observer-getagentevents/)
+- [/observer.Observer/GetDebugEvents](https://apis.io/channels/cilium/observer-observer-getdebugevents/)
+- [/observer.Observer/GetFlows](https://apis.io/channels/cilium/observer-observer-getflows/)
+- [/observer.Observer/GetNamespaces](https://apis.io/channels/cilium/observer-observer-getnamespaces/)
+- [/observer.Observer/GetNodes](https://apis.io/channels/cilium/observer-observer-getnodes/)
 
-#### Properties
+#### Agentic access (1)
 
-- [Documentation](https://docs.cilium.io/en/stable/api/)
-- [OpenAPI](https://github.com/cilium/cilium/blob/main/api/v1/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](openapi/cilium-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cilium-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cilium-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Getting Started](https://docs.cilium.io/en/stable/gettingstarted/)
-- [Changelog](https://github.com/cilium/cilium/releases)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Hubble API
+- [Cilium Agentic Access](https://apis.io/agentic-access/cilium/cilium-agentic-access/)
 
-The Hubble API is a gRPC-based observability API built on top of Cilium and eBPF that provides deep visibility into network flows, DNS queries, HTTP requests, and service communication within Kubernetes clusters. It exposes Observer and Peer gRPC services for querying flows, nodes, namespaces, and server status across single nodes or entire clusters via Hubble Relay.
+#### JSON Schema (1)
 
-- **Human URL:** [https://docs.cilium.io/en/stable/observability/hubble/index.html](https://docs.cilium.io/en/stable/observability/hubble/index.html)
+The data models the API reads and writes.
 
-#### Tags
+- [Cilium Endpoint](https://apis.io/schemas/cilium/cilium-endpoint/)
 
-- eBPF
-- Kubernetes
-- Networking
-- Observability
+#### JSON-LD (1)
 
-#### Properties
+Linked-data contexts for the provider's vocabulary.
 
-- [Documentation](https://docs.cilium.io/en/stable/observability/hubble/index.html)
-- [Reference](https://docs.cilium.io/en/stable/internals/hubble/)
-- [AsyncAPI](asyncapi/cilium-hubble-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [GitHub Repository](https://github.com/cilium/hubble)
-- [Changelog](https://github.com/cilium/hubble/releases)
-- [Postman Collection](collections/cilium-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cilium-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Cilium Context](https://apis.io/jsonld/cilium/cilium-context/)
 
-### Tetragon API
+#### Collections (9)
 
-The Tetragon gRPC API provides access to eBPF-based security observability and runtime enforcement capabilities. It enables querying of kernel-level events including process execution, file access, and network activity, and supports defining tracing policies via Kubernetes custom resources for real-time enforcement and event streaming.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://tetragon.io/docs/reference/grpc-api/](https://tetragon.io/docs/reference/grpc-api/)
+- [Cilium API](https://apis.io/collections/cilium/open-cilium-api/)
+- [Cilium BGP API](https://apis.io/collections/cilium/open-cilium-bgp-api/)
+- [Cilium BGP Daemon API](https://apis.io/collections/cilium/open-cilium-daemon-api/)
+- [Cilium BGP Endpoint API](https://apis.io/collections/cilium/open-cilium-endpoint-api/)
+- [Cilium BGP IPAM API](https://apis.io/collections/cilium/open-cilium-ipam-api/)
+- [Cilium BGP Lrp API](https://apis.io/collections/cilium/open-cilium-lrp-api/)
+- [Cilium BGP Policy API](https://apis.io/collections/cilium/open-cilium-policy-api/)
+- [Cilium BGP Prefilter API](https://apis.io/collections/cilium/open-cilium-prefilter-api/)
+- [Cilium BGP Service API](https://apis.io/collections/cilium/open-cilium-service-api/)
 
-#### Tags
+#### Governance rules (2)
 
-- eBPF
-- Kubernetes
-- Observability
-- Security
+Spectral rulesets for the provider's contracts.
 
-#### Properties
+- [Cilium — asyncapi rules](https://apis.io/rules/cilium/cilium-asyncapi-spectral-rules/)
+- [Cilium — jsonschema rules](https://apis.io/rules/cilium/cilium-jsonschema-spectral-rules/)
 
-- [Documentation](https://tetragon.io/docs/reference/grpc-api/)
-- [Reference](https://tetragon.io/docs/)
-- [GitHub Repository](https://github.com/cilium/tetragon)
-- [Getting Started](https://tetragon.io/docs/getting-started/)
-- [Changelog](https://github.com/cilium/tetragon/releases)
-- [Postman Collection](collections/cilium-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cilium-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Security (1)
 
-### Cilium Operator API
+Authentication, trust centre, and vulnerability disclosure.
 
-The Cilium Operator API provides a REST interface for the Cilium operator component, which handles cluster-wide tasks such as garbage collection of Cilium endpoints and identities, node IPAM management, and coordination of cluster mesh operations. It exposes health and status endpoints for operator lifecycle management in Kubernetes deployments.
+- [Cilium Domain Security](https://apis.io/security/cilium/cilium-domain-security/)
 
-- **Human URL:** [https://docs.cilium.io/en/stable/internals/](https://docs.cilium.io/en/stable/internals/)
-- **Base URL:** `https://localhost/v1`
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
-- eBPF
-- Kubernetes
-- Networking
-- Operations
+- [Cilium Plans Pricing](https://apis.io/plans/cilium/cilium-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [Documentation](https://docs.cilium.io/en/stable/internals/)
-- [OpenAPI](https://github.com/cilium/cilium/blob/main/api/v1/operator/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Changelog](https://github.com/cilium/cilium/releases)
-- [Postman Collection](collections/cilium-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cilium-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published request limits.
 
-### Hubble Relay API
+- [Cilium Rate Limits](https://apis.io/rate-limits/cilium/cilium-rate-limits/)
 
-The Hubble Relay API is a gRPC service that aggregates and relays network flow data from multiple Hubble agents running across Kubernetes cluster nodes. It provides a single cluster-wide endpoint for the Hubble Observer service, enabling centralized queries of flow data, DNS events, and HTTP metrics from all nodes through Hubble Relay without connecting to each node individually.
+#### FinOps (1)
 
-- **Human URL:** [https://docs.cilium.io/en/stable/observability/hubble/index.html](https://docs.cilium.io/en/stable/observability/hubble/index.html)
+What the API costs to run, by operation.
 
-#### Tags
+- [Cilium Finops](https://apis.io/finops/cilium/cilium-finops/)
 
-- gRPC
-- Kubernetes
-- Networking
-- Observability
+## Where to find this API
 
-#### Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- [Documentation](https://docs.cilium.io/en/stable/observability/hubble/index.html)
-- [Reference](https://github.com/cilium/cilium/tree/main/api/v1/relay)
-- [GitHub Repository](https://github.com/cilium/cilium)
-- [Changelog](https://github.com/cilium/cilium/releases)
-- [Postman Collection](collections/cilium-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cilium-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/cilium)
 - [Website](https://cilium.io/)
 - [Documentation](https://docs.cilium.io/)
-- [Getting Started](https://docs.cilium.io/en/stable/gettingstarted/)
-- [GitHub Organization](https://github.com/cilium)
-- [GitHub Repository](https://github.com/cilium/cilium)
-- [Blog](https://cilium.io/blog/)
-- [Community](https://cilium.io/get-involved/)
+- [Getting started](https://docs.cilium.io/en/stable/gettingstarted/)
 - [Support](https://cilium.io/get-help/)
-- [Privacy Policy](https://cilium.io/privacy/)
-- [Slack](https://slack.cilium.io/)
 - [Changelog](https://github.com/cilium/cilium/releases)
-- [YouTube](https://www.youtube.com/@CiliumProject)
-- [Terms of Service](https://cilium.io/terms/)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/cilium)
-- [J S O N L D Context](json-ld/cilium-context.jsonld)
-- [JSON Schema](json-schema/cilium-endpoint-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [AsyncAPI](asyncapi/cilium-hubble-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [OpenAPI](openapi/cilium-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Spectral Rules](spectral/cilium-spectral.yml) — [Spectral](https://docs.stoplight.io/docs/spectral)
+- [Blog](https://cilium.io/blog/)
+- [Terms of service](https://cilium.io/terms/)
+- [Privacy policy](https://cilium.io/privacy/)
+- [GitHub](https://github.com/cilium)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 42.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 54.6 |
+| Contract governance | 13.6 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 35.7 |
+| Access clarity | 5.3 |
+
+**Agent readiness 23.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 10.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cilium/](https://apis.io/providers/cilium/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Cilium: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cilium/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
